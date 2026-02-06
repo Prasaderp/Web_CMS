@@ -104,11 +104,24 @@
             setLoading(true);
 
             try {
+                console.log('[Login] Submitting credentials to', CMS_CONFIG.API_URL + '/api/auth/login');
                 await Auth.login(email, password);
                 // Redirect to dashboard on success
                 window.location.href = CMS_CONFIG.ROUTES.DASHBOARD;
             } catch (err) {
-                showError(err.message || 'Login failed. Please try again.');
+                // Log full error details to the console for debugging
+                console.error('[Login] Error during login', {
+                    message: err?.message,
+                    name: err?.name,
+                    stack: err?.stack
+                });
+
+                // Provide more helpful messages for common failure modes
+                if (err?.message === 'Failed to fetch' || err?.name === 'TypeError') {
+                    showError('Could not reach the API at ' + CMS_CONFIG.API_URL + '. Is the backend running and accessible from your machine?');
+                } else {
+                    showError(err.message || 'Login failed. Please try again.');
+                }
             } finally {
                 setLoading(false);
             }

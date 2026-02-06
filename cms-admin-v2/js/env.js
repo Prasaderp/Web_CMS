@@ -11,7 +11,7 @@
  */
 
 // Set your backend API URL here
-window.CMS_API_URL = 'https://aigenthix-backend.onrender.com';
+// window.CMS_API_URL = 'https://aigenthix-backend.onrender.com';
 
 // Alternatively, you can uncomment the line below for local development:
-// window.CMS_API_URL = 'http://localhost:8000';
+window.CMS_API_URL = 'http://localhost:8000';
