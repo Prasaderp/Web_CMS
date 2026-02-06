@@ -2,7 +2,7 @@
 
 This guide explains how to deploy the complete AiGENThix CMS system to Render, consisting of:
 - **Backend API** (Python FastAPI) - Your API server
-- **CMS Admin** (Next.js) - Admin dashboard for content management
+- **CMS Admin** (Static HTML/CSS/JS) - Admin dashboard for content management
 - **Website** (Vite/React) - Public-facing website
 
 ## 📋 Prerequisites
@@ -61,26 +61,33 @@ The backend is already configured to handle this connection string with SSL.
 
 ---
 
-## 🖥️ Step 3: Deploy CMS Admin (Next.js)
+## 🖥️ Step 3: Deploy CMS Admin (Static Site)
+
+> ⚡ **The CMS Admin is now a pure static HTML/CSS/JS site** - no build step required!
+
+### Step 3a: Configure API URL
+
+Before deploying, update the API URL in `cms-admin-v2/js/env.js`:
+
+```javascript
+// Set your backend URL (from Step 2)
+window.CMS_API_URL = 'https://aigenthix-backend.onrender.com';
+```
+
+### Step 3b: Deploy on Render
 
 1. Go to [Render Dashboard](https://dashboard.render.com)
-2. Click **"New +"** → **"Web Service"**
+2. Click **"New +"** → **"Static Site"**
 3. Connect the same repository
 4. Configure:
    - **Name**: `aigenthix-cms`
    - **Root Directory**: `cms-admin-v2`
-   - **Runtime**: `Node`
-   - **Build Command**: `npm ci && npm run build`
-   - **Start Command**: `npm start`
+   - **Build Command**: (leave empty - no build needed)
+   - **Publish Directory**: `.` (just a single dot - means "current directory")
 
-5. Add Environment Variables:
+5. **No environment variables needed** - configuration is in `js/env.js`
 
-| Key | Value |
-|-----|-------|
-| `NODE_ENV` | `production` |
-| `NEXT_PUBLIC_API_URL` | `https://aigenthix-backend.onrender.com` (your backend URL from Step 2) |
-
-6. Click **"Create Web Service"**
+6. Click **"Create Static Site"**
 
 ---
 
@@ -173,10 +180,12 @@ If you prefer one-click deployment, use the included `render.yaml`:
 | `ADMIN_PASSWORD` | ❌ | Initial admin password |
 
 ### CMS Admin (`cms-admin-v2`)
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | ✅ | Backend API URL |
-| `NODE_ENV` | ❌ | Set to `production` |
+
+> **Note**: The CMS Admin is now a static site. Configuration is done in `js/env.js`, not environment variables.
+
+| File | Required | Description |
+|------|----------|-------------|
+| `js/env.js` | ✅ | Set `window.CMS_API_URL` to your backend URL |
 
 ### Website (`website-v2`)
 | Variable | Required | Description |
@@ -197,8 +206,9 @@ If you prefer one-click deployment, use the included `render.yaml`:
 - Check if connection string includes `?sslmode=require&channel_binding=require`
 
 ### CMS can't connect to backend?
-- Verify `NEXT_PUBLIC_API_URL` is correct
+- Verify `window.CMS_API_URL` in `js/env.js` is correct
 - Check if `CORS_ORIGINS` includes CMS URL
+- Ensure you committed the updated `js/env.js` file
 
 ### Website shows CORS errors?
 - Update `CORS_ORIGINS` in backend to include website URL
