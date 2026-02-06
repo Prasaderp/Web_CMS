@@ -194,28 +194,46 @@
             return;
         }
 
-        // Build form data
+        // Validate URLs before submission
+        const urlsToValidate = [
+            { value: featuredImageInput.value.trim(), name: 'Featured Image URL' },
+            { value: authorAvatarInput.value.trim(), name: 'Author Avatar URL' },
+            { value: authorWebsiteInput.value.trim(), name: 'Author Website URL' },
+            { value: ctaUrlInput.value.trim(), name: 'CTA URL' }
+        ];
+
+        for (const urlField of urlsToValidate) {
+            if (urlField.value && !Utils.isValidUrl(urlField.value)) {
+                showFormError(`${urlField.name} is not a valid URL`);
+                return;
+            }
+        }
+
+        // Sanitize inputs
+        const sanitize = (str) => Utils.sanitizeInput(str);
+
+        // Build form data with sanitized inputs
         const formData = {
-            title,
-            slug: slugInput.value.trim() || Utils.slugify(title),
-            excerpt: excerptInput.value.trim(),
-            content,
-            category: categoryInput.value.trim(),
+            title: sanitize(title),
+            slug: sanitize(slugInput.value.trim() || Utils.slugify(title)),
+            excerpt: sanitize(excerptInput.value.trim()),
+            content, // Content is HTML, sanitized on backend
+            category: sanitize(categoryInput.value.trim()),
             tags: tagsInput.value
                 .split(',')
-                .map(t => t.trim())
+                .map(t => sanitize(t))
                 .filter(t => t.length > 0),
             featured_image_url: featuredImageInput.value.trim(),
-            author_name: authorNameInput.value.trim(),
-            author_bio: authorBioInput.value.trim(),
+            author_name: sanitize(authorNameInput.value.trim()),
+            author_bio: sanitize(authorBioInput.value.trim()),
             author_avatar_url: authorAvatarInput.value.trim(),
-            author_twitter: authorTwitterInput.value.trim(),
-            author_linkedin: authorLinkedinInput.value.trim(),
+            author_twitter: sanitize(authorTwitterInput.value.trim()),
+            author_linkedin: sanitize(authorLinkedinInput.value.trim()),
             author_facebook: '',
             author_instagram: '',
-            author_github: authorGithubInput.value.trim(),
+            author_github: sanitize(authorGithubInput.value.trim()),
             author_website: authorWebsiteInput.value.trim(),
-            cta_text: ctaTextInput.value.trim(),
+            cta_text: sanitize(ctaTextInput.value.trim()),
             cta_url: ctaUrlInput.value.trim(),
             cta_style: ctaStyleInput.value,
             cta_position: ctaPositionInput.value,

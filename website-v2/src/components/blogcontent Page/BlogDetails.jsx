@@ -15,6 +15,7 @@ import {
   Check
 } from "lucide-react";
 import { config } from "../../lib/config";
+import { sanitizeHtml, escapeHtml } from "../../utils/security";
 
 const API_URL = config.API_URL;
 
@@ -91,16 +92,22 @@ const BlogDetails = () => {
     return url;
   };
 
-  // ✅ NEW: Enhanced content renderer with VIDEO EMBED support
+  // ✅ SECURE: Enhanced content renderer with XSS protection via DOMPurify
   const renderContent = (content) => {
     if (!content) return "";
 
-    // Handle HTML content
+    // Handle HTML content - sanitize before rendering
     if (content.includes('<p>') || content.includes('<h2>') || content.includes('<iframe>')) {
+      const sanitized = sanitizeHtml(content, {
+        // Allow iframes for video embeds (YouTube, Vimeo)
+        ADD_TAGS: ['iframe'],
+        ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+      });
+      
       return (
         <div
           className="prose prose-lg max-w-none blog-content-html"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: sanitized }}
           style={{
             color: '#374151',
             lineHeight: '1.75'
@@ -163,19 +170,27 @@ const BlogDetails = () => {
         );
       }
 
-      // Regular paragraphs with formatting
+      // Regular paragraphs with formatting - sanitize after markdown conversion
       let text = para
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic text-gray-800">$1</em>')
         .replace(/`(.*?)`/g, '<code class="bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
-        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-600 hover:underline hover:text-blue-800 transition-colors font-medium" target="_blank" rel="noopener noreferrer">$1</a>');
+        .replace(/\[(.*?)\]\((.*?)\)/g, (match, linkText, url) => {
+          // Validate URL before creating link
+          const safeUrl = escapeHtml(url);
+          const safeText = escapeHtml(linkText);
+          return `<a href="${safeUrl}" class="text-blue-600 hover:underline hover:text-blue-800 transition-colors font-medium" target="_blank" rel="noopener noreferrer">${safeText}</a>`;
+        });
+
+      // Sanitize the final HTML
+      const sanitized = sanitizeHtml(text);
 
       return (
         <p
           key={index}
           className="text-gray-800 leading-relaxed text-base sm:text-lg mb-6"
           style={{ color: '#1f2937' }}
-          dangerouslySetInnerHTML={{ __html: text }}
+          dangerouslySetInnerHTML={{ __html: sanitized }}
         />
       );
     });

@@ -54,6 +54,14 @@ const Api = {
                 ...restOptions
             });
 
+            // Handle 401 Unauthorized - token expired or invalid
+            if (response.status === 401 && requiresAuth) {
+                // Clear auth and redirect to login
+                Auth.clearAuth();
+                window.location.href = CMS_CONFIG.ROUTES.LOGIN;
+                throw new ApiError('Session expired. Please login again.', 401, endpoint);
+            }
+
             const text = await response.text();
             let data = null;
 
@@ -66,7 +74,11 @@ const Api = {
             }
 
             if (!response.ok) {
-                const message = data?.error || data?.detail || `Request failed (${response.status})`;
+                // Don't expose internal error details in production
+                const isClientError = response.status >= 400 && response.status < 500;
+                const message = isClientError 
+                    ? (data?.error || data?.detail || `Request failed (${response.status})`)
+                    : 'An error occurred. Please try again later.';
                 throw new ApiError(message, response.status, endpoint);
             }
 
@@ -128,9 +140,58 @@ const Api = {
     },
 
     /**
-     * Upload file (multipart/form-data).
+     * Validates file before upload.
+     * @param {File} file - File to validate.
+     * @param {Object} options - Validation options.
+     * @returns {Object} - { valid: boolean, error?: string }
      */
-    async upload(endpoint, file, requiresAuth = true) {
+    validateFile(file, options = {}) {
+        const {
+            maxSizeMB = 10,
+            allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+            allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+        } = options;
+
+        if (!file || !(file instanceof File)) {
+            return { valid: false, error: 'Invalid file' };
+        }
+
+        // Check file size
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+        if (file.size > maxSizeBytes) {
+            return { valid: false, error: `File size exceeds ${maxSizeMB}MB limit` };
+        }
+
+        // Check file type
+        if (allowedTypes.length > 0 && !allowedTypes.includes(file.type)) {
+            return { valid: false, error: 'File type not allowed' };
+        }
+
+        // Check file extension
+        const fileName = file.name.toLowerCase();
+        const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+        if (allowedExtensions.length > 0 && !hasValidExtension) {
+            return { valid: false, error: 'File extension not allowed' };
+        }
+
+        return { valid: true };
+    },
+
+    /**
+     * Upload file (multipart/form-data) with validation.
+     * @param {string} endpoint - Upload endpoint.
+     * @param {File} file - File to upload.
+     * @param {Object} options - Upload options including validation.
+     * @param {boolean} requiresAuth - Whether authentication is required.
+     * @returns {Promise<any>} - Upload response data.
+     */
+    async upload(endpoint, file, requiresAuth = true, options = {}) {
+        // Validate file before upload
+        const validation = this.validateFile(file, options);
+        if (!validation.valid) {
+            throw new ApiError(validation.error, 400, endpoint);
+        }
+
         const formData = new FormData();
         formData.append('file', file);
 
@@ -153,6 +214,13 @@ const Api = {
                 signal: controller.signal
             });
 
+            // Handle 401 Unauthorized
+            if (response.status === 401 && requiresAuth) {
+                Auth.clearAuth();
+                window.location.href = CMS_CONFIG.ROUTES.LOGIN;
+                throw new ApiError('Session expired. Please login again.', 401, endpoint);
+            }
+
             const text = await response.text();
             let data = null;
 
@@ -165,7 +233,10 @@ const Api = {
             }
 
             if (!response.ok) {
-                const message = data?.error || 'Upload failed';
+                const isClientError = response.status >= 400 && response.status < 500;
+                const message = isClientError
+                    ? (data?.error || 'Upload failed')
+                    : 'An error occurred during upload. Please try again later.';
                 throw new ApiError(message, response.status, endpoint);
             }
 
@@ -201,7 +272,11 @@ const BlogsApi = {
     bulkPublish: (ids) => Api.post('/api/admin/blogs/bulk/publish', { ids }, true),
     bulkUnpublish: (ids) => Api.post('/api/admin/blogs/bulk/unpublish', { ids }, true),
     bulkDelete: (ids) => Api.post('/api/admin/blogs/bulk/delete', { ids }, true),
-    uploadImage: (file) => Api.upload('/api/admin/upload/image', file, true)
+    uploadImage: (file) => Api.upload('/api/admin/upload/image', file, true, {
+        maxSizeMB: 10,
+        allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+        allowedExtensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+    })
 };
 
 // Freeze to prevent mutation

@@ -10,10 +10,37 @@ const Utils = {
      * @returns {string} - The escaped string.
      */
     escapeHtml(str) {
-        if (!str) return '';
+        if (!str || typeof str !== 'string') return '';
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
+    },
+
+    /**
+     * Validates URL to prevent javascript: and data: XSS attacks.
+     * @param {string} url - URL to validate.
+     * @returns {boolean} - True if URL is safe.
+     */
+    isValidUrl(url) {
+        if (!url || typeof url !== 'string') return false;
+        try {
+            const parsed = new URL(url, window.location.origin);
+            // Only allow http, https, and relative URLs
+            return ['http:', 'https:', ''].includes(parsed.protocol);
+        } catch {
+            return false;
+        }
+    },
+
+    /**
+     * Sanitizes user input by removing potentially dangerous characters.
+     * @param {string} input - Input to sanitize.
+     * @returns {string} - Sanitized input.
+     */
+    sanitizeInput(input) {
+        if (!input || typeof input !== 'string') return '';
+        // Remove null bytes and control characters
+        return input.replace(/[\x00-\x1F\x7F]/g, '').trim();
     },
 
     /**
