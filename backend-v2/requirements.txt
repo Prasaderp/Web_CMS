@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-jose[cryptography]
+bcrypt
+python-multipart
+cloudinary
+python-dotenv
+python-slugify
+redis
+psycopg2-binary
+slowapi

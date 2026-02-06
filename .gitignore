@@ -1,0 +1,45 @@
+# ---- Global editor / OS noise ----
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+~*
+.idea/
+.vscode/
+
+# ---- Python backend (backend-v2) ----
+backend-v2/__pycache__/
+backend-v2/**/*.py[cod]
+backend-v2/.pytest_cache/
+backend-v2/.mypy_cache/
+backend-v2/.ruff_cache/
+backend-v2/.coverage
+backend-v2/htmlcov/
+
+# Local virtualenvs
+backend-v2/venv/
+venv/
+
+# ---- Node / JS (cms-admin-v2, website-v2) ----
+**/node_modules/
+**/.turbo/
+**/.next/
+**/.vercel/
+**/.nuxt/
+
+# Lock/coverage/cache
+**/coverage/
+**/.nyc_output/
+**/dist/
+**/build/
+
+# Vite / Next build outputs
+cms-admin-v2/.next/
+cms-admin-v2/out/
+website-v2/dist/
+
+# ---- Docker / misc ----
+**/.docker/
+**/docker-data/
+
+
