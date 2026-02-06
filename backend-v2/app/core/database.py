@@ -3,6 +3,7 @@ Database connection and session management using psycopg2.
 Implements connection pooling and health checks for PostgreSQL.
 """
 from typing import Generator
+from urllib.parse import urlparse, parse_qs
 import psycopg2
 from psycopg2 import pool, extras
 from psycopg2.extensions import connection as PgConnection
@@ -23,51 +24,50 @@ class Database:
     
     def _parse_database_url(self) -> dict:
         """
-        Parse DATABASE_URL into connection parameters.
-        Expected format: postgresql://user:password@host:port/database
+        Parse DATABASE_URL into connection parameters using urllib.parse.
+        Supports: postgresql://user:password@host:port/database?sslmode=require&channel_binding=require
         """
         url = settings.DATABASE_URL
         
-        # Support both postgresql:// and postgres://
-        if url.startswith("postgresql://"):
-            url = url.replace("postgresql://", "")
-        elif url.startswith("postgres://"):
-            url = url.replace("postgres://", "")
-        else:
+        # Normalize postgres:// to postgresql://
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        
+        parsed = urlparse(url)
+        
+        if parsed.scheme not in ("postgresql", "postgres"):
             raise ValueError("DATABASE_URL must start with postgresql:// or postgres://")
         
-        # Split credentials and host
-        if "@" in url:
-            credentials, host_part = url.split("@")
-            if ":" in credentials:
-                user, password = credentials.split(":", 1)
-            else:
-                user = credentials
-                password = ""
-        else:
+        if not parsed.username:
             raise ValueError("DATABASE_URL must include credentials")
         
-        # Split host and database
-        if "/" in host_part:
-            host_port, database = host_part.split("/", 1)
-        else:
+        # Extract database name (remove leading /)
+        dbname = parsed.path.lstrip("/")
+        if not dbname:
             raise ValueError("DATABASE_URL must include database name")
         
-        # Split host and port
-        if ":" in host_port:
-            host, port_str = host_port.split(":")
-            port = int(port_str)
-        else:
-            host = host_port
-            port = 5432  # PostgreSQL default port
-        
-        return {
-            "host": host,
-            "port": port,
-            "user": user,
-            "password": password,
-            "dbname": database
+        config = {
+            "host": parsed.hostname,
+            "port": parsed.port or 5432,
+            "user": parsed.username,
+            "password": parsed.password or "",
+            "dbname": dbname
         }
+        
+        # Parse query parameters for SSL and other options
+        query_params = parse_qs(parsed.query)
+        
+        # Handle sslmode
+        sslmode = query_params.get("sslmode", [""])[0]
+        if sslmode in ("require", "verify-ca", "verify-full"):
+            config["sslmode"] = sslmode
+        
+        # Handle channel_binding (required by some Neon configurations)
+        channel_binding = query_params.get("channel_binding", [""])[0]
+        if channel_binding:
+            config["channel_binding"] = channel_binding
+        
+        return config
     
     def _init_pool(self) -> None:
         """Initialize connection pool."""
