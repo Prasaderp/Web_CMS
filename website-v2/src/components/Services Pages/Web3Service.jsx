@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
+import SEO from '../SEO';
 
 import s4 from '../IMAGES/h1.jpg';
 import web1 from '../IMAGES/f1.jpg';
@@ -14,42 +15,38 @@ const Web3Service = () => {
     };
 
     return (
+    <>
+        <SEO
+            title="Web3 Development Services - AiGENThix"
+            description="Empowering the future with secure, scalable, and innovative Web3 solutions. From decentralized apps to smart contracts, we build the digital backbone of the new internet."
+        />
+
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />
 
-            {/* HERO SECTION */}
-            <section className="flex flex-wrap items-center justify-between px-10 py-20 max-w-6xl mx-auto gap-10">
-                <motion.div
-                    className="flex-1 max-w-lg"
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                >
-                    <h1 className="text-5xl font-bold mb-6 text-gray-900 leading-tight">
-                        Empowering the Future with Web3 Innovation
-                    </h1>
-                    <p className="text-lg text-gray-600 mb-8">
-                        Unlock decentralized possibilities with secure, scalable, and efficient blockchain solutions. 
-                        From smart contracts to NFTs, we build the digital backbone of the new internet.
-                    </p>
-                    <Link
-                        to="/contact"
-                        className="inline-block bg-[#2D4DE8] hover:bg-[#1b34b8] text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-transform transform hover:-translate-y-1"
+            {/* HERO SECTION - full width like reference image 2 */}
+            <section className="relative py-20 lg:py-32 about-hero">
+                <div className="hero-overlay" />
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.h1
+                        className="text-5xl lg:text-7xl font-black mb-6"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                     >
-                        Get in Touch
-                    </Link>
-                </motion.div>
-
-                <motion.div
-                    className="flex-1 flex justify-center"
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                >
-                    <img src={s4} alt="Web3 Development" className="w-full max-w-md rounded-xl shadow-lg object-cover" />
-                </motion.div>
+                        Empowering the Future with Web3 Innovation
+                    </motion.h1>
+                    <motion.p
+                        className="text-xl lg:text-2xl italic max-w-4xl mx-auto leading-relaxed"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                    >
+                        Unlock decentralized possibilities with secure, scalable, and efficient blockchain solutions. From smart contracts to NFTs, we build the digital backbone of the new internet.
+                    </motion.p>
+                </div>
             </section>
 
             {/* FEATURES */}
@@ -73,12 +70,12 @@ const Web3Service = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
                     {[
-                        { icon: '🌐', title: 'Decentralized Apps', desc: 'Transparent and secure dApps that redefine user ownership.' },
-                        { icon: '🔗', title: 'Smart Contracts', desc: 'Audited and optimized contracts built on Solidity & Rust.' },
-                        { icon: '🎨', title: 'NFT Platforms', desc: 'Seamless NFT minting, trading, and integration solutions.' },
-                        { icon: '💎', title: 'Tokenomics', desc: 'Designing and launching custom ERC, BEP, and Solana tokens.' },
-                        { icon: '⚙️', title: 'DAO Systems', desc: 'Community-driven decentralized governance made simple.' },
-                        { icon: '🧠', title: 'AI + Web3', desc: 'Leverage decentralized AI for smarter blockchain ecosystems.' },
+                        { title: 'Decentralized Apps', desc: 'Transparent and secure dApps that redefine user ownership.' },
+                        { title: 'Smart Contracts', desc: 'Audited and optimized contracts built on Solidity & Rust.' },
+                        { title: 'NFT Platforms', desc: 'Seamless NFT minting, trading, and integration solutions.' },
+                        { title: 'Tokenomics', desc: 'Designing and launching custom ERC, BEP, and Solana tokens.' },
+                        { title: 'DAO Systems', desc: 'Community-driven decentralized governance made simple.' },
+                        { title: 'AI + Web3', desc: 'Leverage decentralized AI for smarter blockchain ecosystems.' },
                     ].map((f, i) => (
                         <motion.div
                             key={i}
@@ -188,6 +185,7 @@ const Web3Service = () => {
                 </motion.div>
             </section>
         </div>
+    </>
     );
 };
 

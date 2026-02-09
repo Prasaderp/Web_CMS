@@ -1,251 +1,182 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
-import s2 from '../IMAGES/s2.svg';
+import SEO from '../SEO';
 
 const SoftwareDevelopmentService = () => {
-    const styles = {
-        servicesPage: {
-            fontFamily: "'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', sans-serif",
-            width: '100%',
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#ffffff',
-        },
-        mainContainer: {
-            flex: 1,
-            paddingTop: '80px',
-        },
-        heroSection: {
-            backgroundColor: '#ffffff',
-            padding: '80px 60px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '60px',
-            maxWidth: '1400px',
-            margin: '0 auto',
-            width: '100%',
-            boxSizing: 'border-box',
-        },
-        leftContent: {
-            flex: 1,
-            maxWidth: '550px',
-        },
-        rightContent: {
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'flex-end',
-        },
-        heroTitle: {
-            fontSize: '3.2rem',
-            fontWeight: '700',
-            marginBottom: '24px',
-            color: '#000000',
-            lineHeight: '1.2',
-            letterSpacing: '-0.5px',
-        },
-        heroDescription: {
-            fontSize: '1rem',
-            color: '#333333',
-            lineHeight: '1.7',
-            marginBottom: '32px',
-            fontWeight: '400',
-        },
-        contactButton: {
-            backgroundColor: '#2D4DE8',
-            color: 'white',
-            border: 'none',
-            padding: '14px 32px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            fontWeight: '600',
-            transition: 'all 0.3s ease',
-            display: 'inline-block',
-            textDecoration: 'none',
-        },
-        heroImage: {
-            width: '100%',
-            maxWidth: '500px',
-            height: 'auto',
-            borderRadius: '8px',
-            objectFit: 'cover',
-        },
-        tagButtonsContainer: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            marginBottom: '30px',
-        },
-        tagButton: {
-            backgroundColor: '#f5f5f5',
-            border: '1px solid #2D4DE8',
-            color: '#2D4DE8',
-            padding: '10px 18px',
-            borderRadius: '20px',
-            fontSize: '0.85rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-        },
-        contentSection: {
-            padding: '80px 60px',
-            maxWidth: '1400px',
-            margin: '0 auto',
-            width: '100%',
-            boxSizing: 'border-box',
-            backgroundColor: '#f9fafb',
-        },
-        sectionTitle: {
-            fontSize: '2.2rem',
-            fontWeight: '700',
-            marginBottom: '32px',
-            color: '#000000',
-        },
-        capabilityGrid: {
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '24px',
-            marginBottom: '40px',
-        },
-        capabilityCard: {
-            backgroundColor: '#ffffff',
-            padding: '28px 24px',
-            borderRadius: '8px',
-            border: '1px solid #e5e7eb',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            transition: 'all 0.3s ease',
-        },
-        capabilityTitle: {
-            fontSize: '1.2rem',
-            fontWeight: '700',
-            marginBottom: '12px',
-            color: '#000000',
-        },
-        capabilityDescription: {
-            fontSize: '0.95rem',
-            color: '#555555',
-            lineHeight: '1.6',
-        },
-        ctaContainer: {
-            textAlign: 'center',
-            padding: '40px 0',
-        },
+    const fadeUp = {
+        hidden: { opacity: 0, y: 40 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: 'easeOut' }
+        }
     };
 
     return (
-        <div style={styles.servicesPage}>
+    <>
+        <SEO
+            title="Software Development Services - AiGENThix"
+            description="Learn about AiGenthix — our mission, vision, AI research, ethical approach, and how we help businesses grow using cutting-edge artificial intelligence."
+        />
+        <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />
-            
-            <div style={styles.mainContainer}>
-                {/* Hero Section */}
-                <section style={styles.heroSection}>
-                    <div style={styles.leftContent}>
-                        <h1 style={styles.heroTitle}>Software Design & Development</h1>
-                        <p style={styles.heroDescription}>
-                            From concept to deployment, we design and build scalable, user-centric software solutions tailored to your unique business needs. Our team combines technical excellence with innovative design to create applications that delight users and drive measurable business outcomes.
-                        </p>
-                        <div style={styles.tagButtonsContainer}>
-                            <span style={styles.tagButton}>Web Development</span>
-                            <span style={styles.tagButton}>Mobile Apps</span>
-                            <span style={styles.tagButton}>SaaS Solutions</span>
-                            <span style={styles.tagButton}>UI/UX Design</span>
-                            <span style={styles.tagButton}>Cloud Architecture</span>
-                            <span style={styles.tagButton}>API Development</span>
-                        </div>
-                        <Link 
-                            to="/contact"
-                            style={styles.contactButton}
-                            onMouseEnter={(e) => {
-                                e.target.style.backgroundColor = '#1a39d1';
-                                e.target.style.transform = 'translateY(-2px)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.backgroundColor = '#2D4DE8';
-                                e.target.style.transform = 'translateY(0)';
-                            }}
-                        >
-                            Get in Touch
-                        </Link>
-                    </div>
-                    
-                    <div style={styles.rightContent}>
-                        <img 
-                            src={s2} 
-                            alt="Software Development"
-                            style={styles.heroImage}
-                        />
-                    </div>
-                </section>
 
-                {/* Capabilities Section */}
-                <section style={styles.contentSection}>
-                    <h2 style={styles.sectionTitle}>Our Development Excellence</h2>
-                    <div style={styles.capabilityGrid}>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>💻 Web Applications</div>
-                            <div style={styles.capabilityDescription}>
-                                Build responsive, performant web applications using modern frameworks (React, Vue, Angular) with server-side rendering, progressive enhancement, and optimal SEO.
-                            </div>
-                        </div>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>📱 Mobile Development</div>
-                            <div style={styles.capabilityDescription}>
-                                Native and cross-platform mobile apps for iOS and Android with intuitive interfaces, offline capabilities, and seamless backend integration.
-                            </div>
-                        </div>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>🏗️ Backend Architecture</div>
-                            <div style={styles.capabilityDescription}>
-                                Scalable backend systems with microservices, containerization, serverless architecture, and database optimization for high-traffic applications.
-                            </div>
-                        </div>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>🎨 UI/UX Design</div>
-                            <div style={styles.capabilityDescription}>
-                                Design-first approach with user research, wireframing, prototyping, and iterative testing to create intuitive, beautiful user experiences.
-                            </div>
-                        </div>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>🔐 Security & Performance</div>
-                            <div style={styles.capabilityDescription}>
-                                Security-first development with encryption, authentication, authorization, DDoS protection, and performance optimization for enterprise standards.
-                            </div>
-                        </div>
-                        <div style={styles.capabilityCard}>
-                            <div style={styles.capabilityTitle}>🔄 DevOps & Deployment</div>
-                            <div style={styles.capabilityDescription}>
-                                CI/CD pipelines, container orchestration, monitoring, logging, and automated deployment for reliable, predictable software releases.
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA Section */}
-                <section style={styles.ctaContainer}>
-                    <h2 style={styles.sectionTitle}>Ready to Build Something Great?</h2>
-                    <p style={{fontSize: '1.1rem', color: '#555555', marginBottom: '24px', maxWidth: '600px', margin: '0 auto 24px'}}>
-                        Let's turn your vision into a robust, scalable software solution that drives business growth.
-                    </p>
-                    <Link 
-                        to="/contact"
-                        style={styles.contactButton}
-                        onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = '#1a39d1';
-                            e.target.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = '#2D4DE8';
-                            e.target.style.transform = 'translateY(0)';
-                        }}
+            {/* HERO SECTION */}
+            <section className="relative py-20 lg:py-32 about-hero">
+                <div className="hero-overlay" />
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.h1
+                        className="text-5xl lg:text-7xl font-black tracking-tight mb-6 text-gray-900"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
                     >
-                        Start Your Project
+                        Custom Software Development
+                    </motion.h1>
+
+                    <motion.p
+                        className="text-xl lg:text-2xl italic max-w-4xl mx-auto leading-relaxed text-gray-700"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                    >
+                        Scalable, secure, and future-ready software solutions.
+                        We design and build custom applications that accelerate
+                        innovation, efficiency, and digital transformation.
+                    </motion.p>
+                </div>
+            </section>
+
+            {/* FEATURES */}
+            <section className="py-20 bg-white text-center">
+                <motion.h2
+                    className="text-3xl font-bold text-gray-900 mb-4"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    Our Software Capabilities
+                </motion.h2>
+
+                <motion.p
+                    className="text-gray-600 max-w-2xl mx-auto mb-12"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    We build high-performance software tailored to your business
+                    goals, from idea to deployment and beyond.
+                </motion.p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
+                    {[
+                        { title: 'Custom Software', desc: 'Tailored solutions built for your unique business needs.' },
+                        { title: 'SaaS Development', desc: 'Scalable, cloud-native SaaS platforms.' },
+                        { title: 'UI/UX Design', desc: 'Intuitive, user-centric digital experiences.' },
+                        { title: 'Web Applications', desc: 'Secure and high-performance web systems.' },
+                        { title: 'Mobile Apps', desc: 'Cross-platform mobile solutions.' },
+                        { title: 'System Integration', desc: 'Seamless integration with existing systems.' },
+                    ].map((f, i) => (
+                        <motion.div
+                            key={i}
+                            className="bg-[#f8f9ff] p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                            variants={fadeUp}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                        >
+                            <div className="text-4xl mb-4">{f.icon}</div>
+                            <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">{f.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
+            {/* DEVELOPMENT APPROACH */}
+            <section className="flex flex-wrap items-center justify-between max-w-6xl mx-auto py-20 px-10 gap-10">
+                <motion.div
+                    className="flex-1 min-w-[320px]"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    <img
+                        src="https://images.unsplash.com/photo-1605379399642-870262d3d051"
+                        alt="Software Strategy"
+                        className="w-full h-[350px] object-cover rounded-xl shadow-lg"
+                    />
+                </motion.div>
+
+                <motion.div
+                    className="flex-1"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    <h3 className="text-2xl font-bold mb-4">
+                        End-to-End Software Development
+                    </h3>
+                    <p className="text-gray-600 mb-6">
+                        From planning and architecture to development, testing,
+                        deployment, and maintenance — we manage the full
+                        software lifecycle with precision and scalability.
+                    </p>
+
+                    <div className="flex flex-wrap gap-3">
+                        {[
+                            'Product Engineering',
+                            'Agile Development',
+                            'Cloud Deployment',
+                            'DevOps'
+                        ].map((t, i) => (
+                            <span
+                                key={i}
+                                className="bg-[#e9edff] text-[#2D4DE8] px-4 py-2 rounded-full text-sm font-medium"
+                            >
+                                {t}
+                            </span>
+                        ))}
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* CTA */}
+            <section className="bg-[#2D4DE8] text-white text-center py-16 px-6">
+                <motion.h2
+                    className="text-3xl font-bold mb-4"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    Ready to Build Custom Software?
+                </motion.h2>
+
+                <motion.p
+                    className="max-w-2xl mx-auto mb-8 text-gray-200"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                >
+                    Let’s build powerful software solutions that scale
+                    with your business and drive long-term success.
+                </motion.p>
+
+                <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
+                    <Link
+                        to="/contact"
+                        className="bg-white text-[#2D4DE8] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+                    >
+                        Talk to Our Experts
                     </Link>
-                </section>
-            </div>
+                </motion.div>
+            </section>
         </div>
+    </>
     );
 };
 

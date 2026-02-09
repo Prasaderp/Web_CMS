@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SEO from "../SEO";
 
 // Import images (you'll need to add these to your images folder)
 import aboutHeroImg from '../IMAGES/about-hero.jpg';
@@ -69,17 +70,23 @@ const AboutUs = () => {
         }
     ];
 
-    return (
+   return (
+    <>
+        <SEO
+            title="About - AiGENThix"
+            description="Learn about AiGenthix — our mission, vision, AI research, ethical approach, and how we help businesses grow using cutting-edge artificial intelligence."
+        />
+
         <div className="min-h-screen bg-white text-black font-['Poppins',_sans-serif]">
             
             {/* Hero Section */}
-            <section className="relative py-20 lg:py-32 bg-gradient-to-br from-blue-50 to-gray-50">
-                <div className="absolute inset-0 bg-white/30"></div>
+            <section className="relative py-20 lg:py-32 about-hero">
+                <div className="hero-overlay"></div>
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-5xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                    <h1 className="text-5xl lg:text-7xl font-black mb-6">
                         About AiGenthix
                     </h1>
-                    <p className="text-xl lg:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+                    <p className="text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed">
                         Pioneering the future of artificial intelligence through innovative consulting, 
                         cutting-edge research, and transformative training solutions.
                     </p>
@@ -316,8 +323,9 @@ const AboutUs = () => {
                     </div>
                 </div>
             </section>
-        </div>
-    );
+            </div>
+    </>
+);
 };
 
 export default AboutUs;

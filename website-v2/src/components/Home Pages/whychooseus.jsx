@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 // Data for the "Why Choose Us" cards
 const featuresData = [
@@ -65,6 +65,85 @@ const featuresData = [
 ];
 
 const WhyChooseUs = () => {
+  const scrollRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Use a constant for the gap between mobile cards (e.g., space-x-8 = 32px)
+  const mobileGap = 32; 
+
+  // 1. Check if mobile (screen width <= 768px)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // 2. Scroll/Navigation logic
+  const scroll = (directionOrIndex) => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    // Get the actual width of a card element (including its left margin/padding in the flow)
+    const firstCard = container.firstChild;
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth; // width + padding + border (flex-none width)
+    const scrollAmount = cardWidth + mobileGap;
+    
+    let nextIndex;
+
+    if (typeof directionOrIndex === 'number') {
+      nextIndex = directionOrIndex;
+    } else {
+      if (directionOrIndex === 'right') {
+        nextIndex = (currentIndex + 1) % featuresData.length;
+      } else {
+        nextIndex = currentIndex === 0 ? featuresData.length - 1 : currentIndex - 1;
+      }
+    }
+    
+    setCurrentIndex(nextIndex);
+    const targetScrollLeft = nextIndex * scrollAmount;
+
+    container.scrollTo({
+      left: targetScrollLeft,
+      behavior: 'smooth'
+    });
+  };
+
+  // 3. Effect to update currentIndex based on actual scroll position (e.g., native swipe)
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || !isMobile) return;
+
+    const handleScroll = () => {
+      const firstCard = container.firstChild;
+      if (!firstCard) return;
+
+      const cardWidth = firstCard.offsetWidth;
+      const scrollAmount = cardWidth + mobileGap;
+      
+      // Calculate the nearest index based on current scroll position
+      const newIndex = Math.round(container.scrollLeft / scrollAmount);
+      
+      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < featuresData.length) {
+        setCurrentIndex(newIndex);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMobile, currentIndex]);
+
+
   return (
     <section className="bg-gray-50 py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -73,31 +152,103 @@ const WhyChooseUs = () => {
           Why Partner with <span className="text-blue-600">AiGENThix?</span>
         </h2>
 
-        {/* Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {featuresData.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-white p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl 
-                         transition duration-300 transform hover:-translate-y-2 text-center 
-                         group flex flex-col items-center justify-center"
-            >
-              {/* Icon */}
-              <div className="mb-6 bg-blue-50 p-5 rounded-full flex items-center justify-center transition duration-300 group-hover:bg-blue-600">
-                {feature.icon}
+        {/* Cards Wrapper (Desktop grid, Mobile carousel) */}
+        <div className="relative">
+          
+          {/* Navigation Arrows (Mobile Only) */}
+          {isMobile && (
+            <>
+              {/* Left Arrow */}
+              <button
+                aria-label="scroll-left"
+                onClick={() => scroll('left')}
+                className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-600 w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 border border-gray-200"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Right Arrow */}
+              <button
+                aria-label="scroll-right"
+                onClick={() => scroll('right')}
+                className="absolute z-10 right-0 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-600 w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 border border-gray-200"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {/* Cards Container - Conditional Rendering/Classes */}
+          <div
+            ref={scrollRef}
+            // Desktop Layout (md and up): Grid layout
+            className={`
+              ${!isMobile ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-10' : ''}
+              
+              ${isMobile ? 
+                // Mobile Layout: Horizontal flex with full-width cards, overflow, and snapping
+                'flex overflow-x-auto snap-x snap-mandatory scrollbar-hide space-x-8 px-10' 
+                : 
+                // Mobile needs horizontal margin to offset the parent's padding (px-4 = 16px) for edge-to-edge feel
+                'mx-auto'
+              }
+            `}
+            // Only apply negative margin on mobile to compensate for section's padding (px-4 = 16px)
+            // and the 'px-10' (40px) added for inner centering/padding
+            style={isMobile ? { marginLeft: '-16px', marginRight: '-16px' } : {}} 
+          >
+            {featuresData.map((feature, index) => (
+              <div
+                key={index}
+                className={`
+                  bg-white p-8 rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl 
+                  transition duration-300 transform hover:-translate-y-2 text-center 
+                  group flex flex-col items-center justify-center
+                  
+                  ${isMobile ? 'flex-none w-full snap-center' : ''}
+                `}
+                // Mobile style: Set card width to 100% of the scrolling container minus the gap (space-x-8 = 32px)
+                style={isMobile ? { minWidth: `calc(100% - ${mobileGap}px)` } : {}}
+              >
+                {/* Icon */}
+                <div className="mb-6 bg-blue-50 p-5 rounded-full flex items-center justify-center transition duration-300 group-hover:bg-blue-600">
+                  {feature.icon}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-semibold text-gray-800 mb-4 leading-tight group-hover:text-blue-600 transition duration-300">
+                  {feature.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 text-base leading-relaxed group-hover:text-gray-700 transition duration-300">
+                  {feature.description}
+                </p>
               </div>
-
-              {/* Title */}
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4 leading-tight group-hover:text-blue-600 transition duration-300">
-                {feature.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-600 text-base leading-relaxed group-hover:text-gray-700 transition duration-300">
-                {feature.description}
-              </p>
+            ))}
+          </div>
+          
+          {/* Dot Indicators (Mobile Only) */}
+          {isMobile && (
+            <div className="flex justify-center mt-8 space-x-3">
+              {featuresData.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => scroll(index)} 
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentIndex 
+                      ? 'bg-blue-600 scale-125' 
+                      : 'bg-gray-400 hover:bg-gray-500'
+                  }`}
+                  aria-label={`Go to feature ${index + 1}`}
+                />
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </div>
     </section>

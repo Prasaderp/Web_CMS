@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { contactService } from '../../services/contactService';
 
 const ContactUs = () => {
     // State to manage form data
@@ -23,24 +24,41 @@ const ContactUs = () => {
         }));
     };
 
+    // State for submission status
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error'
+
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
-        // Here you would typically send this data to an API
-        alert("Form submitted! (Check console for data)");
-        // Reset form after submission if needed
-        setFormData({
-            firstName: '',
-            lastName: '',
-            companyEmail: '',
-            companyName: '',
-            jobTitle: '',
-            phoneNumber: '',
-            country: '',
-            comments: '',
-            agreeToTerms: false,
-        });
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            await contactService.submitContactForm(formData);
+
+            setSubmitStatus('success');
+            alert("Thank you! We will get back to you shortly.");
+
+            // Reset form
+            setFormData({
+                firstName: '',
+                lastName: '',
+                companyEmail: '',
+                companyName: '',
+                jobTitle: '',
+                phoneNumber: '',
+                country: '',
+                comments: '',
+                agreeToTerms: false,
+            });
+        } catch (error) {
+            console.error("Submission error:", error);
+            setSubmitStatus('error');
+            alert("Something went wrong. Please try again later.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     // Define the steps for "Get Started Today"
@@ -93,12 +111,12 @@ const ContactUs = () => {
         // Add pt-24 (padding-top) to account for fixed navbar
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-24 pb-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Hero Section */}
-<div className="text-center mb-16">
-  <h1 className="text-4xl sm:text-5xl font-serif italic font-semibold text-black mb-6">
-    Get Started Today
-  </h1>
-</div>
+                {/* Hero Section */}
+                <div className="text-center mb-16">
+                    <h1 className="text-4xl sm:text-5xl font-serif italic font-semibold text-black mb-6">
+                        Get Started Today
+                    </h1>
+                </div>
 
 
 
@@ -122,9 +140,9 @@ const ContactUs = () => {
                 {/* Contact Form Section */}
                 <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto">
                     <h2 className="text-4xl sm:text-5xl font-serif font-bold text-gray-800 mb-4 text-center">
-                        What Can We Build For You?
+                        Transform Your Vision into Reality
                     </h2>
-                    <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+                    <p className="text-center text-gray-600 font-serif font-bold mb-10 max-w-2xl mx-auto">
                         Let's discuss your ideas. We will send you an NDA before we talk. All the information is kept confidential.
                     </p>
 

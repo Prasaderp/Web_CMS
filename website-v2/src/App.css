@@ -234,108 +234,76 @@ body::-webkit-scrollbar-thumb:hover {
     text-shadow: 2px 2px 4px rgba(197, 164, 109, 0.3);
 }
 
-/* Blog Content Styling - Fix for light text */
-.blog-content-html p,
-.blog-content-html div,
-.blog-content-html span,
-.blog-content-html li {
-  color: #1f2937 !important;
-  line-height: 1.75;
+/* About page hero matching reference image background and font */
+.about-hero {
+    background: linear-gradient(180deg, #0b3b66 0%, #0f4e7a 40%, #053057 100%);
+    color: #ffffff;
+    margin-top: 0; /* flush the hero to the navbar (no extra gap) */
+}
+.about-hero .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(3,36,63,0.65), rgba(6,52,88,0.55));
+}
+.about-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: normal;
+    font-weight: 900;
+    color: #ffffff !important;
+    letter-spacing: 0.5px;
+    line-height: 0.95;
+    /* Slightly reduced sizes to better match image1 */
+    font-size: clamp(40px, 4.2vw, 64px);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.12);
+}
+.about-hero p {
+    color: rgba(255,255,255,0.85);
 }
 
-.blog-content-html h2 {
-  color: #111827 !important;
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+/* Ensure any inline spans inside a hero heading inherit the white Playfair style (overrides utility colors) */
+.about-hero h1 span {
+    color: #ffffff !important;
+    font-style: normal !important;
 }
 
-.blog-content-html h3 {
-  color: #111827 !important;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+/* Ensure inline spans inside hero paragraphs also render white */
+.about-hero p span {
+    color: #ffffff !important;
+    font-style: normal !important;
 }
 
-.blog-content-html h4 {
-  color: #111827 !important;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
+/* Compact variant for pages that need less vertical spacing (won't affect other uses) */
+.about-hero.about-hero--compact {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+@media (min-width: 1024px) {
+    .about-hero.about-hero--compact {
+        padding-top: 4.5rem;
+        padding-bottom: 4.5rem;
+    }
 }
 
-.blog-content-html strong {
-  color: #111827 !important;
-  font-weight: 700;
+/* ======================================================
+   Infinite Logo Scroll Animation
+====================================================== */
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-.blog-content-html a {
-  color: #2563eb !important;
-  text-decoration: underline;
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 20s linear infinite;
 }
 
-.blog-content-html a:hover {
-  color: #1d4ed8 !important;
-}
-
-.blog-content-html ul,
-.blog-content-html ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.blog-content-html li {
-  margin-bottom: 0.5rem;
-}
-
-.blog-content-html img {
-  border-radius: 0.75rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.blog-content-html iframe {
-  border-radius: 0.75rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 100%;
-}
-
-.blog-content-html blockquote {
-  border-left: 4px solid #2563eb;
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: #374151 !important;
-  background: #eff6ff;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-
-.blog-content-html code {
-  background: #f3f4f6;
-  color: #dc2626;
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-family: 'Courier New', monospace;
-}
-
-.blog-content-html pre {
-  background: #1f2937;
-  color: #f3f4f6;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-}
-
-.blog-content-html pre code {
-  background: transparent;
-  color: #f3f4f6;
-  padding: 0;
+.animate-scroll:hover {
+  animation-play-state: paused;
 }

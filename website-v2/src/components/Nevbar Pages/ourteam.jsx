@@ -1,4 +1,6 @@
 import React from 'react';
+import SEO from "../SEO";
+
 
 const ourteam = () => {
     // --- Theme Colors from your Navbar/Hero Section ---
@@ -138,6 +140,11 @@ const ourteam = () => {
 
 
     return (
+    <>
+        <SEO
+            title="Team - AiGENThix"
+            description="Learn about AiGenthix — our mission, vision, AI research, ethical approach, and how we help businesses grow using cutting-edge artificial intelligence."
+        />
         <div style={containerStyle}>
             <h1 style={titleStyle}>Account sign in</h1>
             
@@ -204,6 +211,7 @@ const ourteam = () => {
                 </p>
             </div>
         </div>
+        </>
     );
 };
 

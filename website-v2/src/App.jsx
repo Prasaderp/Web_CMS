@@ -1,11 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ScrollToTop from "./components/ScrollToTop";
 import './App.css';
-import Layout from './components/layout/Layout';
-import ErrorBoundary from './components/layout/ErrorBoundary';
 
-// Home page sections
+// Component imports
 import Hero from './components/Home Pages/Hero';
+import Navbar from './components/Navbar';
 import TryOur from './components/Home Pages/Tryour';
 import TrustedBy from './components/Home Pages/TrustedBy';
 import Innovative from './components/Home Pages/innovative';
@@ -16,134 +16,157 @@ import Testimonials from './components/Home Pages/Testimonials';
 import ContactUs from './components/Home Pages/contactus';
 import Blog from './components/Home Pages/blog';
 import Faq from './components/Home Pages/faq';
-import Industries from './components/Home Pages/Industries';
-import Learning from './components/Home Pages/Learning';
+import Footer from './components/Footer';
+import OurPrinciples from './components/Nevbar Pages/OurPrinciples';
+import OurTeam from './components/Nevbar Pages/ourteam';
+import RND from './components/Nevbar Pages/research-development.jsx';
 
-// Lazily loaded page-level routes
-const AboutUs = lazy(() => import('./components/Nevbar Pages/aboutus'));
-const OurPrinciples = lazy(() => import('./components/Nevbar Pages/OurPrinciples'));
-const OurTeam = lazy(() => import('./components/Nevbar Pages/ourteam'));
-const RND = lazy(() => import('./components/Nevbar Pages/RD'));
-const Services = lazy(() => import('./components/Nevbar Pages/Services'));
+// ================= L&D Learning Pages =================
+import Learning from "./components/Nevbar Pages/Learning-And-Development.jsx";
+import DataEngineering from "./components/learning-and-development/data-engineering.jsx";
+import DataAnalytics from "./components/learning-and-development/data-analytics.jsx";
+import AIML from "./components/learning-and-development/ai-ml.jsx";
+import GenerativeAI from "./components/learning-and-development/generative-ai.jsx";
+import MLOps from "./components/learning-and-development/mlops.jsx";
+import AgenticAI from "./components/learning-and-development/agentic-ai.jsx";
 
-// Blog
-const Blognevbar = lazy(() => import('./components/Nevbar Pages/Blognevbar'));
-const BlogDetails = lazy(() => import('./components/blogcontent Page/BlogDetails'));
+// Products page import
+import Product from './components/Nevbar Pages/Product.jsx';
+import SahayakAI from './components/Products Pages/SahayakAI.jsx';
+import AIInterviewer from './components/Products Pages/AIInterviewer.jsx';
+import VideoTranslation from './components/Products Pages/VideoTranslation.jsx';
+import ProjectManagementTool from './components/Products Pages/ProjectManagementTool';
 
-// R&D Section
-const RoboticsAndHumanoids = lazy(() => import('./components/R&D Pages/RoboticsAndHumanoids'));
-const CybersecurityAISystems = lazy(() => import('./components/R&D Pages/CybersecurityAISystems'));
-const AIEthicsGovernance = lazy(() => import('./components/R&D Pages/AIEthicsGovernance'));
-const KPIScalingAIProducts = lazy(() => import('./components/R&D Pages/KPIScalingAIProducts'));
+// Import your Blognevbar page
+import Blognevbar from './components/Nevbar Pages/Blognevbar';
+import BlogDetails from "./components/blogcontent Page/BlogDetails";
 
-// Industries
-const FinanceIndustry = lazy(() => import('./components/Industries Pages/FinanceIndustry'));
-const HealthcareIndustry = lazy(() => import('./components/Industries Pages/HealthcareIndustry'));
-const EducationIndustry = lazy(() => import('./components/Industries Pages/EducationIndustry'));
-const RetailIndustry = lazy(() => import('./components/Industries Pages/RetailIndustry'));
-const ManufacturingIndustry = lazy(() => import('./components/Industries Pages/ManufacturingIndustry'));
-const EnterpriseIndustry = lazy(() => import('./components/Industries Pages/EnterpriseIndustry'));
+// Authentication imports
+import AboutUs from './components/Nevbar Pages/aboutus';
+import SignIn from './components/Nevbar Pages/SignIn';
+import CreateAccount from './components/Home Pages/CreateAccount';
+import ResetPassword from './components/Nevbar Pages/ResetPassword';
+import MyAccount from './components/Nevbar Pages/MyAccount';
 
-// Authentication
-const SignIn = lazy(() => import('./components/Nevbar Pages/SignIn'));
-const CreateAccount = lazy(() => import('./components/Home Pages/CreateAccount'));
-const ResetPassword = lazy(() => import('./components/Nevbar Pages/ResetPassword'));
-const MyAccount = lazy(() => import('./components/Nevbar Pages/MyAccount'));
+// Individual Service imports
+import Services from './components/Nevbar Pages/Services';
+import AIMLService from './components/Services Pages/AIMLService';
+import GenerativeAIService from './components/Services Pages/GenerativeAIService';
+import RoboticsService from './components/Services Pages/RoboticsService';
+import HumanoidSystems from './components/Services Pages/HumanoidSystems';
+import CybersecurityService from './components/Services Pages/CybersecurityService';
+import DataEngineeringService from './components/Services Pages/DataEngineeringService';
+import BlockchainService from './components/Services Pages/BlockchainService';
+import Web3Service from './components/Services Pages/Web3Service';
+import SoftwareDevelopmentService from './components/Services Pages/SoftwareDevelopmentService';
+import IoTService from './components/Services Pages/IoTService';
+import APIIntegrationService from './components/Services Pages/APIIntegrationService';
 
-// Individual Services
-const AIMLService = lazy(() => import('./components/Services Pages/AIMLService'));
-const GenerativeAIService = lazy(() => import('./components/Services Pages/GenerativeAIService'));
-const DataEngineeringService = lazy(() => import('./components/Services Pages/DataEngineeringService'));
-const BlockchainService = lazy(() => import('./components/Services Pages/BlockchainService'));
-const Web3Service = lazy(() => import('./components/Services Pages/Web3Service'));
-const SoftwareDevelopmentService = lazy(() => import('./components/Services Pages/SoftwareDevelopmentService'));
-const IoTService = lazy(() => import('./components/Services Pages/IoTService'));
-const HireDevService = lazy(() => import('./components/Services Pages/HireDevService'));
-const AIStrategyService = lazy(() => import('./components/Services Pages/AIStrategyService'));
-const AIAgentsService = lazy(() => import('./components/Services Pages/AIAgentsService'));
+
+// Industries Pages
+import Industries from './components/Nevbar Pages/Industries';
+import Healthcare from "./components/industries/Healthcare";
+import Finance from "./components/industries/Finance";
+import Education from "./components/industries/Education";
+import Enterprise from "./components/industries/Enterprise";
+import Manufacturing from "./components/industries/Manufacturing";
+import RetailEcommerce from "./components/industries/RetailEcommerce";
+
+
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <ErrorBoundary>
-          <Suspense fallback={null}>
-            <Routes>
-            {/* Main Home Route */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Hero />
-                  <TryOur />
-                  <Innovative />
-                  <ServicesSection />
-                  {/* <Work /> */}
-                  <WhyChooseUs />
-                  <Testimonials />
-                  <ContactUs />
-                  <Blog />
-                  <Faq />
-                  <TrustedBy />
-                </>
-              }
-            />
+  <ScrollToTop />
+  <Navbar />
+  <Routes>
+        {/* Main Home Route */}
+        <Route path="/" element={
+          <>
+            <Hero />
+            <TryOur />
+            <Innovative />
+            <ServicesSection />
+            {/* <Work /> */}
+            <WhyChooseUs />
+            <Testimonials />
+            <ContactUs />
+            <Blog />
+            <Faq />
+            <TrustedBy />
+          </>
+        } />
 
-            {/* About Route */}
-            <Route path="/about" element={<AboutUs />} />
+        {/* About Route */}
+        <Route path="/about" element={<AboutUs />} />
 
-            {/* Principles Route */}
-            <Route path="/principles" element={<OurPrinciples />} />
+        {/* Principles Route */}
+        <Route path="/principles" element={<OurPrinciples />} />
 
-            {/* Team Route */}
-            <Route path="/team" element={<OurTeam />} />
+        {/* Team Route */}
+        <Route path="/team" element={<OurTeam />} />
 
-            {/* Blog Routes */}
-            <Route path="/blog" element={<Blognevbar />} />
-            <Route path="/blog/:slug" element={<BlogDetails />} />
+        {/* Blog routes */}
+        <Route path="/blog" element={<Blognevbar />} />
+        <Route path="/blog/:slug" element={<BlogDetails />} />
 
-            {/* R&D Routes */}
-            <Route path="/rd" element={<RND />} />
-            <Route path="/rd/robotics-humanoids" element={<RoboticsAndHumanoids />} />
-            <Route path="/rd/cybersecurity-ai-systems" element={<CybersecurityAISystems />} />
-            <Route path="/rd/ai-ethics-governance" element={<AIEthicsGovernance />} />
-            <Route path="/rd/kpis-scaling-ai-products" element={<KPIScalingAIProducts />} />
+        {/* R&D Routes */}
+        <Route path="/research-development" element={<RND />} />
+        
+        {/* ================= L&D ROUTES ================= */}
+        <Route path="/learning-and-development" element={<Learning />} />
+        <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
+        <Route path="/learning-and-development/data-analytics" element={<DataAnalytics />} />
+        <Route path="/learning-and-development/ai-ml" element={<AIML />} />
+        <Route path="/learning-and-development/generative-ai" element={<GenerativeAI />} />
+        <Route path="/learning-and-development/mlops" element={<MLOps />} />
+        <Route path="/learning-and-development/agentic-ai" element={<AgenticAI />} />
 
-            {/* Authentication Routes */}
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/create-account" element={<CreateAccount />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/my-account" element={<MyAccount />} />
+        {/* Authentication Routes */}
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/my-account" element={<MyAccount />} />
 
-            {/* Industries Routes */}
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/industries/finance" element={<FinanceIndustry />} />
-            <Route path="/industries/healthcare" element={<HealthcareIndustry />} />
-            <Route path="/industries/education-technology" element={<EducationIndustry />} />
-            <Route path="/industries/retail-ecommerce" element={<RetailIndustry />} />
-            <Route path="/industries/manufacturing-intelligence" element={<ManufacturingIndustry />} />
-            <Route path="/industries/enterprise-solutions" element={<EnterpriseIndustry />} />
-            <Route path="/l&d" element={<Learning />} />
-            <Route path="/contact" element={<ContactUs />} />
+        {/* Other Routes */}
+        <Route path="/industries" element={<Industries />} />
+        {/* Industries Routes */}
+        <Route path="/industries/healthcare" element={<Healthcare />} />
+        <Route path="/industries/finance" element={<Finance />} />
+        <Route path="/industries/education" element={<Education />} />
+        <Route path="/industries/enterprise-solutions" element={<Enterprise />} />
+        <Route path="/industries/manufacturing" element={<Manufacturing />} />
+        <Route path="/industries/retail-ecommerce" element={<RetailEcommerce />} />
 
-            {/* Services Routes */}
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/generative-ai" element={<GenerativeAIService />} />
-            <Route path="/services/ai-ml" element={<AIMLService />} />
-            <Route path="/services/data-engineering" element={<DataEngineeringService />} />
-            <Route path="/services/web3" element={<Web3Service />} />
-            <Route path="/services/blockchain" element={<BlockchainService />} />
-            <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
-            <Route path="/services/hire-developers" element={<HireDevService />} />
-            <Route path="/services/iot" element={<IoTService />} />
-            <Route path="/services/ai-strategy" element={<AIStrategyService />} />
-            <Route path="/services/ai-agents" element={<AIAgentsService />} />
-            {/* Map the AI Development & Integration slug to existing AIMLService for now */}
-            <Route path="/services/ai-development-integration" element={<AIMLService />} />
-          </Routes>
-          </Suspense>
-        </ErrorBoundary>
-      </Layout>
+
+
+        {/* Products Route */}
+        <Route path="/products" element={<Product />} />
+        <Route path="/contact" element={<ContactUs />} />
+
+        {/* Services Routes */}
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/generative-ai" element={<GenerativeAIService />} />
+        <Route path="/services/robotics" element={<RoboticsService />} />
+        <Route path="/services/humanoids" element={<HumanoidSystems />} />
+        <Route path="/services/cybersecurity" element={<CybersecurityService />} />
+        <Route path="/services/ai-ml" element={<AIMLService />} />
+        <Route path="/services/data-engineering" element={<DataEngineeringService />} />
+        <Route path="/services/web3" element={<Web3Service />} />
+        <Route path="/services/blockchain" element={<BlockchainService />} />
+        <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
+        <Route path="/services/iot" element={<IoTService />} />
+        <Route path="/services/api-integration" element={<APIIntegrationService />} />
+
+        {/* Product detail routes */}
+        <Route path="/products/sahayak-ai" element={<SahayakAI />} />
+        <Route path="/products/video-translation" element={<VideoTranslation />} />
+        <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
+        <Route path="/products/project-management" element={<ProjectManagementTool />} />
+
+
+      </Routes>
+      <Footer />
     </Router>
   );
 }

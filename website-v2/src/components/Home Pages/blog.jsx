@@ -9,7 +9,7 @@ import blog2Img from '../IMAGES/blog2.jpg';
 import blog3Img from '../IMAGES/blog3.jpg';
 
 // --- Placeholder Images for New Cards (Replace with your actual imports) ---
-const newBlog4Img = 'https://picsum.photos/seed/ai-ethics/500/350'; 
+const newBlog4Img = 'https://picsum.photos/seed/ai-ethics/500/350';
 const newBlog5Img = 'https://picsum.photos/seed/ai-scalability/500/350';
 const newBlog6Img = 'https://picsum.photos/seed/ai-finance/500/350';
 // --------------------------------------------------------------------------
@@ -44,7 +44,7 @@ const blogPosts = [
         title: "AI agent for customer service: Key capabilities, use cases, benefits and...",
         excerpt: "AI agents enhance customer service by understanding inquiries, analyzing data, and generating accurate responses.",
         author: "Sarah Johnson",
-        imagePath: blog1Img, 
+        imagePath: blog1Img,
         authorImagePath: 'https://ui-avatars.com/api/?name=Sarah+Johnson&background=059669&color=fff&size=40',
     },
     {
@@ -103,22 +103,22 @@ const blogPosts = [
 // Reusable component for a single blog card (No change to internal UI/UX)
 const BlogCard = ({ post }) => {
     return (
-        <div 
+        <div
             className="flex-shrink-0 w-80 lg:w-96 mx-2" // Ensure card does not shrink and has fixed width
             style={{ width: '300px' }} // Explicitly setting width for animation calculation
-        > 
+        >
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 
                              transition duration-500 hover:shadow-2xl transform hover:-translate-y-2 group">
                 {/* Image Area */}
                 <div className="relative h-48 sm:h-56 overflow-hidden">
-                    <img 
-                        src={post.imagePath} 
-                        alt={post.title} 
+                    <img
+                        src={post.imagePath}
+                        alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                     />
                     {/* Overlay Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                    
+
                     {/* Tag Overlay */}
                     <span className="absolute top-4 left-4 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
                         {post.tag}
@@ -152,14 +152,14 @@ const BlogCard = ({ post }) => {
                     {/* Footer (Author and Read More) */}
                     <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
                         <div className="flex items-center">
-                            <img 
-                                src={post.authorImagePath} 
-                                alt={post.author} 
+                            <img
+                                src={post.authorImagePath}
+                                alt={post.author}
                                 className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-blue-100"
                             />
                             <span className="text-sm font-semibold text-gray-700">{post.author}</span>
                         </div>
-                        
+
                         {/* Read More Link */}
                         <a href="#" className="text-blue-600 hover:text-blue-800 text-sm font-bold flex items-center group-hover:gap-2 transition-all duration-200">
                             Read more
@@ -175,12 +175,12 @@ const BlogCard = ({ post }) => {
 
 const Blog = () => {
     // Duplicate the posts to ensure a seamless loop animation (6 cards * 2 = 12 total in wrapper)
-    const allPosts = [...blogPosts, ...blogPosts]; 
-    
+    const allPosts = [...blogPosts, ...blogPosts];
+
     return (
         <section className="bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 py-24 px-4">
             <div className="max-w-7xl mx-auto">
-                
+
                 {/* Blog Heading */}
                 <div className="text-center mb-16">
                     <h2 className="text-4xl sm:text-5xl font-serif font-bold text-gray-800 tracking-tight mb-4">
@@ -193,9 +193,9 @@ const Blog = () => {
 
                 {/* --- Blog Cards SCROLLING Wrapper --- */}
                 {/* The outer div hides the overflow */}
-                <div className="overflow-hidden py-4"> 
+                <div className="overflow-hidden py-4">
                     {/* The inner div applies the continuous scroll animation */}
-                    <div 
+                    <div
                         className="flex"
                         style={{
                             width: 'calc(300px * 12 + 16px * 11)', // Total width for 12 cards + 11 gaps

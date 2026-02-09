@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logoImg from "./IMAGES/aigenthix.webp";
-import {
-  FaTwitter,
-  FaLinkedin,
-  FaInstagram,
-} from "react-icons/fa";
-import { BRAND, SOCIAL_LINKS } from "../lib/constants";
+import { FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowTop(true);
+      } else {
+        setShowTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       {/* Gradient Divider */}
@@ -33,77 +43,78 @@ const Footer = () => {
 
           {/* Footer Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12">
-            {/* COMPANY Column */}
+            {/* COMPANY */}
             <div>
               <h3 className="text-white font-bold text-sm uppercase mb-4 tracking-wide">
                 Company
               </h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Case Studies</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Community</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Privacy Policy</a></li>
+                <li><a href="/about" className="text-gray-400 hover:text-[#2D4DE8] text-sm">About Us</a></li>
+                <li><a href="/industries" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Industries</a></li>
+                <li><a href="/learning-and-development" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Careers</a></li>
+                <li><a href="/blog" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Case Studies</a></li>
+                <li><a href="/about" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Community</a></li>
+                <li><a href="/about" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Privacy Policy</a></li>
               </ul>
             </div>
 
-            {/* SERVICES Column */}
+            {/* SERVICES */}
             <div>
               <h3 className="text-white font-bold text-sm uppercase mb-4 tracking-wide">
                 Services
               </h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Generative AI</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Artificial Intelligence & ML</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Data Engineering</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Web3</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Blockchain Development</a></li>
+                <li><a href="/services/generative-ai" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Generative AI</a></li>
+                <li><a href="/services/ai-ml" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Artificial Intelligence & ML</a></li>
+                <li><a href="/services/robotics" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Robotics</a></li>
+                <li><a href="/services/humanoids" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Humanoids</a></li>
+                <li><a href="/services/cybersecurity" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Cybersecurity</a></li>
+                <li><a href="/services/web3" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Web3</a></li>
               </ul>
             </div>
 
-            {/* PRODUCTS Column */}
+            {/* PRODUCTS */}
             <div>
               <h3 className="text-white font-bold text-sm uppercase mb-4 tracking-wide">
                 Products
               </h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Sahyak AI</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Video Translation</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">AI Interviewer</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Project Management Tool</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-[#2D4DE8] text-sm">AI Receptionist</a></li>
+                <li><a href="/products/sahayak-ai" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Sahyak AI</a></li>
+                <li><a href="/products/video-translation" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Video Translation</a></li>
+                <li><a href="/products/ai-interviewer" className="text-gray-400 hover:text-[#2D4DE8] text-sm">AI Interviewer</a></li>
+                <li><a href="/products/project-management" className="text-gray-400 hover:text-[#2D4DE8] text-sm">Project Management Tool</a></li>
               </ul>
             </div>
 
-            {/* CONTACT Column */}
+           {/* CONTACT Column */}
             <div>
               <h3 className="text-white font-bold text-sm uppercase mb-4 tracking-wide">
                 Contact Us
               </h3>
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-white">{BRAND.NAME}</p>
+                <p className="text-sm font-semibold text-white">AiGENThix</p>
                 <p className="text-gray-400 text-sm">
-                  {BRAND.ADDRESS_LINE}
+                  HSR Layout, Bengaluru, Karnataka, India
                 </p>
                 <a
-                  href={`mailto:${BRAND.PRIMARY_EMAIL}`}
+                  href="https://mail.google.com/mail/u/0/#inbox?compose=jrjtWvMZmMmJcfNvgVdMbSmqFFhtBpLKBxkfShxZvBGGtvMbQHjFZBDCGdXPzwpdngbjMqjq"
                   className="text-[#2D4DE8] hover:text-[#1a39d1] text-sm block"
                 >
-                  {BRAND.PRIMARY_EMAIL}
+                  info@aigenthix.com
                 </a>
                 <a
-                  href={`mailto:${BRAND.SECONDARY_EMAIL}`}
+                  href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSHwrwztNPZLhPzxRmnfvHlpKCTQkzTXcTmjTDXNjNZpRwgWSZXNKnMbQLXmtzgTfkVTkwhR"
                   className="text-[#2D4DE8] hover:text-[#1a39d1] text-sm block"
                 >
-                  {BRAND.SECONDARY_EMAIL}
+                  aigenthix@gmail.com
                 </a>
-                <p className="text-gray-400 text-sm">{BRAND.PHONE}</p>
+                <p className="text-gray-400 text-sm">+91 7006951124</p>
               </div>
 
               {/* Social Media Icons */}
               <div className="flex gap-4 mt-6">
                 <a
-                  href={SOCIAL_LINKS.TWITTER}
+                  href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 hover:bg-[#2D4DE8] p-2 rounded-full transition-all duration-300"
@@ -111,7 +122,7 @@ const Footer = () => {
                   <FaTwitter className="text-white text-lg" />
                 </a>
                 <a
-                  href={SOCIAL_LINKS.LINKEDIN}
+                  href="https://www.linkedin.com/company/aigenthix-technologies/posts/?feedView=all"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 hover:bg-[#2D4DE8] p-2 rounded-full transition-all duration-300"
@@ -119,13 +130,14 @@ const Footer = () => {
                   <FaLinkedin className="text-white text-lg" />
                 </a>
                 <a
-                  href={SOCIAL_LINKS.INSTAGRAM}
+                  href="https://www.youtube.com/@Aiprojects-h3c"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gray-800 hover:bg-[#2D4DE8] p-2 rounded-full transition-all duration-300"
                 >
-                  <FaInstagram className="text-white text-lg" />
+                  <FaYoutube className="text-white text-lg" />
                 </a>
+                
               </div>
             </div>
           </div>
@@ -133,31 +145,33 @@ const Footer = () => {
           {/* Copyright */}
           <div className="border-t border-gray-700 pt-6 text-center">
             <p className="text-gray-400 text-sm">
-              © 2025 AiGenthix. All Rights Reserved.
+              © 2026 AiGenthix. All Rights Reserved.
             </p>
           </div>
         </div>
 
-        {/* Scroll to Top Button */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-24 right-8 bg-[#2D4DE8] hover:bg-[#1a39d1] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 z-40"
-          aria-label="Scroll to top"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Scroll To Top */}
+        {showTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-24 right-8 bg-[#2D4DE8]/60 hover:bg-[#2D4DE8]/90 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 z-40 backdrop-blur"
+            aria-label="Scroll to top"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 15l7-7 7 7"
-            ></path>
-          </svg>
-        </button>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 15l7-7 7 7"
+              />
+            </svg>
+          </button>
+        )}
       </footer>
     </>
   );

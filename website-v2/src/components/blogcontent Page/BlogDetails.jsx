@@ -103,7 +103,7 @@ const BlogDetails = () => {
         ADD_TAGS: ['iframe'],
         ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
       });
-      
+
       return (
         <div
           className="prose prose-lg max-w-none blog-content-html"

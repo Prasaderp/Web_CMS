@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../SEO';
 
 const MyAccount = () => {
     const fadeIn = `
@@ -20,6 +21,11 @@ const MyAccount = () => {
     }
 
     return (
+    <>
+        <SEO
+            title="My Account - AiGENThix"
+            description="Manage your account settings and preferences at AiGENThix."
+        />
         <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -118,6 +124,7 @@ const MyAccount = () => {
                 </div>
             </div>
         </div>
+    </>
     );
 };
 

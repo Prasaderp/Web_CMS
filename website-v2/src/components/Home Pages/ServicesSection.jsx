@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
 
 // Import images
 import healthcareImg from '../IMAGES/healthcare.jpeg';
@@ -9,49 +10,43 @@ import manufacturingImg from '../IMAGES/manifacturing intelligence.jpeg';
 import educationImg from '../IMAGES/education.jpeg';
 import enterpriseImg from '../IMAGES/enterprise.jpeg';
 
-// Services the user requested (with route slugs)
+// Data for the product/solution cards
 const servicesData = [
   {
-    title: "AI Strategy Consulting",
-    content: "Advisory services to align AI initiatives with business strategy, roadmap creation and governance.",
-    icon: "🧭",
-    image: enterpriseImg,
-    slug: "ai-strategy"
+    title: "Healthcare AI Solutions",
+    slug: "healthcare",
+    content: "Developing intelligent diagnostics, predictive patient care systems, and streamlined clinical workflows to transform health outcomes.",
+    image: healthcareImg
   },
   {
-    title: "AI Development and Integration",
-    content: "End-to-end AI development, systems integration and deployment into your existing stack.",
-    icon: "🔗",
-    image: manufacturingImg,
-    slug: "ai-development-integration"
+    title: "Financial Services AI",
+    slug: "finance",
+    content: "Implementing fraud detection, personalized wealth management, and automated risk assessment for robust financial operations.",
+    image: financialImg
   },
   {
-    title: "Data Engineering",
-    content: "Data pipelines, warehousing, ETL/ELT and real-time data infrastructure to power AI solutions.",
-    icon: "🗄️",
-    image: financialImg,
-    slug: "data-engineering"
+    title: "Retail & E-commerce",
+    slug: "retail-ecommerce",
+    content: "Building hyper-personalized recommendation engines, dynamic pricing tools, and supply chain optimization systems.",
+    image: retailImg
   },
   {
-    title: "Software Design and Development",
-    content: "Design-led engineering, APIs, scalable backend and frontend systems tailored for AI workloads.",
-    icon: "💻",
-    image: retailImg,
-    slug: "software-development"
+    title: "Manufacturing Intelligence",
+    slug: "manufacturing",
+    content: "Applying AI for predictive maintenance, quality control automation, and efficiency gains across the entire production line.",
+    image: manufacturingImg
   },
   {
-    title: "Machine Learning Model Development",
-    content: "Model design, training, evaluation and MLOps to productionize ML at scale.",
-    icon: "🤖",
-    image: healthcareImg,
-    slug: "ai-ml"
+    title: "Education Technology",
+    slug: "education",
+    content: "Creating adaptive learning platforms, automated grading systems, and personalized tutoring solutions for students.",
+    image: educationImg
   },
   {
-    title: "AI Agents Development",
-    content: "Build intelligent agents and autonomous systems to automate tasks and augment teams.",
-    icon: "🧠",
-    image: enterpriseImg,
-    slug: "ai-agents"
+    title: "Enterprise Solutions",
+    slug: "enterprise-solutions",
+    content: "Crafting custom AI agents and automation tools for HR, legal, and operational processes to drive enterprise-wide efficiency.",
+    image: enterpriseImg
   }
 ];
 
@@ -62,7 +57,7 @@ const ServicesSection = () => {
     <section className="bg-[#0B2847] py-20 px-4 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl sm:text-5xl font-semibold text-white mb-16 text-center tracking-tight">
-          Our Services — AI Solutions
+          Transforming Industries with Intelligent AI Solutions
         </h2>
 
         {/* Card Container (fully responsive) */}
@@ -83,12 +78,6 @@ const ServicesSection = () => {
                   className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0D345B]"></div>
-
-                <div className="absolute bottom-4 left-6">
-                  <span className="text-4xl p-3 rounded-full bg-[#1A4F8D]/90 backdrop-blur-sm inline-block shadow-lg">
-                    {service.icon}
-                  </span>
-                </div>
               </div>
 
               {/* Content Area */}
@@ -100,11 +89,22 @@ const ServicesSection = () => {
                   {service.content}
                 </p>
                 <Link
-                  to={`/services/${service.slug}`}
-                  className="mt-auto text-[#4285F4] hover:text-[#6DD5ED] font-semibold text-sm transition duration-200 flex items-center group-hover:translate-x-1"
-                >
-                  Explore Solution
-                </Link>
+  to={`/industries/${service.slug}`}
+  className="mt-auto text-[#4285F4] hover:text-[#6DD5ED] 
+             font-semibold text-sm transition duration-200 
+             flex items-center group-hover:translate-x-1"
+>
+  Explore Solution
+  <svg
+    className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+  </svg>
+</Link>
+
               </div>
             </div>
           ))}

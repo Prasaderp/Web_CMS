@@ -4,7 +4,7 @@
   "private": true,
   "description": "AiGENThix CMS Admin - Static HTML/CSS/JS",
   "scripts": {
-    "start": "npx serve -s . -l 3000",
-    "dev": "npx serve -s . -l 3000"
+    "start": "npx serve . -l 3000",
+    "dev": "npx serve . -l 3000"
   }
 }
