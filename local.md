@@ -5,8 +5,6 @@ run backend -
 4. uv pip install -r requriements.txt
 5. uvicorn app.main:app --reload
 
-THis will run the backend
-
 run website - 
 1. cd website -v2
 2. npm install
