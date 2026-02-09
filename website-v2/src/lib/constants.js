@@ -20,28 +20,27 @@ export const SOCIAL_LINKS = {
 };
 
 export const NAV_PRODUCTS = [
-  { title: 'Sahyak AI', to: '/products/sahyak-ai' },
+  { title: 'Sahayak AI', to: '/products/sahayak-ai' },
   { title: 'Video Translation', to: '/products/video-translation' },
   { title: 'AI Interviewer', to: '/products/ai-interviewer' },
-  { title: 'Project Management Tool', to: '/products/project-tool' },
-  { title: 'AI Receptionist', to: '/products/ai-receptionist' },
+  { title: 'Project Management', to: '/products/project-management' },
 ];
 
 export const NAV_SERVICES = [
-  { title: 'AI Strategy Consulting', to: '/services/ai-strategy' },
-  { title: 'AI Development & Integration', to: '/services/ai-development-integration' },
+  { title: 'Generative AI', to: '/services/generative-ai' },
+  { title: 'Artificial Intelligence & ML', to: '/services/ai-ml' },
   { title: 'Data Engineering', to: '/services/data-engineering' },
-  { title: 'Software Design & Development', to: '/services/software-development' },
-  { title: 'Machine Learning Model Development', to: '/services/ai-ml' },
-  { title: 'AI Agents Development', to: '/services/ai-agents' },
+  { title: 'Software Development', to: '/services/software-development' },
+  { title: 'Robotics', to: '/services/robotics' },
+  { title: 'Cybersecurity', to: '/services/cybersecurity' },
 ];
 
 export const NAV_INDUSTRIES = [
   { title: 'Healthcare', to: '/industries/healthcare' },
   { title: 'Finance', to: '/industries/finance' },
   { title: 'Retail & E-commerce', to: '/industries/retail-ecommerce' },
-  { title: 'Manufacturing Intelligence', to: '/industries/manufacturing-intelligence' },
-  { title: 'Education Technology', to: '/industries/education-technology' },
+  { title: 'Manufacturing', to: '/industries/manufacturing' },
+  { title: 'Education', to: '/industries/education' },
   { title: 'Enterprise Solutions', to: '/industries/enterprise-solutions' },
 ];
 

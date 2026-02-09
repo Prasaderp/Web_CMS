@@ -15,7 +15,7 @@ from app.middleware.rate_limit import limiter
 from app.schemas.responses import HealthCheckResponse, ErrorResponse
 
 # API route imports
-from app.api import auth, blogs, admin
+from app.api import auth, blogs, admin, contact
 
 # Setup logging
 setup_logging()
@@ -47,6 +47,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(blogs.router)
 app.include_router(admin.router)
+app.include_router(contact.router)
 
 
 # Health check endpoint

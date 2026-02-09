@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ScrollToTop from "./components/ScrollToTop";
 import './App.css';
 
@@ -77,9 +77,9 @@ import RetailEcommerce from "./components/industries/RetailEcommerce";
 function App() {
   return (
     <Router>
-  <ScrollToTop />
-  <Navbar />
-  <Routes>
+      <ScrollToTop />
+      <Navbar />
+      <Routes>
         {/* Main Home Route */}
         <Route path="/" element={
           <>
@@ -112,7 +112,7 @@ function App() {
 
         {/* R&D Routes */}
         <Route path="/research-development" element={<RND />} />
-        
+
         {/* ================= L&D ROUTES ================= */}
         <Route path="/learning-and-development" element={<Learning />} />
         <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
@@ -164,6 +164,16 @@ function App() {
         <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
         <Route path="/products/project-management" element={<ProjectManagementTool />} />
 
+        <Route path="*" element={
+          <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
+            <div className="text-center px-6">
+              <h1 className="text-8xl font-bold text-gray-200 mb-4">404</h1>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Page Not Found</h2>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
+              <Link to="/" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg">← Back to Home</Link>
+            </div>
+          </div>
+        } />
 
       </Routes>
       <Footer />

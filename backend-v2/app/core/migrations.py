@@ -93,6 +93,24 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
 """
 
+CONTACT_SUBMISSIONS_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS contact_submissions (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    company_name VARCHAR(200) NOT NULL,
+    job_title VARCHAR(200) NOT NULL,
+    phone_number VARCHAR(20),
+    country VARCHAR(100) NOT NULL,
+    comments TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_contact_email ON contact_submissions(email);
+CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_submissions(created_at);
+"""
+
 # Function to auto-update updated_at timestamp
 UPDATE_TIMESTAMP_FUNCTION = """
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -121,11 +139,11 @@ CREATE TRIGGER update_users_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 """
 
-# All migration scripts in order
 MIGRATIONS = [
     ("blogs", BLOGS_TABLE_SQL),
     ("users", USERS_TABLE_SQL),
     ("categories", CATEGORIES_TABLE_SQL),
+    ("contact_submissions", CONTACT_SUBMISSIONS_TABLE_SQL),
     ("update_function", UPDATE_TIMESTAMP_FUNCTION),
     ("blogs_trigger", BLOGS_TRIGGER),
     ("users_trigger", USERS_TRIGGER),

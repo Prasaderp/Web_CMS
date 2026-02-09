@@ -2,7 +2,7 @@
 Security utilities for password hashing and JWT token management.
 Uses industry-standard bcrypt for passwords and JWT for tokens.
 """
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 import bcrypt
 from jose import jwt, JWTError
@@ -61,10 +61,10 @@ class SecurityService:
             Encoded JWT token string
         """
         to_encode = data.copy()
-        expire = datetime.utcnow() + timedelta(
+        expire = datetime.now(timezone.utc) + timedelta(
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
-        to_encode.update({"exp": expire, "iat": datetime.utcnow()})
+        to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc)})
         
         return jwt.encode(
             to_encode,
