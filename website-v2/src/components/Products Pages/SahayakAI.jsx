@@ -1,14 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import SEO from "../SEO";
-import { 
-  FaFileAlt, 
-  FaBrain, 
-  FaCamera, 
-  FaChartBar, 
-  FaBullseye, 
-  FaChalkboardTeacher 
+import {
+  FaFileAlt,
+  FaBrain,
+  FaCamera,
+  FaChartBar,
+  FaBullseye,
+  FaChalkboardTeacher
 } from "react-icons/fa";
+import LiteYouTube from "../LiteYouTube";
 
 const heroImg =
   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80";
@@ -17,28 +18,6 @@ const demoVideo =
   "https://www.youtube.com/embed/jis1Hckpx9U?si=tu7vAgA13lIfnfHP";
 
 const SahayakAI = () => {
-  const videoRef = useRef(null);
-
-  // Auto play / pause video on scroll
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(video);
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <>
@@ -148,14 +127,7 @@ const SahayakAI = () => {
                 </p>
 
                 <div className="relative rounded-xl overflow-hidden shadow-lg border aspect-video">
-                  <iframe
-                    className="w-full h-full"
-                    src={demoVideo}
-                    title="Sahayak AI Demo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <LiteYouTube src={demoVideo} title="Sahayak AI Demo" />
                 </div>
               </div>
 

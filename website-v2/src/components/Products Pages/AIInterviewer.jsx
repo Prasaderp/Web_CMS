@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SEO from "../SEO";
-import { 
-  FaFileAlt, 
-  FaRobot, 
-  FaBullseye, 
-  FaMicrophoneAlt, 
-  FaChartLine, 
-  FaCogs 
+import {
+  FaFileAlt,
+  FaRobot,
+  FaBullseye,
+  FaMicrophoneAlt,
+  FaChartLine,
+  FaCogs
 } from "react-icons/fa";
+import LiteYouTube from "../LiteYouTube";
 
 const heroImg =
   "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2000&q=80";
@@ -93,23 +94,23 @@ const AIInterviewer = () => {
                     const Icon = item.icon;
                     return (
                       <div
-  key={index}
-  className="bg-gray-50 border rounded-xl p-6 hover:shadow-lg transition duration-300"
->
-  <div className="flex items-start gap-4">
-    <Icon className="text-xl text-gray-700 mt-1 shrink-0" />
+                        key={index}
+                        className="bg-gray-50 border rounded-xl p-6 hover:shadow-lg transition duration-300"
+                      >
+                        <div className="flex items-start gap-4">
+                          <Icon className="text-xl text-gray-700 mt-1 shrink-0" />
 
-    <div>
-      <h4 className="font-semibold text-lg mb-1">
-        {item.title}
-      </h4>
+                          <div>
+                            <h4 className="font-semibold text-lg mb-1">
+                              {item.title}
+                            </h4>
 
-      <p className="text-sm text-gray-600">
-        {item.desc}
-      </p>
-    </div>
-  </div>
-</div>
+                            <p className="text-sm text-gray-600">
+                              {item.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
                     );
                   })}
@@ -125,14 +126,7 @@ const AIInterviewer = () => {
                 </p>
 
                 <div className="relative rounded-xl overflow-hidden shadow-lg border aspect-video">
-                  <iframe
-                    className="w-full h-full"
-                    src={demoVideo}
-                    title="AI Interviewer Demo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <LiteYouTube src={demoVideo} title="AI Interviewer Demo" />
                 </div>
               </div>
 

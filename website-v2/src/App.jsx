@@ -1,181 +1,160 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ScrollToTop from "./components/ScrollToTop";
 import './App.css';
 
-// Component imports
 import Hero from './components/Home Pages/Hero';
 import Navbar from './components/Navbar';
 import TryOur from './components/Home Pages/Tryour';
 import TrustedBy from './components/Home Pages/TrustedBy';
 import Innovative from './components/Home Pages/innovative';
 import ServicesSection from './components/Home Pages/ServicesSection';
-import Work from './components/Home Pages/work';
 import WhyChooseUs from './components/Home Pages/whychooseus';
 import Testimonials from './components/Home Pages/Testimonials';
 import ContactUs from './components/Home Pages/contactus';
 import Blog from './components/Home Pages/blog';
 import Faq from './components/Home Pages/faq';
 import Footer from './components/Footer';
-import OurPrinciples from './components/Nevbar Pages/OurPrinciples';
-import OurTeam from './components/Nevbar Pages/ourteam';
-import RND from './components/Nevbar Pages/research-development.jsx';
 
-// ================= L&D Learning Pages =================
-import Learning from "./components/Nevbar Pages/Learning-And-Development.jsx";
-import DataEngineering from "./components/learning-and-development/data-engineering.jsx";
-import DataAnalytics from "./components/learning-and-development/data-analytics.jsx";
-import AIML from "./components/learning-and-development/ai-ml.jsx";
-import GenerativeAI from "./components/learning-and-development/generative-ai.jsx";
-import MLOps from "./components/learning-and-development/mlops.jsx";
-import AgenticAI from "./components/learning-and-development/agentic-ai.jsx";
+const AboutUs = lazy(() => import('./components/Nevbar Pages/aboutus'));
+const OurPrinciples = lazy(() => import('./components/Nevbar Pages/OurPrinciples'));
+const OurTeam = lazy(() => import('./components/Nevbar Pages/ourteam'));
+const RND = lazy(() => import('./components/Nevbar Pages/research-development.jsx'));
+const Blognevbar = lazy(() => import('./components/Nevbar Pages/Blognevbar'));
+const BlogDetails = lazy(() => import('./components/blogcontent Page/BlogDetails'));
 
-// Products page import
-import Product from './components/Nevbar Pages/Product.jsx';
-import SahayakAI from './components/Products Pages/SahayakAI.jsx';
-import AIInterviewer from './components/Products Pages/AIInterviewer.jsx';
-import VideoTranslation from './components/Products Pages/VideoTranslation.jsx';
-import ProjectManagementTool from './components/Products Pages/ProjectManagementTool';
+const Learning = lazy(() => import('./components/Nevbar Pages/Learning-And-Development.jsx'));
+const DataEngineering = lazy(() => import('./components/learning-and-development/data-engineering.jsx'));
+const DataAnalytics = lazy(() => import('./components/learning-and-development/data-analytics.jsx'));
+const AIML = lazy(() => import('./components/learning-and-development/ai-ml.jsx'));
+const GenerativeAI = lazy(() => import('./components/learning-and-development/generative-ai.jsx'));
+const MLOps = lazy(() => import('./components/learning-and-development/mlops.jsx'));
+const AgenticAI = lazy(() => import('./components/learning-and-development/agentic-ai.jsx'));
 
-// Import your Blognevbar page
-import Blognevbar from './components/Nevbar Pages/Blognevbar';
-import BlogDetails from "./components/blogcontent Page/BlogDetails";
+const Product = lazy(() => import('./components/Nevbar Pages/Product.jsx'));
+const SahayakAI = lazy(() => import('./components/Products Pages/SahayakAI.jsx'));
+const AIInterviewer = lazy(() => import('./components/Products Pages/AIInterviewer.jsx'));
+const VideoTranslation = lazy(() => import('./components/Products Pages/VideoTranslation.jsx'));
+const ProjectManagementTool = lazy(() => import('./components/Products Pages/ProjectManagementTool'));
 
-// Authentication imports
-import AboutUs from './components/Nevbar Pages/aboutus';
-import SignIn from './components/Nevbar Pages/SignIn';
-import CreateAccount from './components/Home Pages/CreateAccount';
-import ResetPassword from './components/Nevbar Pages/ResetPassword';
-import MyAccount from './components/Nevbar Pages/MyAccount';
+const SignIn = lazy(() => import('./components/Nevbar Pages/SignIn'));
+const CreateAccount = lazy(() => import('./components/Home Pages/CreateAccount'));
+const ResetPassword = lazy(() => import('./components/Nevbar Pages/ResetPassword'));
+const MyAccount = lazy(() => import('./components/Nevbar Pages/MyAccount'));
 
-// Individual Service imports
-import Services from './components/Nevbar Pages/Services';
-import AIMLService from './components/Services Pages/AIMLService';
-import GenerativeAIService from './components/Services Pages/GenerativeAIService';
-import RoboticsService from './components/Services Pages/RoboticsService';
-import HumanoidSystems from './components/Services Pages/HumanoidSystems';
-import CybersecurityService from './components/Services Pages/CybersecurityService';
-import DataEngineeringService from './components/Services Pages/DataEngineeringService';
-import BlockchainService from './components/Services Pages/BlockchainService';
-import Web3Service from './components/Services Pages/Web3Service';
-import SoftwareDevelopmentService from './components/Services Pages/SoftwareDevelopmentService';
-import IoTService from './components/Services Pages/IoTService';
-import APIIntegrationService from './components/Services Pages/APIIntegrationService';
+const Services = lazy(() => import('./components/Nevbar Pages/Services'));
+const AIMLService = lazy(() => import('./components/Services Pages/AIMLService'));
+const GenerativeAIService = lazy(() => import('./components/Services Pages/GenerativeAIService'));
+const RoboticsService = lazy(() => import('./components/Services Pages/RoboticsService'));
+const HumanoidSystems = lazy(() => import('./components/Services Pages/HumanoidSystems'));
+const CybersecurityService = lazy(() => import('./components/Services Pages/CybersecurityService'));
+const DataEngineeringService = lazy(() => import('./components/Services Pages/DataEngineeringService'));
+const BlockchainService = lazy(() => import('./components/Services Pages/BlockchainService'));
+const Web3Service = lazy(() => import('./components/Services Pages/Web3Service'));
+const SoftwareDevelopmentService = lazy(() => import('./components/Services Pages/SoftwareDevelopmentService'));
+const IoTService = lazy(() => import('./components/Services Pages/IoTService'));
+const APIIntegrationService = lazy(() => import('./components/Services Pages/APIIntegrationService'));
 
+const Industries = lazy(() => import('./components/Nevbar Pages/Industries'));
+const Healthcare = lazy(() => import('./components/industries/Healthcare'));
+const Finance = lazy(() => import('./components/industries/Finance'));
+const Education = lazy(() => import('./components/industries/Education'));
+const Enterprise = lazy(() => import('./components/industries/Enterprise'));
+const Manufacturing = lazy(() => import('./components/industries/Manufacturing'));
+const RetailEcommerce = lazy(() => import('./components/industries/RetailEcommerce'));
 
-// Industries Pages
-import Industries from './components/Nevbar Pages/Industries';
-import Healthcare from "./components/industries/Healthcare";
-import Finance from "./components/industries/Finance";
-import Education from "./components/industries/Education";
-import Enterprise from "./components/industries/Enterprise";
-import Manufacturing from "./components/industries/Manufacturing";
-import RetailEcommerce from "./components/industries/RetailEcommerce";
-
-
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
+    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
+  </div>
+);
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
       <Navbar />
-      <Routes>
-        {/* Main Home Route */}
-        <Route path="/" element={
-          <>
-            <Hero />
-            <TryOur />
-            <Innovative />
-            <ServicesSection />
-            {/* <Work /> */}
-            <WhyChooseUs />
-            <Testimonials />
-            <ContactUs />
-            <Blog />
-            <Faq />
-            <TrustedBy />
-          </>
-        } />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Hero />
+              <TryOur />
+              <Innovative />
+              <ServicesSection />
+              <WhyChooseUs />
+              <Testimonials />
+              <ContactUs />
+              <Blog />
+              <Faq />
+              <TrustedBy />
+            </>
+          } />
 
-        {/* About Route */}
-        <Route path="/about" element={<AboutUs />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/principles" element={<OurPrinciples />} />
+          <Route path="/team" element={<OurTeam />} />
 
-        {/* Principles Route */}
-        <Route path="/principles" element={<OurPrinciples />} />
+          <Route path="/blog" element={<Blognevbar />} />
+          <Route path="/blog/:slug" element={<BlogDetails />} />
 
-        {/* Team Route */}
-        <Route path="/team" element={<OurTeam />} />
+          <Route path="/research-development" element={<RND />} />
 
-        {/* Blog routes */}
-        <Route path="/blog" element={<Blognevbar />} />
-        <Route path="/blog/:slug" element={<BlogDetails />} />
+          <Route path="/learning-and-development" element={<Learning />} />
+          <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
+          <Route path="/learning-and-development/data-analytics" element={<DataAnalytics />} />
+          <Route path="/learning-and-development/ai-ml" element={<AIML />} />
+          <Route path="/learning-and-development/generative-ai" element={<GenerativeAI />} />
+          <Route path="/learning-and-development/mlops" element={<MLOps />} />
+          <Route path="/learning-and-development/agentic-ai" element={<AgenticAI />} />
 
-        {/* R&D Routes */}
-        <Route path="/research-development" element={<RND />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/my-account" element={<MyAccount />} />
 
-        {/* ================= L&D ROUTES ================= */}
-        <Route path="/learning-and-development" element={<Learning />} />
-        <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
-        <Route path="/learning-and-development/data-analytics" element={<DataAnalytics />} />
-        <Route path="/learning-and-development/ai-ml" element={<AIML />} />
-        <Route path="/learning-and-development/generative-ai" element={<GenerativeAI />} />
-        <Route path="/learning-and-development/mlops" element={<MLOps />} />
-        <Route path="/learning-and-development/agentic-ai" element={<AgenticAI />} />
+          <Route path="/industries" element={<Industries />} />
+          <Route path="/industries/healthcare" element={<Healthcare />} />
+          <Route path="/industries/finance" element={<Finance />} />
+          <Route path="/industries/education" element={<Education />} />
+          <Route path="/industries/enterprise-solutions" element={<Enterprise />} />
+          <Route path="/industries/manufacturing" element={<Manufacturing />} />
+          <Route path="/industries/retail-ecommerce" element={<RetailEcommerce />} />
 
-        {/* Authentication Routes */}
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/create-account" element={<CreateAccount />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/my-account" element={<MyAccount />} />
+          <Route path="/products" element={<Product />} />
+          <Route path="/contact" element={<ContactUs />} />
 
-        {/* Other Routes */}
-        <Route path="/industries" element={<Industries />} />
-        {/* Industries Routes */}
-        <Route path="/industries/healthcare" element={<Healthcare />} />
-        <Route path="/industries/finance" element={<Finance />} />
-        <Route path="/industries/education" element={<Education />} />
-        <Route path="/industries/enterprise-solutions" element={<Enterprise />} />
-        <Route path="/industries/manufacturing" element={<Manufacturing />} />
-        <Route path="/industries/retail-ecommerce" element={<RetailEcommerce />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/generative-ai" element={<GenerativeAIService />} />
+          <Route path="/services/robotics" element={<RoboticsService />} />
+          <Route path="/services/humanoids" element={<HumanoidSystems />} />
+          <Route path="/services/cybersecurity" element={<CybersecurityService />} />
+          <Route path="/services/ai-ml" element={<AIMLService />} />
+          <Route path="/services/data-engineering" element={<DataEngineeringService />} />
+          <Route path="/services/web3" element={<Web3Service />} />
+          <Route path="/services/blockchain" element={<BlockchainService />} />
+          <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
+          <Route path="/services/iot" element={<IoTService />} />
+          <Route path="/services/api-integration" element={<APIIntegrationService />} />
 
+          <Route path="/products/sahayak-ai" element={<SahayakAI />} />
+          <Route path="/products/video-translation" element={<VideoTranslation />} />
+          <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
+          <Route path="/products/project-management" element={<ProjectManagementTool />} />
 
-
-        {/* Products Route */}
-        <Route path="/products" element={<Product />} />
-        <Route path="/contact" element={<ContactUs />} />
-
-        {/* Services Routes */}
-        <Route path="/services" element={<Services />} />
-        <Route path="/services/generative-ai" element={<GenerativeAIService />} />
-        <Route path="/services/robotics" element={<RoboticsService />} />
-        <Route path="/services/humanoids" element={<HumanoidSystems />} />
-        <Route path="/services/cybersecurity" element={<CybersecurityService />} />
-        <Route path="/services/ai-ml" element={<AIMLService />} />
-        <Route path="/services/data-engineering" element={<DataEngineeringService />} />
-        <Route path="/services/web3" element={<Web3Service />} />
-        <Route path="/services/blockchain" element={<BlockchainService />} />
-        <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
-        <Route path="/services/iot" element={<IoTService />} />
-        <Route path="/services/api-integration" element={<APIIntegrationService />} />
-
-        {/* Product detail routes */}
-        <Route path="/products/sahayak-ai" element={<SahayakAI />} />
-        <Route path="/products/video-translation" element={<VideoTranslation />} />
-        <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
-        <Route path="/products/project-management" element={<ProjectManagementTool />} />
-
-        <Route path="*" element={
-          <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
-            <div className="text-center px-6">
-              <h1 className="text-8xl font-bold text-gray-200 mb-4">404</h1>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Page Not Found</h2>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
-              <Link to="/" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg">← Back to Home</Link>
+          <Route path="*" element={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
+              <div className="text-center px-6">
+                <h1 className="text-8xl font-bold text-gray-200 mb-4">404</h1>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Page Not Found</h2>
+                <p className="text-gray-600 mb-8 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
+                <Link to="/" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg">← Back to Home</Link>
+              </div>
             </div>
-          </div>
-        } />
+          } />
 
-      </Routes>
+        </Routes>
+      </Suspense>
       <Footer />
     </Router>
   );

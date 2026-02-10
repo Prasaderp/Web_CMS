@@ -2,14 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import heroImg from "../IMAGES/project.jpeg";
 import SEO from "../SEO";
-import { 
-  FaProjectDiagram, 
-  FaTasks, 
-  FaStream, 
-  FaTable, 
-  FaCalendarAlt, 
-  FaUserShield 
+import {
+  FaProjectDiagram,
+  FaTasks,
+  FaStream,
+  FaTable,
+  FaCalendarAlt,
+  FaUserShield
 } from "react-icons/fa";
+import LiteYouTube from "../LiteYouTube";
 
 const demoVideo =
   "https://www.youtube.com/embed/jis1Hckpx9U?si=tu7vAgA13lIfnfHP";
@@ -122,14 +123,7 @@ const ProjectManagementTool = () => {
                 </p>
 
                 <div className="relative rounded-xl overflow-hidden shadow-lg border aspect-video">
-                  <iframe
-                    className="w-full h-full"
-                    src={demoVideo}
-                    title="Project Management Demo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <LiteYouTube src={demoVideo} title="Project Management Demo" />
                 </div>
               </div>
 

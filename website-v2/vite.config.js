@@ -10,11 +10,12 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: false,
-        chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
                 manualChunks: {
-                    vendor: ['react', 'react-dom', 'react-router-dom'],
+                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+                    'vendor-ui': ['framer-motion', 'lucide-react'],
+                    'vendor-security': ['dompurify'],
                 },
             },
         },

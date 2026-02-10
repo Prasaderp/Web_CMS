@@ -18,6 +18,9 @@ import { blogService } from "../../services/blogService";
 import { sanitizeHtml, escapeHtml } from "../../utils/security";
 import { formatDate } from "../../utils/date";
 import { optimizeImage } from "../../utils/image";
+import LiteYouTube from "../LiteYouTube";
+
+const YOUTUBE_IFRAME_RE = /<iframe[^>]*src=["']([^"']*(?:youtube\.com|youtu\.be)[^"']*)["'][^>]*(?:title=["']([^"']*)["'])?[^>]*><\/iframe>/gi;
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -29,7 +32,6 @@ const BlogDetails = () => {
 
   useEffect(() => {
     loadBlog();
-    // Increment view count once per slug
     if (slug && !viewIncremented.current) {
       blogService.incrementView(slug);
       viewIncremented.current = true;
@@ -37,12 +39,8 @@ const BlogDetails = () => {
   }, [slug]);
 
   useEffect(() => {
-    // Scroll to top when blog changes
     window.scrollTo(0, 0);
-    // Reset view increment ref when slug changes
-    return () => {
-      viewIncremented.current = false;
-    };
+    return () => { viewIncremented.current = false; };
   }, [slug]);
 
   const loadBlog = async () => {
@@ -71,30 +69,42 @@ const BlogDetails = () => {
     }
   };
 
+  const renderHtmlWithLiteYouTube = (html) => {
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+    YOUTUBE_IFRAME_RE.lastIndex = 0;
 
+    while ((match = YOUTUBE_IFRAME_RE.exec(html)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(
+          <div key={`html-${lastIndex}`} className="prose prose-lg max-w-none blog-content-html" dangerouslySetInnerHTML={{ __html: html.slice(lastIndex, match.index) }} style={{ color: '#374151', lineHeight: '1.75' }} />
+        );
+      }
+      parts.push(<LiteYouTube key={`yt-${match.index}`} src={match[1]} title={match[2] || 'Video'} />);
+      lastIndex = match.index + match[0].length;
+    }
 
-  // ✅ SECURE: Enhanced content renderer with XSS protection via DOMPurify
+    if (lastIndex < html.length) {
+      parts.push(
+        <div key={`html-${lastIndex}`} className="prose prose-lg max-w-none blog-content-html" dangerouslySetInnerHTML={{ __html: html.slice(lastIndex) }} style={{ color: '#374151', lineHeight: '1.75' }} />
+      );
+    }
+
+    return parts.length > 0 ? parts : (
+      <div className="prose prose-lg max-w-none blog-content-html" dangerouslySetInnerHTML={{ __html: html }} style={{ color: '#374151', lineHeight: '1.75' }} />
+    );
+  };
+
   const renderContent = (content) => {
     if (!content) return "";
 
-    // Handle HTML content - sanitize before rendering
     if (content.includes('<p>') || content.includes('<h2>') || content.includes('<iframe>')) {
       const sanitized = sanitizeHtml(content, {
-        // Allow iframes for video embeds (YouTube, Vimeo)
         ADD_TAGS: ['iframe'],
         ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
       });
-
-      return (
-        <div
-          className="prose prose-lg max-w-none blog-content-html"
-          dangerouslySetInnerHTML={{ __html: sanitized }}
-          style={{
-            color: '#374151',
-            lineHeight: '1.75'
-          }}
-        />
-      );
+      return renderHtmlWithLiteYouTube(sanitized);
     }
 
     // Handle Markdown-style content

@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SEO from "../SEO";
-import { 
-  FaMicrophoneAlt, 
-  FaLanguage, 
-  FaBrain, 
-  FaVolumeUp, 
-  FaMusic, 
-  FaBolt 
+import {
+  FaMicrophoneAlt,
+  FaLanguage,
+  FaBrain,
+  FaVolumeUp,
+  FaMusic,
+  FaBolt
 } from "react-icons/fa";
+import LiteYouTube from "../LiteYouTube";
 
 const heroImg =
   "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=2000&q=80";
@@ -126,14 +127,7 @@ const VideoTranslation = () => {
                 </p>
 
                 <div className="relative rounded-xl overflow-hidden shadow-lg border aspect-video">
-                  <iframe
-                    className="w-full h-full"
-                    src={demoVideo}
-                    title="AI Video Translation Demo"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <LiteYouTube src={demoVideo} title="AI Video Translation Demo" />
                 </div>
               </div>
 
