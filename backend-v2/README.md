@@ -93,6 +93,16 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 | CORS_ORIGINS | Yes | Comma-separated allowed origins |
 | CLOUDINARY_* | Yes | Cloudinary credentials |
 | REDIS_URL | No | Redis cache URL |
+| SMTP_HOST | Yes (for contact emails) | SMTP host (e.g. smtp.gmail.com) |
+| SMTP_PORT | No | SMTP port (default: 587) |
+| SMTP_USERNAME | Yes (for contact emails) | SMTP account username |
+| SMTP_PASSWORD | Yes (for contact emails) | SMTP account password/app password |
+| SMTP_USE_TLS | No | Enable STARTTLS (default: true) |
+| SMTP_USE_SSL | No | Enable SMTP over SSL (default: false) |
+| SMTP_TIMEOUT_SECONDS | No | SMTP connection timeout in seconds (default: 10) |
+| CONTACT_NOTIFICATION_TO | No | Destination inbox for contact submissions |
+| CONTACT_NOTIFICATION_FROM | No | Sender email address (falls back to SMTP_USERNAME when email-like) |
+| CONTACT_NOTIFICATION_SUBJECT_PREFIX | No | Subject prefix for contact notifications |
 
 ## Testing
 
