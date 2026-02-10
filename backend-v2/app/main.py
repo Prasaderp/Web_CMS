@@ -2,6 +2,7 @@
 FastAPI application entry point.
 Clean, minimal main file - all logic is in modules.
 """
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -20,6 +21,8 @@ from app.api import auth, blogs, admin, contact
 # Setup logging
 setup_logging()
 logger = get_logger(__name__)
+
+IS_SERVERLESS = bool(os.environ.get("VERCEL"))
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -59,7 +62,7 @@ async def health_check():
     """
     db_healthy = database.health_check()
     cache_healthy = cache_service._available
-    
+
     return HealthCheckResponse(
         status="healthy" if db_healthy else "unhealthy",
         version=settings.APP_VERSION,
@@ -73,7 +76,7 @@ async def health_check():
 async def global_exception_handler(request: Request, exc: Exception):
     """Handle uncaught exceptions."""
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
-    
+
     return JSONResponse(
         status_code=500,
         content=ErrorResponse(
@@ -102,16 +105,20 @@ async def startup():
     """Initialize services on startup."""
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
     logger.info(f"Environment: {'Development' if settings.DEBUG else 'Production'}")
+    logger.info(f"Serverless mode: {IS_SERVERLESS}")
     logger.info(f"CORS origins: {settings.cors_origins}")
-    
-    # Run database migrations
-    from app.core.migrations import run_migrations, create_default_admin
-    if not run_migrations():
-        logger.warning("Database migrations failed - some features may not work")
-    
-    # Create default admin if configured and no users exist
-    if settings.ADMIN_EMAIL and settings.ADMIN_PASSWORD:
-        create_default_admin(settings.ADMIN_EMAIL, settings.ADMIN_PASSWORD)
+
+    # Run database migrations (idempotent - uses IF NOT EXISTS)
+    try:
+        from app.core.migrations import run_migrations, create_default_admin
+        if not run_migrations():
+            logger.warning("Database migrations had issues - some features may not work")
+
+        # Create default admin if configured and no users exist
+        if settings.ADMIN_EMAIL and settings.ADMIN_PASSWORD:
+            create_default_admin(settings.ADMIN_EMAIL, settings.ADMIN_PASSWORD)
+    except Exception as e:
+        logger.error(f"Startup initialization error: {e}")
 
 
 # Shutdown event
@@ -119,6 +126,7 @@ async def startup():
 async def shutdown():
     """Cleanup on shutdown."""
     logger.info("Shutting down application")
+    database.close()
 
 
 # Root endpoint
