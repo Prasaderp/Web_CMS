@@ -52,7 +52,7 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str | None = None
     SMTP_USE_TLS: bool = True
     SMTP_USE_SSL: bool = False
-    SMTP_TIMEOUT_SECONDS: int = 10
+    SMTP_TIMEOUT_SECONDS: int = 30
     CONTACT_NOTIFICATION_TO: EmailStr = "akankshasomvanshi@gmail.com"
     CONTACT_NOTIFICATION_FROM: EmailStr | None = None
     CONTACT_NOTIFICATION_SUBJECT_PREFIX: str = "[AiGENThix Contact]"
@@ -86,8 +86,8 @@ class Settings(BaseSettings):
     @classmethod
     def validate_smtp_timeout(cls, v: int) -> int:
         """Ensure SMTP timeout is reasonable."""
-        if v < 1 or v > 60:
-            raise ValueError("SMTP_TIMEOUT_SECONDS must be between 1 and 60")
+        if v < 5 or v > 60:
+            raise ValueError("SMTP_TIMEOUT_SECONDS must be between 5 and 60")
         return v
     
     @model_validator(mode="after")

@@ -38,7 +38,6 @@ const ContactUs = () => {
             await contactService.submitContactForm(formData);
 
             setSubmitStatus('success');
-            alert("Thank you! We will get back to you shortly.");
 
             // Reset form
             setFormData({
@@ -55,7 +54,6 @@ const ContactUs = () => {
         } catch (error) {
             console.error("Submission error:", error);
             setSubmitStatus('error');
-            alert("Something went wrong. Please try again later.");
         } finally {
             setIsSubmitting(false);
         }
@@ -256,12 +254,12 @@ const ContactUs = () => {
                                 onChange={handleChange}
                                 placeholder="Comments*"
                                 rows="5"
-                                maxLength="300"
+                                maxLength="500"
                                 required
                                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 resize-y"
                             ></textarea>
                             <p className="text-xs text-gray-500 mt-1">
-                                {formData.comments.length} of 300 max characters
+                                {formData.comments.length} of 500 max characters
                             </p>
                         </div>
                         {/* Terms and Conditions Checkbox */}
@@ -283,11 +281,22 @@ const ContactUs = () => {
                         <div className="md:col-span-2 mt-4">
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                disabled={isSubmitting}
+                                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-6 rounded-md transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
-                                Start a conversation
+                                {isSubmitting ? 'Submitting...' : 'Start a conversation'}
                             </button>
                         </div>
+                        {submitStatus === 'success' && (
+                            <div className="md:col-span-2 text-green-700 text-sm font-medium">
+                                Thank you. Your message has been submitted successfully.
+                            </div>
+                        )}
+                        {submitStatus === 'error' && (
+                            <div className="md:col-span-2 text-red-700 text-sm font-medium">
+                                We could not submit your request right now. Please try again shortly.
+                            </div>
+                        )}
                     </form>
                 </div>
             </div>

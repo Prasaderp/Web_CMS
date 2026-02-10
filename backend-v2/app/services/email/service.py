@@ -3,6 +3,7 @@ Production-grade async SMTP email service with retries and comprehensive logging
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 from email.message import EmailMessage
 from typing import Optional
@@ -76,9 +77,16 @@ class EmailService:
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=2, max=10),
-        retry=retry_if_exception_type((ConnectionError, TimeoutError, OSError)),
-        before_sleep=before_sleep_log(logger, "WARNING"),
-        after=after_log(logger, "INFO"),
+        retry=retry_if_exception_type((
+            aiosmtplib.SMTPConnectTimeoutError,
+            aiosmtplib.SMTPConnectError,
+            aiosmtplib.SMTPServerDisconnected,
+            ConnectionError,
+            TimeoutError,
+            OSError,
+        )),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
+        after=after_log(logger, logging.INFO),
         reraise=True,
     )
     async def _send_with_retry(self, message: EmailMessage) -> None:
@@ -91,36 +99,42 @@ class EmailService:
         use_ssl = settings.SMTP_USE_SSL
         use_tls = settings.SMTP_USE_TLS
 
+        smtp_kwargs = {
+            "hostname": host,
+            "port": port,
+            "timeout": timeout,
+            "use_tls": use_ssl,
+        }
+
         try:
-            if use_ssl:
-                async with aiosmtplib.SMTP(
-                    hostname=host,
-                    port=port,
-                    timeout=timeout,
-                    use_tls=False,
-                ) as smtp:
-                    await smtp.login(username, password)
-                    await smtp.send_message(message)
-            else:
-                async with aiosmtplib.SMTP(
-                    hostname=host,
-                    port=port,
-                    timeout=timeout,
-                    use_tls=False,
-                    start_tls=False,
-                ) as smtp:
-                    if use_tls:
-                        await smtp.starttls()
-                    await smtp.login(username, password)
-                    await smtp.send_message(message)
-        except (ConnectionError, TimeoutError, OSError) as exc:
+            async with aiosmtplib.SMTP(**smtp_kwargs) as smtp:
+                if use_tls and not use_ssl:
+                    await smtp.starttls()
+                await smtp.login(username, password)
+                await smtp.send_message(message)
+        except (
+            aiosmtplib.SMTPConnectTimeoutError,
+            aiosmtplib.SMTPConnectError,
+            aiosmtplib.SMTPServerDisconnected,
+            ConnectionError,
+            TimeoutError,
+            OSError,
+        ) as exc:
             logger.warning(
                 f"SMTP connection error (will retry): {type(exc).__name__}: {exc}"
             )
             raise
+        except aiosmtplib.SMTPAuthenticationError as exc:
+            logger.error(
+                f"SMTP authentication failed: {exc}",
+                exc_info=True,
+            )
+            raise ContactEmailDeliveryError(
+                "Failed to authenticate with SMTP server"
+            ) from exc
         except Exception as exc:
             logger.error(
-                f"SMTP non-retryable error: {type(exc).__name__}: {exc}",
+                f"SMTP unexpected error: {type(exc).__name__}: {exc}",
                 exc_info=True,
             )
             raise ContactEmailDeliveryError(
@@ -174,7 +188,14 @@ class EmailService:
                     "reply_to": payload.company_email,
                 },
             )
-        except (ConnectionError, TimeoutError, OSError) as exc:
+        except (
+            aiosmtplib.SMTPConnectTimeoutError,
+            aiosmtplib.SMTPConnectError,
+            aiosmtplib.SMTPServerDisconnected,
+            ConnectionError,
+            TimeoutError,
+            OSError,
+        ) as exc:
             logger.error(
                 f"Contact email delivery failed after retries: {exc}",
                 extra={
