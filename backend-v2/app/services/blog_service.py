@@ -110,6 +110,14 @@ class BlogService:
         cache_service.set(cache_key, blog_public.model_dump(), ttl=600)
         
         return blog_public
+
+    def increment_views(self, slug: str) -> bool:
+        """
+        Increment view count for a blog.
+        Note: Does NOT invalidate cache to prevent cache stampede.
+        View counts will be eventually consistent.
+        """
+        return self.blog_repo.increment_views(slug)
     
     def get_blog_by_id(self, blog_id: int) -> BlogPublic:
         """
@@ -164,17 +172,15 @@ class BlogService:
         # Get featured blog
         featured_dict = self.blog_repo.get_featured()
         featured = self._blog_to_list_item(featured_dict) if featured_dict else None
-        
-        # Get latest blogs
+
         latest_blogs = self.blog_repo.get_all(published_only=True, limit=6)
         latest = [self._blog_to_list_item(blog) for blog in latest_blogs]
-        
-        # For now, popular = latest (can add view count later)
-        popular = latest
-        
-        # Categories (empty for now - can add categories table)
+
+        popular_blogs = self.blog_repo.get_popular(limit=6)
+        popular = [self._blog_to_list_item(blog) for blog in popular_blogs]
+
         categories = []
-        
+
         page_data = BlogPageData(
             featured=featured,
             latest=latest,

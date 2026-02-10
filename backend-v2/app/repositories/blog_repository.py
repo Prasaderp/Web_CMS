@@ -129,6 +129,36 @@ class BlogRepository:
         )
         blog = self.cursor.fetchone()
         return self._parse_json_fields(blog) if blog else None
+
+    def get_popular(self, limit: int = 6) -> List[dict]:
+        self.cursor.execute(
+            """
+            SELECT id, title, slug, excerpt, featured_image_url,
+                   author_name, created_at, tags, category, read_time
+            FROM blogs
+            WHERE published = TRUE
+            ORDER BY view_count DESC, created_at DESC
+            LIMIT %s
+            """,
+            (limit,)
+        )
+        return [self._parse_json_fields(blog) for blog in self.cursor.fetchall()]
+
+    def increment_views(self, slug: str) -> bool:
+        """
+        Atomically increment blog view count.
+        
+        Args:
+            slug: Blog slug
+            
+        Returns:
+            True if blog exists and was updated
+        """
+        self.cursor.execute(
+            "UPDATE blogs SET view_count = view_count + 1 WHERE slug = %s",
+            (slug,)
+        )
+        return self.cursor.rowcount > 0
     
     def create(self, blog_data: BlogCreate) -> int:
         """

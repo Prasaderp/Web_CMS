@@ -33,6 +33,20 @@ class BlogService {
       throw error;
     }
   }
+  /**
+   * Increment blog view count.
+   * Fire and forget - does not block UI.
+   *
+   * @param {string} slug
+   */
+  async incrementView(slug) {
+    try {
+      await apiClient.post(`/api/blogs/${slug}/view`);
+    } catch (error) {
+      // Silently fail for view counts - don't disrupt user experience
+      console.warn(`Failed to increment view for ${slug}`, error);
+    }
+  }
 }
 
 // Singleton instance

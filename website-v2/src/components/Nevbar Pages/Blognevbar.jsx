@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { blogService } from "../../services/blogService";
+import { formatDate } from "../../utils/date";
+import { optimizeImage } from "../../utils/image";
+import { truncateText } from "../../utils/text";
 
 const BlogPage = () => {
   const [pageData, setPageData] = useState({
@@ -35,35 +38,7 @@ const BlogPage = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Recent";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
 
-  const optimizeImage = (url, width = 800) => {
-    if (!url) return "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80";
-
-    // Cloudinary optimization
-    if (url.includes('cloudinary.com') && url.includes('/upload/')) {
-      return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto,c_fill/`);
-    }
-    // Unsplash optimization
-    if (url.includes('unsplash.com')) {
-      return `${url}${url.includes('?') ? '&' : '?'}w=${width}&q=80&auto=format&fit=crop`;
-    }
-    return url;
-  };
-
-  const truncateText = (text, maxLength = 150) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength).trim() + "...";
-  };
 
   if (loading) {
     return (

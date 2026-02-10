@@ -93,32 +93,24 @@ class CacheService:
             logger.error(f"Cache set error for key {key}: {e}")
             return False
     
-    def delete(self, pattern: str) -> bool:
-        """
-        Delete keys matching pattern.
-        
-        Args:
-            pattern: Key pattern (supports wildcards)
-            
-        Returns:
-            True if successful, False otherwise
-        """
+    def delete_pattern(self, pattern: str) -> bool:
         if not self._available or not self._client:
             return False
-        
         try:
-            keys = self._client.keys(pattern)
-            if keys:
-                self._client.delete(*keys)
+            cursor = 0
+            while True:
+                cursor, keys = self._client.scan(cursor, match=pattern, count=100)
+                if keys:
+                    self._client.delete(*keys)
+                if cursor == 0:
+                    break
             return True
         except Exception as e:
             logger.error(f"Cache delete error for pattern {pattern}: {e}")
             return False
-    
+
     def invalidate_blog_cache(self) -> None:
-        """Invalidate all blog-related cache keys."""
-        self.delete("blog:*")
-        logger.info("Blog cache invalidated")
+        self.delete_pattern("blog:*")
 
 
 # Singleton cache instance

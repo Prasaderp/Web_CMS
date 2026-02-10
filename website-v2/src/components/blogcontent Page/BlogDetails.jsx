@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -14,10 +14,10 @@ import {
   Copy,
   Check
 } from "lucide-react";
-import { config } from "../../lib/config";
+import { blogService } from "../../services/blogService";
 import { sanitizeHtml, escapeHtml } from "../../utils/security";
-
-const API_URL = config.API_URL;
+import { formatDate } from "../../utils/date";
+import { optimizeImage } from "../../utils/image";
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -25,28 +25,32 @@ const BlogDetails = () => {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const viewIncremented = useRef(false);
 
   useEffect(() => {
     loadBlog();
+    // Increment view count once per slug
+    if (slug && !viewIncremented.current) {
+      blogService.incrementView(slug);
+      viewIncremented.current = true;
+    }
   }, [slug]);
 
   useEffect(() => {
     // Scroll to top when blog changes
     window.scrollTo(0, 0);
+    // Reset view increment ref when slug changes
+    return () => {
+      viewIncremented.current = false;
+    };
   }, [slug]);
 
   const loadBlog = async () => {
     setLoading(true);
     try {
-      // ✅ OPTIMIZED: Single API call with Redis cache (10 min TTL on backend)
-      const response = await fetch(`${API_URL}/api/blogs/${slug}`);
-      const data = await response.json();
-
-      if (data.success) {
-        setBlog(data.data);
-        // Load related blogs from same category
-        loadRelatedBlogs(data.data.category, data.data.id);
-      }
+      const blog = await blogService.getBlogBySlug(slug);
+      setBlog(blog);
+      loadRelatedBlogs(blog.category, blog.id);
     } catch (error) {
       console.error("Failed to load blog:", error);
     } finally {
@@ -57,40 +61,17 @@ const BlogDetails = () => {
   const loadRelatedBlogs = async (category, currentId) => {
     if (!category) return;
     try {
-      const response = await fetch(`${API_URL}/api/blogs/page-data`);
-      const data = await response.json();
-      if (data.success) {
-        const related = data.latest
-          .filter(b => b.category === category && b.id !== currentId)
-          .slice(0, 3);
-        setRelatedBlogs(related);
-      }
+      const pageData = await blogService.getPageData();
+      const related = (pageData.latest || [])
+        .filter(b => b.category === category && b.id !== currentId)
+        .slice(0, 3);
+      setRelatedBlogs(related);
     } catch (error) {
       console.error("Failed to load related blogs:", error);
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Recent";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
 
-  const optimizeImage = (url, width = 1200) => {
-    if (!url) return "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80";
-
-    if (url.includes('cloudinary.com') && url.includes('/upload/')) {
-      return url.replace('/upload/', `/upload/w_${width},f_auto,q_auto,c_fill/`);
-    }
-    if (url.includes('unsplash.com')) {
-      return `${url}${url.includes('?') ? '&' : '?'}w=${width}&q=80&auto=format&fit=crop`;
-    }
-    return url;
-  };
 
   // ✅ SECURE: Enhanced content renderer with XSS protection via DOMPurify
   const renderContent = (content) => {

@@ -2,6 +2,7 @@
 FastAPI application entry point.
 Clean, minimal main file - all logic is in modules.
 """
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -14,19 +15,36 @@ from app.core.cache import cache_service
 from app.middleware.rate_limit import limiter
 from app.schemas.responses import HealthCheckResponse, ErrorResponse
 
-# API route imports
 from app.api import auth, blogs, admin, contact
 
-# Setup logging
 setup_logging()
 logger = get_logger(__name__)
 
-# Initialize FastAPI app
+
+@asynccontextmanager
+async def lifespan(app):
+    logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
+    logger.info(f"Environment: {'Development' if settings.DEBUG else 'Production'}")
+    logger.info(f"CORS origins: {settings.cors_origins}")
+
+    from app.core.migrations import run_migrations, create_default_admin
+    if not run_migrations():
+        logger.warning("Database migrations failed - some features may not work")
+
+    if settings.ADMIN_EMAIL and settings.ADMIN_PASSWORD:
+        create_default_admin(settings.ADMIN_EMAIL, settings.ADMIN_PASSWORD)
+
+    yield
+
+    logger.info("Shutting down application")
+
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     docs_url="/docs" if settings.DEBUG else None,
-    redoc_url="/redoc" if settings.DEBUG else None
+    redoc_url="/redoc" if settings.DEBUG else None,
+    lifespan=lifespan,
 )
 
 # Add rate limiting
@@ -96,29 +114,6 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
     )
 
 
-# Startup event
-@app.on_event("startup")
-async def startup():
-    """Initialize services on startup."""
-    logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
-    logger.info(f"Environment: {'Development' if settings.DEBUG else 'Production'}")
-    logger.info(f"CORS origins: {settings.cors_origins}")
-    
-    # Run database migrations
-    from app.core.migrations import run_migrations, create_default_admin
-    if not run_migrations():
-        logger.warning("Database migrations failed - some features may not work")
-    
-    # Create default admin if configured and no users exist
-    if settings.ADMIN_EMAIL and settings.ADMIN_PASSWORD:
-        create_default_admin(settings.ADMIN_EMAIL, settings.ADMIN_PASSWORD)
-
-
-# Shutdown event
-@app.on_event("shutdown")
-async def shutdown():
-    """Cleanup on shutdown."""
-    logger.info("Shutting down application")
 
 
 # Root endpoint

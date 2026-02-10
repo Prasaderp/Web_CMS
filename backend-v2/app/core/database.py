@@ -2,7 +2,7 @@
 Database connection and session management using psycopg2.
 Implements connection pooling and health checks for PostgreSQL.
 """
-from typing import Generator
+from collections.abc import Generator
 from urllib.parse import urlparse, parse_qs
 import psycopg2
 from psycopg2 import pool, extras
@@ -17,9 +17,7 @@ class Database:
     """Manages PostgreSQL database connection pool."""
     
     def __init__(self):
-        """Initialize database connection pool."""
         self._pool: pool.ThreadedConnectionPool | None = None
-        self._connection: PgConnection | None = None
         self._init_pool()
     
     def _parse_database_url(self) -> dict:
@@ -97,18 +95,7 @@ class Database:
         if self._pool and conn:
             self._pool.putconn(conn)
     
-    def get_cursor(self):
-        """Get a cursor with dictionary results."""
-        if not self._connection or self._connection.closed:
-            self._connection = self.get_connection()
-        return self._connection.cursor(cursor_factory=extras.RealDictCursor)
-    
-    def close(self) -> None:
-        """Close the current connection."""
-        if self._connection and not self._connection.closed:
-            self.return_connection(self._connection)
-            self._connection = None
-    
+
     def health_check(self) -> bool:
         """Check if database is healthy."""
         try:
