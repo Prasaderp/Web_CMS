@@ -11,5 +11,5 @@ python-slugify
 redis
 psycopg2-binary
 slowapi
-requests
+resend
 pydantic[email]

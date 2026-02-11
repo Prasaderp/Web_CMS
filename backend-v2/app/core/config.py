@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str | None = None
     ADMIN_PASSWORD: str | None = None
     
+    RESEND_API_KEY: str | None = None
+    CONTACT_NOTIFICATION_EMAIL: str | None = None
+    CONTACT_FROM_EMAIL: str | None = None
+    
     # Internal: parsed CORS origins list
     _cors_origins_list: List[str] = []
     

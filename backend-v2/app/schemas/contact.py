@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator
 class ContactSubmissionBase(BaseModel):
     firstName: str = Field(..., min_length=1, max_length=100)
     lastName: str = Field(..., min_length=1, max_length=100)
-    companyEmail: EmailStr
+    companyEmail: EmailStr = Field(...)
     companyName: str = Field(..., min_length=1, max_length=200)
     jobTitle: str = Field(..., min_length=1, max_length=200)
     country: str = Field(..., min_length=1, max_length=100)
@@ -15,21 +15,21 @@ class ContactSubmissionBase(BaseModel):
 
     @field_validator("firstName", "lastName", "companyName", "jobTitle", "country", "comments", mode="before")
     @classmethod
-    def validate_required_text(cls, value: str) -> str:
-        if not isinstance(value, str):
+    def strip_and_validate(cls, v: str) -> str:
+        if not isinstance(v, str):
             raise ValueError("Must be a string")
-        normalized = value.strip()
-        if not normalized:
+        stripped = v.strip()
+        if not stripped:
             raise ValueError("Field cannot be empty")
-        return normalized
+        return stripped
 
     @field_validator("phoneNumber", mode="before")
     @classmethod
-    def normalize_phone_number(cls, value: Optional[str]) -> Optional[str]:
-        if value is None:
+    def normalize_phone(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
             return None
-        normalized = value.strip()
-        return normalized or None
+        stripped = v.strip()
+        return stripped or None
 
 
 class ContactSubmissionCreate(ContactSubmissionBase):
