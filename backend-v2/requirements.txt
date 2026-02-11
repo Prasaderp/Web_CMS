@@ -13,6 +13,3 @@ psycopg2-binary
 slowapi
 requests
 pydantic[email]
-aiosmtplib
-jinja2
-tenacity
