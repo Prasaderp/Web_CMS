@@ -1,8 +1,5 @@
-"""
-Authentication service - handles authentication business logic.
-Orchestrates between repositories and security utilities.
-"""
 from typing import Optional
+import hashlib
 from fastapi import HTTPException, status
 
 from app.core.security import security_service
@@ -11,6 +8,10 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.auth import LoginRequest, LoginResponse, UserPublic
 
 logger = get_logger(__name__)
+
+
+def mask_pii(email: str) -> str:
+    return hashlib.sha256(email.encode()).hexdigest()[:16]
 
 
 class AuthService:
@@ -42,7 +43,7 @@ class AuthService:
         user = self.user_repo.get_by_email(login_data.email)
         
         if not user:
-            logger.warning(f"Login attempt for non-existent email: {login_data.email}")
+            logger.warning(f"Login attempt for non-existent user | hash={mask_pii(login_data.email)}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password"
@@ -52,7 +53,7 @@ class AuthService:
         password_hash = user.get("password_hash") or user.get("password", "")
         
         if not security_service.verify_password(login_data.password, password_hash):
-            logger.warning(f"Failed login attempt for user: {login_data.email}")
+            logger.warning(f"Failed login attempt | hash={mask_pii(login_data.email)}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password"
@@ -64,7 +65,7 @@ class AuthService:
             "email": user["email"]
         })
         
-        logger.info(f"Successful login for user: {login_data.email}")
+        logger.info(f"Successful login | hash={mask_pii(login_data.email)}")
         
         return LoginResponse(
             success=True,

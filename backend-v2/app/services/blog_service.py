@@ -1,12 +1,9 @@
-"""
-Blog service - handles blog business logic.
-Orchestrates between repositories and cache layer.
-"""
 from typing import List, Optional
 from fastapi import HTTPException, status
 from datetime import datetime
 
 from app.core.cache import cache_service
+from app.core.cache_keys import make_cache_key
 from app.core.logging import get_logger
 from app.repositories.blog_repository import BlogRepository
 from app.schemas.blog import (
@@ -89,8 +86,7 @@ class BlogService:
         Raises:
             HTTPException: If blog not found
         """
-        # Try cache first
-        cache_key = f"blog:slug:{slug}"
+        cache_key = make_cache_key("blog:slug:{slug}", slug=slug)
         cached = cache_service.get(cache_key)
         if cached:
             logger.debug(f"Cache hit for blog slug: {slug}")
@@ -162,8 +158,7 @@ class BlogService:
         Returns:
             BlogPageData with featured, latest, popular, categories
         """
-        # Try cache first
-        cache_key = "blog:page_data"
+        cache_key = make_cache_key("blog:page_data")
         cached = cache_service.get(cache_key)
         if cached:
             logger.debug("Cache hit for blog page data")

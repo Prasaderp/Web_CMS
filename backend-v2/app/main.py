@@ -1,10 +1,8 @@
-"""
-FastAPI application entry point.
-Clean, minimal main file - all logic is in modules.
-"""
 from contextlib import asynccontextmanager
+import asyncio
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
@@ -13,6 +11,10 @@ from app.core.logging import setup_logging, get_logger
 from app.core.database import database
 from app.core.cache import cache_service
 from app.middleware.rate_limit import limiter
+from app.middleware.security_headers import SecurityHeadersMiddleware
+from app.middleware.request_id import RequestIDMiddleware
+from app.middleware.csrf import CSRFMiddleware
+from app.middleware.request_size import RequestSizeLimitMiddleware
 from app.schemas.responses import HealthCheckResponse, ErrorResponse
 
 from app.api import auth, blogs, admin, contact
@@ -37,6 +39,8 @@ async def lifespan(app):
     yield
 
     logger.info("Shutting down application")
+    await asyncio.sleep(2)
+    database.close_pool()
 
 
 app = FastAPI(
@@ -47,17 +51,25 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Add rate limiting
 app.state.limiter = limiter
 
+app.add_middleware(RequestSizeLimitMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RequestIDMiddleware)
+app.add_middleware(CSRFMiddleware)
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=settings.allowed_hosts if not settings.DEBUG else ["*"]
+)
 
-# CORS Middleware (strict - no wildcards)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
+    expose_headers=[],
 )
 
 

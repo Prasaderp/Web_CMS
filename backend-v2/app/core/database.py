@@ -4,6 +4,7 @@ Implements connection pooling and health checks for PostgreSQL.
 """
 from collections.abc import Generator
 from urllib.parse import urlparse, parse_qs
+from time import time
 import psycopg2
 from psycopg2 import pool, extras
 from psycopg2.extensions import connection as PgConnection
@@ -14,10 +15,11 @@ logger = get_logger(__name__)
 
 
 class Database:
-    """Manages PostgreSQL database connection pool."""
     
     def __init__(self):
         self._pool: pool.ThreadedConnectionPool | None = None
+        self._conn_timestamps: dict = {}
+        self._max_conn_age = 1800
         self._init_pool()
     
     def _parse_database_url(self) -> dict:
@@ -49,7 +51,8 @@ class Database:
             "port": parsed.port or 5432,
             "user": parsed.username,
             "password": parsed.password or "",
-            "dbname": dbname
+            "dbname": dbname,
+            "options": "-c statement_timeout=30000"
         }
         
         # Parse query parameters for SSL and other options
@@ -68,32 +71,59 @@ class Database:
         return config
     
     def _init_pool(self) -> None:
-        """Initialize connection pool."""
         try:
             db_config = self._parse_database_url()
             
             self._pool = pool.ThreadedConnectionPool(
                 minconn=2,
-                maxconn=20,
+                maxconn=5,
                 **db_config
             )
             logger.info(f"PostgreSQL connection pool initialized: {db_config['host']}:{db_config['port']}/{db_config['dbname']}")
         except psycopg2.Error as e:
             logger.error(f"Failed to initialize database pool: {e}")
-            # Don't raise - allow app to start, will retry on first connection
     
     def get_connection(self) -> PgConnection:
-        """Get a connection from the pool."""
         if not self._pool:
             self._init_pool()
         if not self._pool:
             raise Exception("Database connection pool not available")
-        return self._pool.getconn()
+        
+        conn = self._pool.getconn()
+        conn_id = id(conn)
+        
+        if conn_id in self._conn_timestamps:
+            age = time() - self._conn_timestamps[conn_id]
+            if age > self._max_conn_age:
+                try:
+                    self._pool.putconn(conn, close=True)
+                    conn = self._pool.getconn()
+                    conn_id = id(conn)
+                except Exception as e:
+                    logger.error(f"Connection recycling failed: {e}")
+        
+        self._conn_timestamps[conn_id] = time()
+        
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            cursor.close()
+        except Exception as e:
+            logger.warning(f"Connection validation failed, reconnecting: {e}")
+            self._pool.putconn(conn, close=True)
+            conn = self._pool.getconn()
+            self._conn_timestamps[id(conn)] = time()
+        
+        return conn
     
     def return_connection(self, conn: PgConnection) -> None:
-        """Return a connection to the pool."""
         if self._pool and conn:
             self._pool.putconn(conn)
+    
+    def close_pool(self) -> None:
+        if self._pool:
+            self._pool.closeall()
+            logger.info("Database connection pool closed")
     
 
     def health_check(self) -> bool:

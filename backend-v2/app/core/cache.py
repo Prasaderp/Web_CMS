@@ -110,7 +110,7 @@ class CacheService:
             return False
 
     def invalidate_blog_cache(self) -> None:
-        self.delete_pattern("blog:*")
+        self.delete_pattern("v1:blog:*")
 
 
 # Singleton cache instance

@@ -4,7 +4,7 @@ Admin blog API routes (authentication required).
 from typing import List
 
 from fastapi import APIRouter, Depends, UploadFile, File
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 from app.dependencies import get_blog_service
 from app.middleware.auth import get_current_user
@@ -17,8 +17,16 @@ router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
 class BulkActionRequest(BaseModel):
-    """Request schema for bulk actions."""
-    ids: List[int]
+    ids: List[int] = Field(..., max_length=100)
+    
+    @field_validator("ids")
+    @classmethod
+    def validate_ids_count(cls, v: List[int]) -> List[int]:
+        if len(v) > 100:
+            raise ValueError("Maximum 100 IDs allowed per bulk operation")
+        if len(v) == 0:
+            raise ValueError("At least one ID required")
+        return v
 
 
 @router.get("/blogs", response_model=SuccessResponse[List[BlogListItem]])

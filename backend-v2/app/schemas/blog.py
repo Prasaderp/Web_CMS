@@ -4,14 +4,13 @@ All API boundaries use these schemas for validation.
 """
 from typing import List, Optional
 from datetime import datetime
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, HttpUrl
 from slugify import slugify
 
 
 class BlogBase(BaseModel):
-    """Base blog fields shared across schemas."""
     title: str = Field(..., min_length=1, max_length=500)
-    content: str = Field(..., min_length=1)
+    content: str = Field(..., min_length=1, max_length=100000)
     excerpt: Optional[str] = Field(None, max_length=1000)
     slug: Optional[str] = Field(None, max_length=200)
     category: Optional[str] = Field(None, max_length=100)
@@ -35,9 +34,15 @@ class BlogBase(BaseModel):
     cta_style: Optional[str] = Field("primary", max_length=50)
     cta_position: Optional[str] = Field("bottom", max_length=50)
     
-    # Metadata
     published: bool = False
     is_featured: bool = False
+    
+    @field_validator("featured_image_url", "cta_url", "author_website", mode="before")
+    @classmethod
+    def validate_url_scheme(cls, v: Optional[str]) -> Optional[str]:
+        if v and v.strip() and not v.startswith(("https://", "http://")):
+            raise ValueError("URL must start with https:// or http://")
+        return v
 
 
 class BlogCreate(BlogBase):

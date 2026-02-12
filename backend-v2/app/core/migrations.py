@@ -59,6 +59,7 @@ CREATE INDEX IF NOT EXISTS idx_blogs_published ON blogs(published);
 CREATE INDEX IF NOT EXISTS idx_blogs_featured ON blogs(is_featured);
 CREATE INDEX IF NOT EXISTS idx_blogs_created_at ON blogs(created_at);
 CREATE INDEX IF NOT EXISTS idx_blogs_category ON blogs(category);
+CREATE INDEX IF NOT EXISTS idx_blogs_view_count ON blogs(view_count DESC NULLS LAST);
 """
 
 # PostgreSQL-compatible SQL for users table

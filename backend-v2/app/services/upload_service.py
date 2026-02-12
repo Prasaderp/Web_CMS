@@ -1,6 +1,4 @@
-"""
-Upload service - handles file uploads to Cloudinary.
-"""
+import os
 import cloudinary
 import cloudinary.uploader
 from fastapi import UploadFile, HTTPException, status
@@ -10,7 +8,6 @@ from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
-# Configure Cloudinary
 cloudinary.config(
     cloud_name=settings.CLOUDINARY_CLOUD_NAME,
     api_key=settings.CLOUDINARY_API_KEY,
@@ -18,44 +15,66 @@ cloudinary.config(
     secure=True
 )
 
+ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"}
+
+MAGIC_BYTES = {
+    b"\xff\xd8\xff": "jpeg",
+    b"\x89\x50\x4e\x47\x0d\x0a\x1a\x0a": "png",
+    b"\x47\x49\x46\x38": "gif",
+    b"\x52\x49\x46\x46": "webp",
+    b"<svg": "svg",
+}
+
 
 class UploadService:
-    """Service for file uploads."""
+    
+    @staticmethod
+    def _validate_magic_bytes(file_content: bytes) -> bool:
+        for magic, file_type in MAGIC_BYTES.items():
+            if file_content.startswith(magic):
+                return True
+        return False
+    
+    @staticmethod
+    def _sanitize_filename(filename: str) -> str:
+        filename = os.path.basename(filename)
+        filename = filename.replace("..", "").replace("/", "").replace("\\", "")
+        return filename
     
     @staticmethod
     async def upload_image(file: UploadFile) -> str:
-        """
-        Upload image to Cloudinary.
-        
-        Args:
-            file: Image file to upload
-            
-        Returns:
-            Cloudinary secure URL
-            
-        Raises:
-            HTTPException: If upload fails
-        """
-        # Validate file type
         if not file.content_type or not file.content_type.startswith("image/"):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="File must be an image"
             )
         
-        # Validate file size (max 10MB)
         file_content = await file.read()
+        
         if len(file_content) > 10 * 1024 * 1024:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="File size must be less than 10MB"
             )
         
+        if not UploadService._validate_magic_bytes(file_content):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid image file format"
+            )
+        
+        filename = UploadService._sanitize_filename(file.filename or "upload")
+        ext = os.path.splitext(filename)[1].lower()
+        
+        if ext not in ALLOWED_EXTENSIONS:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"File extension must be one of: {', '.join(ALLOWED_EXTENSIONS)}"
+            )
+        
         try:
-            # Reset file position
             await file.seek(0)
             
-            # Upload to Cloudinary
             result = cloudinary.uploader.upload(
                 file.file,
                 folder="aigenthix/blogs",
@@ -73,5 +92,4 @@ class UploadService:
             ) from e
 
 
-# Singleton instance
 upload_service = UploadService()
