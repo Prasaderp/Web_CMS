@@ -1,35 +1,61 @@
-import secrets
-import hmac
+"""
+CSRF protection middleware.
+
+For stateless JWT-based APIs consumed by SPAs on a different origin,
+the JWT Bearer token already provides CSRF protection because:
+  - It is sent via the Authorization header, NOT cookies.
+  - Browsers do NOT automatically attach Authorization headers to
+    cross-origin requests the way they attach cookies.
+
+This middleware validates the Origin/Referer header on mutating requests
+to ensure they originate from allowed origins. This is the recommended
+CSRF defence for cross-origin APIs that do not use session cookies.
+
+Reference: OWASP CSRF Prevention Cheat Sheet — Verifying Origin With
+Standard Headers.
+"""
+from urllib.parse import urlparse
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from fastapi import HTTPException
+from starlette.responses import JSONResponse
 
 from app.core.config import settings
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
+
+# HTTP methods that mutate state
+_UNSAFE_METHODS = frozenset({"POST", "PUT", "DELETE", "PATCH"})
 
 
 class CSRFMiddleware(BaseHTTPMiddleware):
+    """Validate Origin / Referer on state-changing requests."""
+
     async def dispatch(self, request: Request, call_next):
-        csrf_token = secrets.token_urlsafe(32)
-        
-        if request.method in ["POST", "PUT", "DELETE", "PATCH"]:
-            if request.url.path.startswith("/api/admin"):
-                token_from_header = request.headers.get("X-CSRF-Token")
-                token_from_cookie = request.cookies.get("csrf_token")
-                
-                if not token_from_header or not token_from_cookie:
-                    raise HTTPException(status_code=403, detail="CSRF token missing")
-                
-                if not hmac.compare_digest(token_from_header, token_from_cookie):
-                    raise HTTPException(status_code=403, detail="CSRF token invalid")
-        
-        response = await call_next(request)
-        
-        response.set_cookie(
-            key="csrf_token",
-            value=csrf_token,
-            httponly=False,
-            secure=not settings.DEBUG,
-            samesite="strict"
-        )
-        
-        return response
+        if request.method in _UNSAFE_METHODS:
+            origin = request.headers.get("origin")
+            referer = request.headers.get("referer")
+
+            # Extract the origin from Referer if Origin is not present
+            request_origin = origin
+            if not request_origin and referer:
+                parsed = urlparse(referer)
+                request_origin = f"{parsed.scheme}://{parsed.netloc}"
+
+            # Allow requests with no origin info (server-to-server, curl, etc.)
+            # Browsers always send Origin on cross-origin POST, so missing
+            # origin means this is NOT a browser-initiated cross-site attack.
+            if request_origin:
+                allowed_origins = settings.cors_origins
+                if request_origin not in allowed_origins:
+                    logger.warning(
+                        f"CSRF origin rejected | origin={request_origin} | "
+                        f"path={request.url.path} | allowed={allowed_origins}"
+                    )
+                    return JSONResponse(
+                        status_code=403,
+                        content={"detail": "Cross-origin request not allowed"},
+                    )
+
+        return await call_next(request)

@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     JWT_ISSUER: str = "aigenthix-cms-api"
     
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
-    ALLOWED_HOSTS: str = "localhost,127.0.0.1"
+    ALLOWED_HOSTS: str = "localhost,127.0.0.1,aigenthix-backend.onrender.com"
     
     DATABASE_URL: str
     

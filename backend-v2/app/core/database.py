@@ -52,7 +52,6 @@ class Database:
             "user": parsed.username,
             "password": parsed.password or "",
             "dbname": dbname,
-            "options": "-c statement_timeout=30000"
         }
         
         # Parse query parameters for SSL and other options
@@ -71,6 +70,11 @@ class Database:
         return config
     
     def _init_pool(self) -> None:
+        """Initialize the PostgreSQL connection pool.
+        
+        Raises:
+            No exceptions raised; logs errors and leaves pool as None.
+        """
         try:
             db_config = self._parse_database_url()
             
@@ -79,15 +83,27 @@ class Database:
                 maxconn=5,
                 **db_config
             )
-            logger.info(f"PostgreSQL connection pool initialized: {db_config['host']}:{db_config['port']}/{db_config['dbname']}")
-        except psycopg2.Error as e:
+            logger.info(
+                "PostgreSQL connection pool initialized",
+                extra={"host": db_config["host"], "port": db_config["port"], "dbname": db_config["dbname"]}
+            )
+        except (psycopg2.Error, ValueError) as e:
             logger.error(f"Failed to initialize database pool: {e}")
+            self._pool = None
     
     def get_connection(self) -> PgConnection:
+        """Acquire a validated connection from the pool.
+        
+        Returns:
+            A healthy PostgreSQL connection with statement_timeout configured.
+            
+        Raises:
+            ConnectionError: If the database connection pool is not available.
+        """
         if not self._pool:
             self._init_pool()
         if not self._pool:
-            raise Exception("Database connection pool not available")
+            raise ConnectionError("Database connection pool not available")
         
         conn = self._pool.getconn()
         conn_id = id(conn)
@@ -114,6 +130,16 @@ class Database:
             conn = self._pool.getconn()
             self._conn_timestamps[id(conn)] = time()
         
+        # Set statement_timeout per-connection instead of as a startup
+        # parameter, which is unsupported by Neon's connection pooler.
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SET statement_timeout = '30s'")
+            cursor.close()
+            conn.commit()
+        except Exception as e:
+            logger.warning(f"Failed to set statement_timeout: {e}")
+        
         return conn
     
     def return_connection(self, conn: PgConnection) -> None:
@@ -136,7 +162,7 @@ class Database:
             cursor.close()
             self.return_connection(conn)
             return True
-        except psycopg2.Error as e:
+        except (psycopg2.Error, ConnectionError) as e:
             logger.error(f"Database health check failed: {e}")
             return False
 

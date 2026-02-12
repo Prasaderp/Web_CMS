@@ -28,6 +28,7 @@ async def lifespan(app):
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
     logger.info(f"Environment: {'Development' if settings.DEBUG else 'Production'}")
     logger.info(f"CORS origins: {settings.cors_origins}")
+    logger.info(f"Allowed hosts: {settings.allowed_hosts}")
 
     from app.core.migrations import run_migrations, create_default_admin
     if not run_migrations():
