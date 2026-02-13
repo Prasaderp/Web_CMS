@@ -204,6 +204,8 @@
     function applyFilters() {
         let result = [...blogs];
 
+        const safeText = (value) => (typeof value === 'string' ? value : '');
+
         // Apply filter
         if (currentFilter === 'published') {
             result = result.filter(b => b.published);
@@ -216,11 +218,16 @@
         // Apply search
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
-            result = result.filter(b =>
-                b.title.toLowerCase().includes(query) ||
-                (b.category && b.category.toLowerCase().includes(query)) ||
-                (b.author_name && b.author_name.toLowerCase().includes(query))
-            );
+            result = result.filter((b) => {
+                const title = safeText(b.title);
+                const category = safeText(b.category);
+                const author = safeText(b.author_name);
+                return (
+                    title.toLowerCase().includes(query) ||
+                    category.toLowerCase().includes(query) ||
+                    author.toLowerCase().includes(query)
+                );
+            });
         }
 
         filteredBlogs = result;
@@ -381,22 +388,68 @@
     // ============================================
     // Blog Actions
     // ============================================
+    function updateBlogInState(id, updater) {
+        let changed = false;
+        blogs = blogs.map((blog) => {
+            if (blog.id !== id) return blog;
+            changed = true;
+            return updater(blog);
+        });
+        if (!changed) return;
+        updateStats();
+        applyFilters();
+    }
+
+    function removeBlogFromState(id) {
+        const next = blogs.filter((blog) => blog.id !== id);
+        if (next.length === blogs.length) return;
+        blogs = next;
+        selectedIds.delete(id);
+        updateBulkActionsBar();
+        updateStats();
+        applyFilters();
+    }
+
     async function toggleFeatured(id) {
+        const existing = blogs.find((b) => b.id === id);
+        if (!existing) return;
+
+        const previousFeatured = existing.is_featured;
+        updateBlogInState(id, (blog) => ({
+            ...blog,
+            is_featured: !blog.is_featured
+        }));
+
         try {
             await BlogsApi.toggleFeatured(id);
-            await loadBlogs();
             Utils.showToast('Featured status updated', 'success');
         } catch (error) {
+            updateBlogInState(id, (blog) => ({
+                ...blog,
+                is_featured: previousFeatured
+            }));
             Utils.showToast(error.message, 'error');
         }
     }
 
     async function togglePublish(id) {
+        const existing = blogs.find((b) => b.id === id);
+        if (!existing) return;
+
+        const previousPublished = existing.published;
+        updateBlogInState(id, (blog) => ({
+            ...blog,
+            published: !blog.published
+        }));
+
         try {
             await BlogsApi.togglePublish(id);
-            await loadBlogs();
             Utils.showToast('Publish status updated', 'success');
         } catch (error) {
+            updateBlogInState(id, (blog) => ({
+                ...blog,
+                published: previousPublished
+            }));
             Utils.showToast(error.message, 'error');
         }
     }
@@ -404,11 +457,18 @@
     async function deleteBlog(id) {
         if (!Utils.confirm('Delete this blog? This cannot be undone.')) return;
 
+        const existing = blogs.find((b) => b.id === id);
+        if (!existing) return;
+
+        removeBlogFromState(id);
+
         try {
             await BlogsApi.delete(id);
-            await loadBlogs();
             Utils.showToast('Blog deleted', 'success');
         } catch (error) {
+            blogs = [existing, ...blogs];
+            updateStats();
+            applyFilters();
             Utils.showToast(error.message, 'error');
         }
     }

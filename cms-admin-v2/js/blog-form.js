@@ -188,6 +188,12 @@
             return;
         }
 
+        if (title.length > 160) {
+            showFormError('Title is too long (max 160 characters)');
+            titleInput.focus();
+            return;
+        }
+
         if (!content) {
             showFormError('Content is required');
             contentInput.focus();

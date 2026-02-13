@@ -2,6 +2,47 @@
  * API Client Module
  * Handles all HTTP requests to the backend with centralized error handling.
  * Depends on: config.js
+ *
+ * Blog entity (frontend contract, kept intentionally minimal):
+ * {
+ *   id: number,
+ *   title: string,
+ *   slug: string,
+ *   excerpt?: string,
+ *   content: string,
+ *   category?: string,
+ *   tags?: string[],
+ *   featured_image_url?: string,
+ *   published: boolean,
+ *   is_featured: boolean,
+ *   created_at: string,
+ *   read_time?: number,
+ *   author_name?: string,
+ *   author_avatar_url?: string,
+ *   author_bio?: string,
+ *   author_twitter?: string,
+ *   author_linkedin?: string,
+ *   author_github?: string,
+ *   author_website?: string,
+ *   cta_text?: string,
+ *   cta_url?: string,
+ *   cta_style?: string,
+ *   cta_position?: string
+ * }
+ *
+ * REST endpoints used by cms-admin-v2:
+ * - POST /api/auth/login -> { token: string, user: {...} }
+ * - GET /api/admin/blogs -> Blog[]
+ * - GET /api/admin/blogs/{id} -> Blog
+ * - POST /api/admin/blogs -> Blog
+ * - PUT /api/admin/blogs/{id} -> Blog
+ * - DELETE /api/admin/blogs/{id}
+ * - PATCH /api/admin/blogs/{id}/publish
+ * - PATCH /api/admin/blogs/{id}/featured
+ * - POST /api/admin/blogs/bulk/publish { ids: number[] }
+ * - POST /api/admin/blogs/bulk/unpublish { ids: number[] }
+ * - POST /api/admin/blogs/bulk/delete { ids: number[] }
+ * - POST /api/admin/upload/image (multipart) -> { url: string } | { data: {...} }
  */
 
 /**

@@ -37,31 +37,31 @@
                 <div class="form-group">
                     <label class="form-label" for="title">Title *</label>
                     <input type="text" id="title" name="title" class="form-input" placeholder="Enter blog title"
-                        required>
+                        required maxlength="160">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="slug">Slug</label>
                         <input type="text" id="slug" name="slug" class="form-input"
-                            placeholder="auto-generated-from-title">
+                            placeholder="auto-generated-from-title" maxlength="180">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="category">Category</label>
                         <input type="text" id="category" name="category" class="form-input"
-                            placeholder="e.g., Technology, Business">
+                            placeholder="e.g., Technology, Business" maxlength="80">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="excerpt">Excerpt</label>
                     <textarea id="excerpt" name="excerpt" class="form-input form-textarea"
-                        placeholder="Brief summary of the blog post" rows="3"></textarea>
+                        placeholder="Brief summary of the blog post" rows="3" maxlength="320"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="tags">Tags (comma separated)</label>
-                    <input type="text" id="tags" name="tags" class="form-input" placeholder="e.g., tech, ai, web">
+                    <input type="text" id="tags" name="tags" class="form-input" placeholder="e.g., tech, ai, web" maxlength="200">
                 </div>
             </div>
 
@@ -93,9 +93,9 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="author_name">Author Name</label>
-                        <input type="text" id="author_name" name="author_name" class="form-input"
-                            placeholder="John Doe">
+                    <label class="form-label" for="author_name">Author Name</label>
+                    <input type="text" id="author_name" name="author_name" class="form-input"
+                            placeholder="John Doe" maxlength="120">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="author_avatar_url">Author Avatar URL</label>
@@ -107,19 +107,19 @@
                 <div class="form-group">
                     <label class="form-label" for="author_bio">Author Bio</label>
                     <textarea id="author_bio" name="author_bio" class="form-input form-textarea"
-                        placeholder="Brief author biography" rows="3"></textarea>
+                        placeholder="Brief author biography" rows="3" maxlength="400"></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="author_twitter">Twitter</label>
                         <input type="text" id="author_twitter" name="author_twitter" class="form-input"
-                            placeholder="@username">
+                            placeholder="@username" maxlength="80">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="author_linkedin">LinkedIn</label>
                         <input type="text" id="author_linkedin" name="author_linkedin" class="form-input"
-                            placeholder="linkedin.com/in/username">
+                            placeholder="linkedin.com/in/username" maxlength="160">
                     </div>
                 </div>
 
@@ -127,7 +127,7 @@
                     <div class="form-group">
                         <label class="form-label" for="author_github">GitHub</label>
                         <input type="text" id="author_github" name="author_github" class="form-input"
-                            placeholder="github.com/username">
+                            placeholder="github.com/username" maxlength="160">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="author_website">Website</label>
@@ -144,7 +144,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="cta_text">CTA Text</label>
-                        <input type="text" id="cta_text" name="cta_text" class="form-input" placeholder="Learn More">
+                        <input type="text" id="cta_text" name="cta_text" class="form-input" placeholder="Learn More" maxlength="120">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="cta_url">CTA URL</label>
