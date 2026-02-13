@@ -7,10 +7,11 @@
 const Auth = {
     /**
      * Gets the stored auth token.
-     * @returns {string|null}
+     * @returns {string|null} Token or null if not found/empty.
      */
     getToken() {
-        return localStorage.getItem(CMS_CONFIG.STORAGE_KEYS.TOKEN);
+        const token = localStorage.getItem(CMS_CONFIG.STORAGE_KEYS.TOKEN);
+        return (token && typeof token === 'string' && token.trim().length > 0) ? token : null;
     },
 
     /**
@@ -85,7 +86,8 @@ const Auth = {
         }
 
         // Validate response shape
-        if (!json || typeof json.token !== 'string' || !json.user) {
+        // Expected: { token: string (non-empty), user: Object }
+        if (!json || typeof json.token !== 'string' || !json.token.trim() || !json.user) {
             throw new Error('Unexpected login response from server');
         }
 

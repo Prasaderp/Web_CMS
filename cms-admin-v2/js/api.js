@@ -260,18 +260,58 @@ const Api = {
 
 /**
  * Blogs API namespace.
+ * Single source of truth for admin blog endpoints.
+ * 
+ * Entity Shape (Blog):
+ * @typedef {Object} Blog
+ * @property {number} id
+ * @property {string} title
+ * @property {string} slug
+ * @property {string} [excerpt]
+ * @property {string} content
+ * @property {string} [category]
+ * @property {string[]} [tags]
+ * @property {string} [featured_image_url]
+ * @property {boolean} published
+ * @property {boolean} is_featured
+ * @property {string} created_at - ISO 8601 date string
+ * @property {number} [read_time]
+ * @property {string} [author_name]
+ * @property {string} [author_avatar_url]
+ * @property {string} [author_bio]
  */
 const BlogsApi = {
+    /** @returns {Promise<Blog[]>} */
     getAll: () => Api.get('/api/admin/blogs', true),
+    
+    /** @param {number} id @returns {Promise<Blog>} */
     getById: (id) => Api.get(`/api/admin/blogs/${id}`, true),
+    
+    /** @param {Object} data @returns {Promise<Blog>} */
     create: (data) => Api.post('/api/admin/blogs', data, true),
+    
+    /** @param {number} id @param {Object} data @returns {Promise<Blog>} */
     update: (id, data) => Api.put(`/api/admin/blogs/${id}`, data, true),
+    
+    /** @param {number} id @returns {Promise<void>} */
     delete: (id) => Api.delete(`/api/admin/blogs/${id}`, true),
+    
+    /** @param {number} id @returns {Promise<Blog>} */
     togglePublish: (id) => Api.patch(`/api/admin/blogs/${id}/publish`, undefined, true),
+    
+    /** @param {number} id @returns {Promise<Blog>} */
     toggleFeatured: (id) => Api.patch(`/api/admin/blogs/${id}/featured`, undefined, true),
+    
+    /** @param {number[]} ids @returns {Promise<void>} */
     bulkPublish: (ids) => Api.post('/api/admin/blogs/bulk/publish', { ids }, true),
+    
+    /** @param {number[]} ids @returns {Promise<void>} */
     bulkUnpublish: (ids) => Api.post('/api/admin/blogs/bulk/unpublish', { ids }, true),
+    
+    /** @param {number[]} ids @returns {Promise<void>} */
     bulkDelete: (ids) => Api.post('/api/admin/blogs/bulk/delete', { ids }, true),
+    
+    /** @param {File} file @returns {Promise<{url: string}>} */
     uploadImage: (file) => Api.upload('/api/admin/upload/image', file, true, {
         maxSizeMB: 10,
         allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],

@@ -217,7 +217,7 @@
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
             result = result.filter(b =>
-                b.title.toLowerCase().includes(query) ||
+                (b.title || '').toLowerCase().includes(query) ||
                 (b.category && b.category.toLowerCase().includes(query)) ||
                 (b.author_name && b.author_name.toLowerCase().includes(query))
             );
@@ -382,21 +382,49 @@
     // Blog Actions
     // ============================================
     async function toggleFeatured(id) {
+        // Optimistic update
+        const blogIndex = blogs.findIndex(b => b.id === id);
+        if (blogIndex === -1) return;
+
+        const previousState = blogs[blogIndex].is_featured;
+        blogs[blogIndex].is_featured = !previousState;
+        
+        // Re-render immediately
+        updateStats();
+        applyFilters();
+
         try {
             await BlogsApi.toggleFeatured(id);
-            await loadBlogs();
             Utils.showToast('Featured status updated', 'success');
         } catch (error) {
+            // Revert on error
+            blogs[blogIndex].is_featured = previousState;
+            updateStats();
+            applyFilters();
             Utils.showToast(error.message, 'error');
         }
     }
 
     async function togglePublish(id) {
+        // Optimistic update
+        const blogIndex = blogs.findIndex(b => b.id === id);
+        if (blogIndex === -1) return;
+
+        const previousState = blogs[blogIndex].published;
+        blogs[blogIndex].published = !previousState;
+        
+        // Re-render immediately
+        updateStats();
+        applyFilters();
+
         try {
             await BlogsApi.togglePublish(id);
-            await loadBlogs();
             Utils.showToast('Publish status updated', 'success');
         } catch (error) {
+            // Revert on error
+            blogs[blogIndex].published = previousState;
+            updateStats();
+            applyFilters();
             Utils.showToast(error.message, 'error');
         }
     }
@@ -404,11 +432,31 @@
     async function deleteBlog(id) {
         if (!Utils.confirm('Delete this blog? This cannot be undone.')) return;
 
+        // Optimistic update
+        const blogIndex = blogs.findIndex(b => b.id === id);
+        if (blogIndex === -1) return;
+
+        const deletedBlog = blogs[blogIndex];
+        blogs.splice(blogIndex, 1);
+        
+        // Remove from selection if present
+        if (selectedIds.has(id)) {
+            selectedIds.delete(id);
+            updateBulkActionsBar();
+        }
+
+        // Re-render immediately
+        updateStats();
+        applyFilters();
+
         try {
             await BlogsApi.delete(id);
-            await loadBlogs();
             Utils.showToast('Blog deleted', 'success');
         } catch (error) {
+            // Revert on error
+            blogs.splice(blogIndex, 0, deletedBlog);
+            updateStats();
+            applyFilters();
             Utils.showToast(error.message, 'error');
         }
     }
