@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
@@ -47,7 +48,16 @@ export const registerUser = async (email, password, name) => {
 export const loginUser = (email, password) =>
   signInWithEmailAndPassword(auth, email, password);
 
-export const googleSignIn = () => signInWithPopup(auth, googleProvider);
+export const googleSignIn = async () => {
+  try {
+    return await signInWithPopup(auth, googleProvider);
+  } catch (err) {
+    if (err.code === "auth/popup-blocked" || err.code === "auth/popup-closed-by-user") {
+      return signInWithRedirect(auth, googleProvider);
+    }
+    throw err;
+  }
+};
 
 export const resetPassword = (email) => sendPasswordResetEmail(auth, email);
 
