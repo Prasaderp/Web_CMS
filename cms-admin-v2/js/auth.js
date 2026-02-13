@@ -7,14 +7,10 @@
 const Auth = {
     /**
      * Gets the stored auth token.
-     * Treats empty or non-string values as missing.
      * @returns {string|null}
      */
     getToken() {
-        const raw = localStorage.getItem(CMS_CONFIG.STORAGE_KEYS.TOKEN);
-        if (typeof raw !== 'string') return null;
-        const token = raw.trim();
-        return token ? token : null;
+        return localStorage.getItem(CMS_CONFIG.STORAGE_KEYS.TOKEN);
     },
 
     /**
@@ -36,7 +32,7 @@ const Auth = {
      * @returns {boolean}
      */
     isAuthenticated() {
-        return typeof this.getToken() === 'string';
+        return !!this.getToken();
     },
 
     /**
