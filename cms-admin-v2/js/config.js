@@ -9,7 +9,7 @@ const CMS_CONFIG = {
      * In production, this is set via window.CMS_API_URL (injected at runtime).
      * Falls back to localhost for development.
      */
-    API_URL: window.CMS_API_URL || 'http://localhost:8000',
+    API_URL: window.CMS_API_URL || 'https://aigenthix-backend.onrender.com',
 
     /**
      * Default network timeout in milliseconds.
