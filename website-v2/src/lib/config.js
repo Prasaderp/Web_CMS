@@ -9,5 +9,5 @@ export const config = {
   
   // App metadata
   APP_NAME: 'AiGENThix',
-  APP_URL: 'https://aigenthix.com',
+  APP_URL: import.meta.env.VITE_SITE_URL || 'https://aigenthix.com',
 };

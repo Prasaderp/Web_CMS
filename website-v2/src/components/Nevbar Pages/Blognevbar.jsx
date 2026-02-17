@@ -4,6 +4,8 @@ import { blogService } from "../../services/blogService";
 import { formatDate } from "../../utils/date";
 import { optimizeImage } from "../../utils/image";
 import { truncateText } from "../../utils/text";
+import SEO from "../SEO";
+import { breadcrumbSchema } from "../../lib/seo.schemas";
 
 const BlogPage = () => {
   const [pageData, setPageData] = useState({
@@ -74,6 +76,12 @@ const BlogPage = () => {
 
   return (
     <div className="bg-white font-sans text-gray-800">
+      <SEO
+        title="AI Blog - Insights on Generative AI, ML & Technology - AiGENThix"
+        description="Read the latest insights on Artificial Intelligence, Generative AI, Machine Learning, Robotics, and enterprise technology from AiGENThix experts."
+        keywords="AI blog, artificial intelligence articles, generative AI insights, machine learning blog, technology trends, AiGENThix blog"
+        structuredData={breadcrumbSchema([{ name: 'Blog', path: '/blog' }])}
+      />
       {/* HERO SECTION */}
       <section
         className="text-center py-20 px-6 text-white"

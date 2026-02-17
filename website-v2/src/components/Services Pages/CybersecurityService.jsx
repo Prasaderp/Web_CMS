@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 import SEO from "../SEO";
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const CybersecurityService = () => {
   const [active, setActive] = useState(null);
@@ -48,6 +49,11 @@ const CybersecurityService = () => {
         <SEO
             title="Cybersecurity Services - AiGENThix"
             description="Protect your business with advanced cybersecurity systems. From threat detection to enterprise compliance, we secure your digital future."
+            keywords="cybersecurity services, threat detection, penetration testing, zero-trust security, compliance, risk management, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Cybersecurity Services', description: 'Advanced threat detection, penetration testing, and enterprise security solutions.', path: '/services/cybersecurity' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Cybersecurity', path: '/services/cybersecurity' }]),
+            ]}
         />
     <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
       <Navbar />

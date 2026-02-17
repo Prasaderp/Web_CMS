@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from "../SEO";
+import { breadcrumbSchema } from "../../lib/seo.schemas";
 
 
 // Images (ONLY 4)
@@ -108,8 +109,10 @@ const ProductsPage = () => {
   return (
     <>
       <SEO
-        title="Products - AiGENThix"
-        description="Explore Aigenthix AI products like Sahayak AI, Video Translation AI, AI Interviewer, and Project Management tools for modern businesses."
+        title="AI Products - Sahayak AI, Video Translation & More - AiGENThix"
+        description="Explore AiGENThix AI products: Sahayak AI assistant, Video Translation AI, AI Interviewer, and Project Management tools built for modern businesses."
+        keywords="AI products, Sahayak AI, video translation AI, AI interviewer, project management tool, AiGENThix products"
+        structuredData={breadcrumbSchema([{ name: 'Products', path: '/products' }])}
       />
 
       <div className="min-h-screen bg-gray-50">

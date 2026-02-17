@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const AIMLService = () => {
     const fadeUp = {
@@ -13,8 +14,13 @@ const AIMLService = () => {
     return (
     <>
         <SEO
-            title="AI & ML Services - AiGENThix"
+            title="AI & Machine Learning Services - Build Intelligent Systems - AiGENThix"
             description="Build intelligent systems that learn, adapt, and scale. We help businesses unlock the power of AI & ML to automate, predict, and innovate with confidence."
+            keywords="AI services, machine learning development, ML consulting, predictive analytics, NLP, computer vision, AI automation, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'AI & Machine Learning Services', description: 'Build intelligent systems that learn, adapt, and scale with custom AI & ML solutions.', path: '/services/ai-ml' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'AI & ML', path: '/services/ai-ml' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />

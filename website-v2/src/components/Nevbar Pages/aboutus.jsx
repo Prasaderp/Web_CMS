@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from "../SEO";
+import { breadcrumbSchema } from "../../lib/seo.schemas";
 
 // Import images (you'll need to add these to your images folder)
 import aboutHeroImg from '../IMAGES/about-hero.jpg';
@@ -73,8 +74,10 @@ const AboutUs = () => {
    return (
     <>
         <SEO
-            title="About - AiGENThix"
-            description="Learn about AiGenthix — our mission, vision, AI research, ethical approach, and how we help businesses grow using cutting-edge artificial intelligence."
+            title="About AiGENThix - Our Mission, Vision & Ethical AI Approach"
+            description="Learn about AiGENThix — an AI consulting company founded in 2020, specializing in ethical AI, machine learning, and enterprise solutions across 3 continents."
+            keywords="about AiGENThix, AI company, ethical AI, AI consulting firm, machine learning company, AI research, enterprise AI solutions"
+            structuredData={breadcrumbSchema([{ name: 'About', path: '/about' }])}
         />
 
         <div className="min-h-screen bg-white text-black font-['Poppins',_sans-serif]">

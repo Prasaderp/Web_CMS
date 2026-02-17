@@ -1,15 +1,18 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import SEO from '../SEO';
+import { breadcrumbSchema } from '../../lib/seo.schemas';
 import kpisScalingAIProductsImg from '../IMAGES/r&d4.jpg';
 
 const KPIScalingAIProducts = () => {
     return (
         <div className="min-h-screen bg-white pt-24 pb-16 px-4">
-            <Helmet>
-                <title>KPIs for Scaling AI Products | AiGENThix R&D</title>
-                <meta name="description" content="Learn about key performance indicators for scaling AI products and measuring AI solution maturity, ROI, and business integration." />
-            </Helmet>
+            <SEO
+                title="KPIs for Scaling AI Products | AiGENThix R&D"
+                description="Learn about key performance indicators for scaling AI products and measuring AI solution maturity, ROI, and business integration."
+                keywords="AI KPIs, scaling AI products, AI ROI, AI maturity metrics"
+                structuredData={breadcrumbSchema([{ name: 'R&D', path: '/research-development' }, { name: 'KPIs for Scaling AI', path: '/rd/kpis-scaling-ai-products' }])}
+            />
 
             <div className="max-w-4xl mx-auto">
                 {/* Back button */}

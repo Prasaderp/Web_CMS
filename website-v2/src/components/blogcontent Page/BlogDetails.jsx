@@ -19,6 +19,9 @@ import { sanitizeHtml, escapeHtml } from "../../utils/security";
 import { formatDate } from "../../utils/date";
 import { optimizeImage } from "../../utils/image";
 import LiteYouTube from "../LiteYouTube";
+import SEO from "../SEO";
+import { seoConfig } from "../../lib/seo.config";
+import { breadcrumbSchema } from "../../lib/seo.schemas";
 
 const YOUTUBE_IFRAME_RE = /<iframe[^>]*src=["']([^"']*(?:youtube\.com|youtu\.be)[^"']*)["'][^>]*(?:title=["']([^"']*)["'])?[^>]*><\/iframe>/gi;
 
@@ -283,8 +286,50 @@ const BlogDetails = () => {
     { platform: 'website', url: blog.author_website }
   ].filter(s => s.url);
 
+  const articleSchema = blog ? {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.excerpt || blog.content?.substring(0, 160),
+    image: blog.featured_image_url || seoConfig.defaultImage,
+    datePublished: blog.published_at || blog.created_at,
+    dateModified: blog.updated_at || blog.published_at || blog.created_at,
+    author: {
+      '@type': 'Person',
+      name: blog.author_name || 'AiGENThix',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AiGENThix',
+      logo: { '@type': 'ImageObject', url: `${seoConfig.siteUrl}/faviconlogo.jpeg` },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${seoConfig.siteUrl}/blog/${slug}`,
+    },
+  } : null;
+
+  const blogBreadcrumb = breadcrumbSchema([
+    { name: 'Blog', path: '/blog' },
+    ...(blog ? [{ name: blog.title, path: `/blog/${slug}` }] : []),
+  ]);
+
   return (
     <div className="bg-gray-50 min-h-screen font-sans">
+      {blog && (
+        <SEO
+          title={`${blog.title} - AiGENThix Blog`}
+          description={blog.excerpt || blog.content?.substring(0, 160)}
+          keywords={blog.tags?.join(', ') || blog.category || 'AI, technology, AiGENThix'}
+          image={blog.featured_image_url}
+          type="article"
+          article={{
+            publishedTime: blog.published_at || blog.created_at,
+            author: blog.author_name || 'AiGENThix',
+          }}
+          structuredData={[articleSchema, blogBreadcrumb].filter(Boolean)}
+        />
+      )}
       {/* HERO SECTION */}
       <section
         className="relative text-center text-white py-20 px-4 sm:px-8 md:px-16 lg:px-24"

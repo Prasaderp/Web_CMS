@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const APIIntegrationService = () => {
     const fadeUp = {
@@ -19,6 +20,11 @@ const APIIntegrationService = () => {
         <SEO
             title="API Integration Services - AiGENThix"
             description="Seamlessly connect applications, platforms, and services with secure, scalable, and high-performance API integrations that power automation and digital growth."
+            keywords="API integration services, REST API, GraphQL, microservices, third-party integrations, API gateway, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'API Integration Services', description: 'REST & GraphQL APIs, microservices architecture, and secure third-party integrations.', path: '/services/api-integration' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'API Integration', path: '/services/api-integration' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />

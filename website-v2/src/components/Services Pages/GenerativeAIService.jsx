@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const GenerativeAIService = () => {
     const [active, setActive] = useState(null);
@@ -42,8 +43,13 @@ const GenerativeAIService = () => {
     return (
     <>
         <SEO
-            title="Generative AI Solutions for Your Business Services - AiGENThix"
-            description="Unlock the next level of innovation with generative AI. From intelligent content creation to workflow automation, we help businesses stay ahead with AI-driven solutions."
+            title="Generative AI Solutions & LLM Development Services - AiGENThix"
+            description="Unlock the next level of innovation with generative AI. From LLM-powered chatbots to RAG systems and content automation, we help businesses stay ahead with AI-driven solutions."
+            keywords="generative AI services, LLM development, RAG systems, AI chatbots, content generation AI, enterprise generative AI, prompt engineering, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Generative AI Solutions', description: 'LLM-powered applications, RAG systems, AI chatbots, and enterprise generative AI adoption.', path: '/services/generative-ai' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Generative AI', path: '/services/generative-ai' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />

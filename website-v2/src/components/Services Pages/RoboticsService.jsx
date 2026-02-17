@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 import SEO from "../SEO";
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const RoboticsService = () => {
   const [active, setActive] = useState(null);
@@ -48,6 +49,11 @@ const RoboticsService = () => {
         <SEO
             title="Robotics Solutions for Smart Automation Services - AiGENThix"
             description="Transform industries with intelligent robotics systems. From automation to autonomous machines, we engineer the future of robotics."
+            keywords="robotics services, industrial robotics, autonomous robots, RPA, robotic process automation, AI robotics, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Robotics Solutions', description: 'Industrial and autonomous robotics systems for smart automation.', path: '/services/robotics' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Robotics', path: '/services/robotics' }]),
+            ]}
         />
     <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
       <Navbar />

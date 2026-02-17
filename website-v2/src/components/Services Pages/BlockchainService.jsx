@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 import SEO from "../SEO";
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const BlockchainService = () => {
   const [active, setActive] = useState(null);
@@ -60,6 +61,11 @@ const BlockchainService = () => {
         <SEO
             title="Blockchain Technology for the Future Services - AiGENThix"
             description="Unlock secure, transparent, and decentralized innovation with blockchain technology. From smart contracts to enterprise solutions, we help businesses lead the digital revolution."
+            keywords="blockchain services, smart contracts, enterprise blockchain, dApps, tokenization, cross-chain, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Blockchain Technology Services', description: 'Smart contracts, enterprise blockchain, and decentralized application development.', path: '/services/blockchain' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Blockchain', path: '/services/blockchain' }]),
+            ]}
         />
     <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
       <Navbar />

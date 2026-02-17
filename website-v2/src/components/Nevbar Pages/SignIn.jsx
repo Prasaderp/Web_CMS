@@ -2,6 +2,7 @@ import { useState } from "react";
 import { loginUser, googleSignIn } from "../../firebase";
 import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import SEO from "../SEO";
 
 const FIREBASE_ERROR_MAP = {
   "auth/user-not-found": "No account found with this email.",
@@ -66,6 +67,7 @@ const SignIn = () => {
 
   return (
     <div className="auth-container">
+      <SEO title="Sign In - AiGENThix" description="Sign in to your AiGENThix account." noIndex />
       <h1 className="auth-title auth-fade-in">Account log in</h1>
 
       <p className="auth-subtitle auth-fade-in-delayed">

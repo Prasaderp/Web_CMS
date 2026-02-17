@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const IoTService = () => {
     const fadeUp = {
@@ -19,6 +20,11 @@ const IoTService = () => {
         <SEO
             title="Internet of Things (IoT) Solutions - AiGENThix"
             description="Connect devices, data, and intelligence at scale. We build secure, real-time IoT ecosystems that enable smarter operations, automation, and predictive insights."
+            keywords="IoT solutions, embedded systems, smart devices, edge computing, industrial IoT, real-time analytics, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'IoT & Embedded Systems', description: 'Smart IoT devices, edge computing, and real-time industrial IoT platforms.', path: '/services/iot' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'IoT', path: '/services/iot' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../Navbar";
 import SEO from "../SEO";
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const HumanoidSystems = () => {
   const [active, setActive] = useState(null);
@@ -50,6 +51,11 @@ const HumanoidSystems = () => {
         <SEO
             title="Humanoid Systems & Robotics Services - AiGENThix"
             description="Experience the next generation of robotics with intelligent humanoid systems. From human-like motion to AI-powered interaction, we build the future of humanoid technology."
+            keywords="humanoid systems, humanoid robotics, AI humanoids, human-robot interaction, cognitive robotics, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Humanoid Systems', description: 'Intelligent humanoid systems with AI-powered motion, perception, and interaction.', path: '/services/humanoids' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Humanoid Systems', path: '/services/humanoids' }]),
+            ]}
         />
     <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
       <Navbar />

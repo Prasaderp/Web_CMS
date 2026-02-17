@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { resetPassword } from "../../firebase";
 import { Link } from "react-router-dom";
+import SEO from "../SEO";
 
 const FIREBASE_ERROR_MAP = {
   "auth/user-not-found": "No account found with this email.",
@@ -38,6 +39,7 @@ const ResetPassword = () => {
 
   return (
     <div className="auth-container">
+      <SEO title="Reset Password - AiGENThix" description="Reset your AiGENThix account password." noIndex />
       <h1 className="auth-title auth-fade-in">Reset password</h1>
 
       <p className="auth-subtitle auth-fade-in-delayed">

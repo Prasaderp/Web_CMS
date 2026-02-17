@@ -75,7 +75,7 @@ const CreateAccount = () => {
 
   return (
     <div className="auth-container">
-      <SEO title="Create Account" />
+      <SEO title="Create Account - AiGENThix" description="Create your AiGENThix account." noIndex />
 
       <h1 className="auth-title auth-fade-in">Create Account</h1>
 

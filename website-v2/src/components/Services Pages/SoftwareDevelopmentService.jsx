@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const SoftwareDevelopmentService = () => {
     const fadeUp = {
@@ -18,7 +19,12 @@ const SoftwareDevelopmentService = () => {
     <>
         <SEO
             title="Software Development Services - AiGENThix"
-            description="Learn about AiGenthix — our mission, vision, AI research, ethical approach, and how we help businesses grow using cutting-edge artificial intelligence."
+            description="Custom web, mobile, and enterprise software development services. We build scalable, cloud-native SaaS platforms and AI-powered applications for modern businesses."
+            keywords="software development services, custom web development, mobile app development, SaaS platform, cloud-native solutions, enterprise software, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Software Development Services', description: 'Custom web, mobile, and enterprise software development with cloud-native architecture.', path: '/services/software-development' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Software Development', path: '/services/software-development' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />

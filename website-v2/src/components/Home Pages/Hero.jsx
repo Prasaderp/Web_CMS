@@ -1,14 +1,16 @@
 import React from 'react';
 import mainImage from '../IMAGES/main.png';
 import SEO from "../SEO";
-
+import { seoConfig } from '../../lib/seo.config';
 
 const Hero = () => {
     return (
     <>
         <SEO
             title="Best AI Consulting and Development Company - AiGENThix"
-            description="We build cutting-edge AI solutions for startups and enterprises."
+            description="AiGENThix is a leading AI consulting and development company building cutting-edge Generative AI, Machine Learning, Robotics, and enterprise AI solutions for startups and enterprises."
+            keywords="AI consulting company, AI development, generative AI solutions, machine learning services, ethical AI, enterprise AI, AiGENThix"
+            structuredData={[seoConfig.organization, seoConfig.website]}
         />
         <div className="bg-[#0B2847] text-white min-h-screen flex items-center justify-center pt-32 pb-20 relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-20 w-full">

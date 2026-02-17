@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import SEO from "../SEO";
+import { breadcrumbSchema } from "../../lib/seo.schemas";
 
 
 /* =========================================================
@@ -187,8 +188,10 @@ const Services = () => {
   return (
     <>
         <SEO
-            title="Services - AiGENThix"
-            description="End-to-end AI, software, and deep-tech solutions helping businesses innovate, scale, and lead in a digital-first world."
+            title="AI Services - Generative AI, ML, Robotics & More - AiGENThix"
+            description="End-to-end AI, software, and deep-tech solutions helping businesses innovate, scale, and lead in a digital-first world. Generative AI, Machine Learning, Robotics, Cybersecurity, Data Engineering."
+            keywords="AI services, generative AI services, machine learning consulting, robotics development, cybersecurity AI, data engineering, blockchain, IoT, AiGENThix"
+            structuredData={breadcrumbSchema([{ name: 'Services', path: '/services' }])}
         />
         <div className="min-h-screen bg-white font-['Poppins',_sans-serif]">
 

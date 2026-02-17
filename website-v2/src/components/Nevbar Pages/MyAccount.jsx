@@ -20,6 +20,7 @@ const MyAccount = () => {
       <SEO
         title="My Account - AiGENThix"
         description="Manage your account settings and preferences at AiGENThix."
+        noIndex
       />
 
       <div className="auth-container">

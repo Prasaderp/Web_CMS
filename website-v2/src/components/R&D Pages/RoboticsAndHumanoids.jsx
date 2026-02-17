@@ -1,6 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import SEO from '../SEO';
+import { breadcrumbSchema } from '../../lib/seo.schemas';
+import { seoConfig } from '../../lib/seo.config';
 import roboticsHumanoidsImg from '../IMAGES/r&d1.jpg';
 
 const RoboticsAndHumanoids = () => {
@@ -13,29 +15,27 @@ const RoboticsAndHumanoids = () => {
         color: '#333',
     };
 
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Robotics and Humanoids",
-        "description": "AI-driven robotics is transitioning from static automation to dynamic physical intelligence",
-        "image": roboticsHumanoidsImg,
-        "datePublished": "2025-05-12",
-        "author": {
-            "@type": "Organization",
-            "name": "R&D Department"
-        }
+    const articleSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: 'Robotics and Humanoids',
+        description: 'AI-driven robotics is transitioning from static automation to dynamic physical intelligence',
+        image: `${seoConfig.siteUrl}/assets/r&d1.jpg`,
+        datePublished: '2025-05-12',
+        author: { '@type': 'Organization', name: 'AiGENThix R&D' },
     };
 
     return (
         <>
-            <Helmet>
-                <title>Robotics and Humanoids - AI-Driven Physical Intelligence | R&D</title>
-                <meta name="description" content="Explore how AI-driven robotics is evolving from static automation to dynamic physical intelligence. Learn about humanoids and autonomous machines in unstructured environments." />
-                <meta name="keywords" content="robotics, humanoids, AI, automation, physical intelligence, autonomous machines" />
-                <script type="application/ld+json">
-                    {JSON.stringify(structuredData)}
-                </script>
-            </Helmet>
+            <SEO
+                title="Robotics and Humanoids - AI-Driven Physical Intelligence | R&D"
+                description="Explore how AI-driven robotics is evolving from static automation to dynamic physical intelligence. Learn about humanoids and autonomous machines in unstructured environments."
+                keywords="robotics, humanoids, AI, automation, physical intelligence, autonomous machines"
+                structuredData={[
+                    articleSchema,
+                    breadcrumbSchema([{ name: 'R&D', path: '/research-development' }, { name: 'Robotics & Humanoids', path: '/rd/robotics-humanoids' }]),
+                ]}
+            />
 
             <style>
                 {`

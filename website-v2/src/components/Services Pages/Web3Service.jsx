@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 import s4 from '../IMAGES/h1.jpg';
 import web1 from '../IMAGES/f1.jpg';
@@ -19,6 +20,11 @@ const Web3Service = () => {
         <SEO
             title="Web3 Development Services - AiGENThix"
             description="Empowering the future with secure, scalable, and innovative Web3 solutions. From decentralized apps to smart contracts, we build the digital backbone of the new internet."
+            keywords="Web3 development, decentralized apps, DeFi, NFT, DAO, blockchain integration, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Web3 Development Services', description: 'Decentralized applications, DeFi platforms, and trustless Web3 architectures.', path: '/services/web3' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Web3', path: '/services/web3' }]),
+            ]}
         />
 
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">

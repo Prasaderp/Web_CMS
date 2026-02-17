@@ -1,4 +1,25 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+
+// Plain-text answers for FAQPage structured data (Google rich results)
+const faqSchemaData = [
+  { question: "What is AiGenthix and what does your company do?", answer: "AiGenthix is an AI consulting and solutions company specializing in cutting-edge artificial intelligence applications across multiple industries. We help businesses harness AI to improve efficiency, automation, and decision-making. Our expertise spans healthcare, education, finance, governance, and enterprise AI, offering AI-driven consulting, training, and research & development services." },
+  { question: "What AI services does AiGenthix offer?", answer: "We provide three core AI services: 1. AI Consulting – We help businesses develop and integrate AI strategies for automation and efficiency. 2. AI Training & Workforce Upskilling – We offer AI workshops, machine learning bootcamps, and corporate training. 3. AI Research & Development – We build custom AI solutions, conduct AI safety research, and innovate in NLP, computer vision, and predictive analytics." },
+  { question: "What makes AiGenthix different from other AI consulting firms?", answer: "AiGenthix stands out because of our Ethical AI Approach prioritizing fairness and transparency, Industry-Specific Expertise tailoring AI solutions, Comprehensive AI Services offering consulting, training, and R&D under one roof, and Commitment to Social Impact building AI that enhances human well-being." },
+  { question: "Can AiGenthix develop custom AI solutions for my business?", answer: "Yes! We specialize in developing custom AI models tailored to your business needs. Whether it's predictive analytics, computer vision, NLP, or automation, we design AI-powered solutions that integrate seamlessly with your operations." },
+  { question: "How can AI help my business?", answer: "AI can help your business by automating repetitive tasks, improving decision-making with data-driven insights, enhancing customer experience with chatbots and personalization, and optimizing operations with AI-driven supply chain and workflow automation." },
+  { question: "How can I get started with AiGenthix?", answer: "Step 1: Contact us via email or our website. Step 2: Schedule a consultation with our AI experts. Step 3: We assess your business requirements and propose a customized AI solution. Step 4: Implementation, training, and support to ensure AI success." },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqSchemaData.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 
 // --- FAQ Data ---
 const faqData = [
@@ -118,6 +139,10 @@ const FAQItem = ({ question, answer }) => {
 // --- Main FAQ Section ---
 const FAQ = () => {
   return (
+    <>
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+    </Helmet>
     <section className="bg-white py-12 sm:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Title */}
@@ -142,7 +167,9 @@ const FAQ = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
 export default FAQ;
+

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import SEO from '../SEO';
+import { breadcrumbSchema, serviceSchema } from '../../lib/seo.schemas';
 
 const DataEngineeringService = () => {
     const fadeUp = {
@@ -19,6 +20,11 @@ const DataEngineeringService = () => {
         <SEO
             title="Data Engineering Services - AiGENThix"
             description="Build scalable, reliable, and high-performance data platforms. We transform raw data into trusted insights that drive AI, automation, and business growth."
+            keywords="data engineering services, data pipelines, ETL, cloud data platforms, data analytics, AI training data, AiGENThix"
+            structuredData={[
+                serviceSchema({ name: 'Data Engineering Services', description: 'Scalable data pipelines, ETL workflows, and analytics-ready data platforms.', path: '/services/data-engineering' }),
+                breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: 'Data Engineering', path: '/services/data-engineering' }]),
+            ]}
         />
         <div className="font-inter bg-gradient-to-b from-white to-[#f8faff] text-gray-800">
             <Navbar />
