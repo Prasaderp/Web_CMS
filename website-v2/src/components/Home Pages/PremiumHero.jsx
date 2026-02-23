@@ -19,6 +19,13 @@ const QUICK_TAGS = [
   "AI Interviewer",
 ];
 
+const LOGOS = [
+  "https://www.time4education.com/theme/times/time/images/logov2.png",
+  "https://beamwelly.com/wp-content/uploads/2023/11/beam_welly_logo-removebg-preview.png",
+  "https://almashines.s3.dualstack.ap-southeast-1.amazonaws.com/assets/images/institutes/logo/170x170/1519.jpg?v=1702015468",
+  "https://e7.pngegg.com/pngimages/921/740/png-clipart-black-text-with-logo-illustration-mumbai-government-of-india-government-of-maharashtra-logo-government-miscellaneous-emblem.png",
+];
+
 const findMatches = (value) => {
   const normalizedValue = value.trim().toLowerCase();
   if (!normalizedValue) return [];
@@ -124,6 +131,39 @@ const PremiumHero = () => {
               }`}
             />
           ))}
+        </div>
+      </div>
+      <div className="mt-24 overflow-hidden px-6">
+        <h3 className="text-center text-2xl font-semibold text-gray-800 mb-12">
+          Trusted By Leading Enterprises
+        </h3>
+        <div className="relative overflow-hidden">
+          <div className="flex whitespace-nowrap animate-scroll">
+            {LOGOS.map((logo, index) => (
+              <div
+                key={`logo-first-${index}`}
+                className="flex-shrink-0 w-36 sm:w-48 md:w-56 h-20 mx-6 sm:mx-10 flex justify-center items-center"
+              >
+                <img
+                  src={logo}
+                  alt="company"
+                  className="h-14 sm:h-16 object-contain hover:scale-110 transition duration-300"
+                />
+              </div>
+            ))}
+            {LOGOS.map((logo, index) => (
+              <div
+                key={`logo-second-${index}`}
+                className="flex-shrink-0 w-36 sm:w-48 md:w-56 h-20 mx-6 sm:mx-10 flex justify-center items-center"
+              >
+                <img
+                  src={logo}
+                  alt="company"
+                  className="h-14 sm:h-16 object-contain hover:scale-110 transition duration-300"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
