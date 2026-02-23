@@ -43,11 +43,21 @@ website-v2/dist/
 **/docker-data/
 
 # ---- Environment files (IMPORTANT: Never commit secrets!) ----
-# **/.env
-**/.env.local
-**/.env.production
+# Backend Python (backend-v2)
+backend-v2/.env
+backend-v2/.env.local
+backend-v2/.env.production
+backend-v2/.env.development
+
+# Frontend Vite (website-v2)
+website-v2/.env
+website-v2/.env.local
+website-v2/.env.production
+website-v2/.env.development
+
 # Keep example files for reference
 !**/.env.example
 !**/.env.production.example
+!**/.env.development.example
 
 /Prompt Eng
