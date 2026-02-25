@@ -38,7 +38,7 @@ const companyMoreItems = [
   { title: "OUR TEAM", to: "/team" },
   { title: "CONTACT US", to: "/contact" },
   { title: "CAREERS", to: "/careers" },
-  { title: "BLOG", to: "/blog" },
+  // { title: "BLOG", to: "/blog" },
 ];
 
 const Navbar = () => {
@@ -50,9 +50,9 @@ const Navbar = () => {
   const accountItems = user
     ? [{ title: "MY ACCOUNT", to: "/my-account" }]
     : [
-        { title: "LOG IN", to: "/sign-in" },
-        { title: "CREATE ACCOUNT", to: "/create-account" },
-      ];
+      { title: "LOG IN", to: "/sign-in" },
+      { title: "CREATE ACCOUNT", to: "/create-account" },
+    ];
 
   const toggleDropdown = (menu) => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
@@ -112,9 +112,8 @@ const Navbar = () => {
                 <Link to="/products" className={`${linkClasses} flex items-center`}>
                   PRODUCTS
                   <svg
-                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${
-                      activeDropdown === "products" ? "rotate-180" : ""
-                    }`}
+                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${activeDropdown === "products" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -124,9 +123,8 @@ const Navbar = () => {
                 </Link>
 
                 <div
-                  className={`${dropdownAnimation} left-0 w-64 ${
-                    activeDropdown === "products" ? dropdownVisible : dropdownHidden
-                  }`}
+                  className={`${dropdownAnimation} left-0 w-64 ${activeDropdown === "products" ? dropdownVisible : dropdownHidden
+                    }`}
                 >
                   {productsDropdownItems.map((item) => (
                     <Link
@@ -156,9 +154,8 @@ const Navbar = () => {
                 <Link to="/services" className={`${linkClasses} flex items-center`}>
                   SERVICES
                   <svg
-                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${
-                      activeDropdown === "services" ? "rotate-180" : ""
-                    }`}
+                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${activeDropdown === "services" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -168,9 +165,8 @@ const Navbar = () => {
                 </Link>
 
                 <div
-                  className={`${dropdownAnimation} left-0 w-80 ${
-                    activeDropdown === "services" ? dropdownVisible : dropdownHidden
-                  }`}
+                  className={`${dropdownAnimation} left-0 w-80 ${activeDropdown === "services" ? dropdownVisible : dropdownHidden
+                    }`}
                 >
                   {serviceDropdownItems.map((item) => (
                     <Link
@@ -200,9 +196,8 @@ const Navbar = () => {
                 <Link to="/industries" className={`${linkClasses} flex items-center`}>
                   INDUSTRIES
                   <svg
-                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${
-                      activeDropdown === "industries" ? "rotate-180" : ""
-                    }`}
+                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${activeDropdown === "industries" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -212,9 +207,8 @@ const Navbar = () => {
                 </Link>
 
                 <div
-                  className={`${dropdownAnimation} left-0 w-72 ${
-                    activeDropdown === "industries" ? dropdownVisible : dropdownHidden
-                  }`}
+                  className={`${dropdownAnimation} left-0 w-72 ${activeDropdown === "industries" ? dropdownVisible : dropdownHidden
+                    }`}
                 >
                   {industriesDropdownItems.map((item) => (
                     <Link
@@ -254,9 +248,8 @@ const Navbar = () => {
                 <button className={`${linkClasses} flex items-center`}>
                   MORE
                   <svg
-                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${
-                      activeDropdown === "more" ? "rotate-180" : ""
-                    }`}
+                    className={`ml-1 h-3 w-3 transition-transform duration-300 ${activeDropdown === "more" ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -266,9 +259,8 @@ const Navbar = () => {
                 </button>
 
                 <div
-                  className={`${dropdownAnimation} left-1/2 -translate-x-1/2 w-60 ${
-                    activeDropdown === "more" ? dropdownVisible : dropdownHidden
-                  }`}
+                  className={`${dropdownAnimation} left-1/2 -translate-x-1/2 w-60 ${activeDropdown === "more" ? dropdownVisible : dropdownHidden
+                    }`}
                 >
                   {companyMoreItems.map((item, index) => (
                     <React.Fragment key={item.title}>
@@ -301,9 +293,8 @@ const Navbar = () => {
                 </button>
 
                 <div
-                  className={`${dropdownAnimation} right-0 w-60 ${
-                    activeDropdown === "account" ? dropdownVisible : dropdownHidden
-                  }`}
+                  className={`${dropdownAnimation} right-0 w-60 ${activeDropdown === "account" ? dropdownVisible : dropdownHidden
+                    }`}
                 >
                   {accountItems.map((item, index) => (
                     <React.Fragment key={item.title}>
@@ -446,9 +437,9 @@ const Navbar = () => {
             <Link to="/careers" className={mobileLinkClasses} onClick={() => setIsOpen(false)}>
               CAREERS
             </Link>
-            <Link to="/blog" className={mobileLinkClasses} onClick={() => setIsOpen(false)}>
+            {/* <Link to="/blog" className={mobileLinkClasses} onClick={() => setIsOpen(false)}>
               BLOG
-            </Link>
+            </Link> */}
             <hr className="border-gray-200" />
 
             {accountItems.map((item) => (

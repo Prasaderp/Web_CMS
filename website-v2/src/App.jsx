@@ -88,15 +88,15 @@ function App() {
             <>
               <Hero />
               <PremiumHero />
+              <TrustedBy />
               <TryOur />
               <Innovative />
               <ServicesSection />
               <WhyChooseUs />
               <Testimonials />
               <ContactUs />
-              <Blog />
+              {/* <Blog /> */}
               <Faq />
-              <TrustedBy />
             </>
           } />
 
