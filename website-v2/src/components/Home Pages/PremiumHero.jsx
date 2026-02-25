@@ -19,12 +19,6 @@ const QUICK_TAGS = [
   "AI Interviewer",
 ];
 
-const LOGOS = [
-  "https://www.time4education.com/theme/times/time/images/logov2.png",
-  "https://beamwelly.com/wp-content/uploads/2023/11/beam_welly_logo-removebg-preview.png",
-  "https://almashines.s3.dualstack.ap-southeast-1.amazonaws.com/assets/images/institutes/logo/170x170/1519.jpg?v=1702015468",
-  "https://e7.pngegg.com/pngimages/921/740/png-clipart-black-text-with-logo-illustration-mumbai-government-of-india-government-of-maharashtra-logo-government-miscellaneous-emblem.png",
-];
 
 const findMatches = (value) => {
   const normalizedValue = value.trim().toLowerCase();
@@ -58,7 +52,7 @@ const PremiumHero = () => {
   };
 
   return (
-    <section className="w-full pt-28 pb-20 relative overflow-hidden font-serif bg-gradient-to-br from-slate-50 to-indigo-50">
+    <section className="w-full pt-28 pb-10 relative overflow-hidden font-serif bg-gradient-to-br from-slate-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
         <div className="animate-fadeInUp">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-900">
@@ -126,46 +120,13 @@ const PremiumHero = () => {
               key={imageUrl}
               src={imageUrl}
               alt="slide"
-              className={`absolute top-0 left-0 w-full h-full object-cover rounded-3xl shadow-xl transition-opacity duration-1000 ${
-                index === currentImage ? "opacity-100" : "opacity-0"
-              }`}
+              className={`absolute top-0 left-0 w-full h-full object-cover rounded-3xl shadow-xl transition-opacity duration-1000 ${index === currentImage ? "opacity-100" : "opacity-0"
+                }`}
             />
           ))}
         </div>
       </div>
-      <div className="mt-24 overflow-hidden px-6">
-        <h3 className="text-center text-2xl font-semibold text-gray-800 mb-12">
-          Trusted By Leading Enterprises
-        </h3>
-        <div className="relative overflow-hidden">
-          <div className="flex whitespace-nowrap animate-scroll">
-            {LOGOS.map((logo, index) => (
-              <div
-                key={`logo-first-${index}`}
-                className="flex-shrink-0 w-36 sm:w-48 md:w-56 h-20 mx-6 sm:mx-10 flex justify-center items-center"
-              >
-                <img
-                  src={logo}
-                  alt="company"
-                  className="h-14 sm:h-16 object-contain hover:scale-110 transition duration-300"
-                />
-              </div>
-            ))}
-            {LOGOS.map((logo, index) => (
-              <div
-                key={`logo-second-${index}`}
-                className="flex-shrink-0 w-36 sm:w-48 md:w-56 h-20 mx-6 sm:mx-10 flex justify-center items-center"
-              >
-                <img
-                  src={logo}
-                  alt="company"
-                  className="h-14 sm:h-16 object-contain hover:scale-110 transition duration-300"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+
     </section>
   );
 };

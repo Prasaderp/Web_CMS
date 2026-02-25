@@ -1,75 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-
-/* ======================================================
-   Animated Stat Component
-====================================================== */
-const AnimatedStat = ({ stat }) => {
-  const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const statRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true);
-            animateCount();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (statRef.current) observer.observe(statRef.current);
-
-    return () => {
-      if (statRef.current) observer.unobserve(statRef.current);
-    };
-  }, [hasAnimated]);
-
-  const animateCount = () => {
-    const duration = 2000;
-    const steps = 60;
-    const increment = stat.number / steps;
-    let current = 0;
-
-    const timer = setInterval(() => {
-      current += increment;
-
-      if (current >= stat.number) {
-        setCount(stat.number);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-  };
-
-  return (
-    <div ref={statRef} className="text-center group">
-      <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2D4DE8] mb-3 group-hover:scale-110 transition-transform duration-300">
-        {count}
-        {stat.suffix}
-      </h3>
-      <p className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
-        {stat.label}
-      </p>
-    </div>
-  );
-};
+import React from "react";
 
 /* ======================================================
    TrustedBy Component
 ====================================================== */
 const TrustedBy = () => {
-  const stats = [
-    { number: 100, label: "AI Experts", suffix: "+" },
-    { number: 160, label: "Software Products Delivered", suffix: "+" },
-    { number: 50, label: "AI Solutions", suffix: "+" },
-    { number: 15, label: "Total Years of Experience", suffix: "+" },
-  ];
-
   /* ✅ Logos with Image Links */
   const logos = [
     {
@@ -91,11 +25,11 @@ const TrustedBy = () => {
   ];
 
   return (
-    <section className="bg-[#F5F5F5] py-16 sm:py-20 overflow-hidden">
+    <section className="bg-transparent pt-6 pb-2 sm:pt-10 sm:pb-2 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20">
         {/* Heading */}
         <h2
-          className="text-center text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-14"
+          className="text-center text-2xl sm:text-3xl font-semibold text-gray-800 mb-12"
           style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
         >
           Trusted By Leading Enterprises
@@ -104,7 +38,7 @@ const TrustedBy = () => {
         {/* ======================================================
             LOGO INFINITE SCROLL
         ====================================================== */}
-        <div className="relative overflow-hidden mb-16">
+        <div className="relative overflow-hidden mb-4">
           <div className="flex whitespace-nowrap animate-scroll">
             {/* First Set */}
             {logos.map((logo, index) => (
@@ -136,17 +70,6 @@ const TrustedBy = () => {
           </div>
         </div>
 
-        {/* Separator */}
-        <div className="w-1/3 mx-auto h-[1px] bg-gray-300 my-10"></div>
-
-        {/* ======================================================
-            STATS SECTION
-        ====================================================== */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-14 mt-14">
-          {stats.map((stat, index) => (
-            <AnimatedStat key={index} stat={stat} />
-          ))}
-        </div>
       </div>
     </section>
   );

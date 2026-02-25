@@ -80,106 +80,106 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-      <ScrollToTop />
-      <Navbar />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero />
-              <PremiumHero />
-              <TryOur />
-              <Innovative />
-              <ServicesSection />
-              <WhyChooseUs />
-              <Testimonials />
-              <ContactUs />
-              <Blog />
-              <Faq />
-              <TrustedBy />
-            </>
-          } />
+        <ScrollToTop />
+        <Navbar />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero />
+                <PremiumHero />
+                <TrustedBy />
+                <TryOur />
+                <Innovative />
+                <ServicesSection />
+                <WhyChooseUs />
+                <Testimonials />
+                <ContactUs />
+                {/* <Blog /> */}
+                <Faq />
+              </>
+            } />
 
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/principles" element={<OurPrinciples />} />
-          <Route path="/team" element={<OurTeam />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/principles" element={<OurPrinciples />} />
+            <Route path="/team" element={<OurTeam />} />
 
-          <Route path="/blog" element={<Blognevbar />} />
-          <Route path="/blog/:slug" element={<BlogDetails />} />
+            <Route path="/blog" element={<Blognevbar />} />
+            <Route path="/blog/:slug" element={<BlogDetails />} />
 
-          <Route path="/research-development" element={<RND />} />
+            <Route path="/research-development" element={<RND />} />
 
-          <Route path="/learning-and-development" element={<Learning />} />
-          <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
-          <Route path="/learning-and-development/data-analytics" element={<DataAnalytics />} />
-          <Route path="/learning-and-development/ai-ml" element={<AIML />} />
-          <Route path="/learning-and-development/generative-ai" element={<GenerativeAI />} />
-          <Route path="/learning-and-development/mlops" element={<MLOps />} />
-          <Route path="/learning-and-development/agentic-ai" element={<AgenticAI />} />
+            <Route path="/learning-and-development" element={<Learning />} />
+            <Route path="/learning-and-development/data-engineering" element={<DataEngineering />} />
+            <Route path="/learning-and-development/data-analytics" element={<DataAnalytics />} />
+            <Route path="/learning-and-development/ai-ml" element={<AIML />} />
+            <Route path="/learning-and-development/generative-ai" element={<GenerativeAI />} />
+            <Route path="/learning-and-development/mlops" element={<MLOps />} />
+            <Route path="/learning-and-development/agentic-ai" element={<AgenticAI />} />
 
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/create-account" element={<CreateAccount />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
-          <Route path="/careers" element={<Careers />} />
+            <Route path="/careers" element={<Careers />} />
 
-          <Route
-  path="/my-account"
-  element={
-    <ProtectedRoute>
-      <MyAccount />
-    </ProtectedRoute>
-  }
-/>
+            <Route
+              path="/my-account"
+              element={
+                <ProtectedRoute>
+                  <MyAccount />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="/industries" element={<Industries />} />
-          <Route path="/industries/healthcare" element={<Healthcare />} />
-          <Route path="/industries/finance" element={<Finance />} />
-          <Route path="/industries/education" element={<Education />} />
-          <Route path="/industries/enterprise-solutions" element={<Enterprise />} />
-          <Route path="/industries/manufacturing" element={<Manufacturing />} />
-          <Route path="/industries/retail-ecommerce" element={<RetailEcommerce />} />
+            <Route path="/industries" element={<Industries />} />
+            <Route path="/industries/healthcare" element={<Healthcare />} />
+            <Route path="/industries/finance" element={<Finance />} />
+            <Route path="/industries/education" element={<Education />} />
+            <Route path="/industries/enterprise-solutions" element={<Enterprise />} />
+            <Route path="/industries/manufacturing" element={<Manufacturing />} />
+            <Route path="/industries/retail-ecommerce" element={<RetailEcommerce />} />
 
-          <Route path="/products" element={<Product />} />
-          <Route path="/contact" element={<ContactUs />} />
+            <Route path="/products" element={<Product />} />
+            <Route path="/contact" element={<ContactUs />} />
 
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/generative-ai" element={<GenerativeAIService />} />
-          <Route path="/services/robotics" element={<RoboticsService />} />
-          <Route path="/services/humanoids" element={<HumanoidSystems />} />
-          <Route path="/services/cybersecurity" element={<CybersecurityService />} />
-          <Route path="/services/ai-ml" element={<AIMLService />} />
-          <Route path="/services/data-engineering" element={<DataEngineeringService />} />
-          <Route path="/services/web3" element={<Web3Service />} />
-          <Route path="/services/blockchain" element={<BlockchainService />} />
-          <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
-          <Route path="/services/iot" element={<IoTService />} />
-          <Route path="/services/api-integration" element={<APIIntegrationService />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/generative-ai" element={<GenerativeAIService />} />
+            <Route path="/services/robotics" element={<RoboticsService />} />
+            <Route path="/services/humanoids" element={<HumanoidSystems />} />
+            <Route path="/services/cybersecurity" element={<CybersecurityService />} />
+            <Route path="/services/ai-ml" element={<AIMLService />} />
+            <Route path="/services/data-engineering" element={<DataEngineeringService />} />
+            <Route path="/services/web3" element={<Web3Service />} />
+            <Route path="/services/blockchain" element={<BlockchainService />} />
+            <Route path="/services/software-development" element={<SoftwareDevelopmentService />} />
+            <Route path="/services/iot" element={<IoTService />} />
+            <Route path="/services/api-integration" element={<APIIntegrationService />} />
 
-          <Route path="/products/sahayak-ai" element={<SahayakAI />} />
-          <Route path="/products/video-translation" element={<VideoTranslation />} />
-          <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
-          <Route path="/products/project-management" element={<ProjectManagementTool />} />
+            <Route path="/products/sahayak-ai" element={<SahayakAI />} />
+            <Route path="/products/video-translation" element={<VideoTranslation />} />
+            <Route path="/products/ai-interviewer" element={<AIInterviewer />} />
+            <Route path="/products/project-management" element={<ProjectManagementTool />} />
 
-          <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-use" element={<TermsOfUse />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-          <Route path="*" element={
-            <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
-              <div className="text-center px-6">
-                <h1 className="text-8xl font-bold text-gray-200 mb-4">404</h1>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Page Not Found</h2>
-                <p className="text-gray-600 mb-8 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
-                <Link to="/" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg">← Back to Home</Link>
+            <Route path="*" element={
+              <div className="min-h-screen flex items-center justify-center bg-gray-50" style={{ marginTop: '80px' }}>
+                <div className="text-center px-6">
+                  <h1 className="text-8xl font-bold text-gray-200 mb-4">404</h1>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Page Not Found</h2>
+                  <p className="text-gray-600 mb-8 max-w-md mx-auto">The page you're looking for doesn't exist or has been moved.</p>
+                  <Link to="/" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all shadow-lg">← Back to Home</Link>
+                </div>
               </div>
-            </div>
-          } />
+            } />
 
-          
 
-        </Routes>
-      </Suspense>
-      <Footer />
+
+          </Routes>
+        </Suspense>
+        <Footer />
       </AuthProvider>
     </Router>
   );

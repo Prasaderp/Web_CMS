@@ -85,7 +85,7 @@ const styleSheet = `
 @keyframes blink { 0%,49% { border-right-color: rgba(0,128,128,0.8);} 50%,100% { border-right-color: transparent; } }
 
 /* container */
-.aigen-container { padding: 80px 20px; font-family: ${MAIN_FONT}; box-sizing: border-box; }
+.aigen-container { padding: 30px 20px 80px; font-family: ${MAIN_FONT}; box-sizing: border-box; }
 
 /* welcome */
 .aigen-welcome { overflow: hidden; margin-bottom: 20px; }
@@ -152,7 +152,7 @@ const styleSheet = `
 /* mobile carousel styles */
 @media (max-width: 768px) {
   .aigen-container { 
-    padding: 40px 16px; 
+    padding: 20px 16px 40px; 
     background: white; /* Ensure white background on mobile */
   }
   
@@ -333,8 +333,8 @@ const ProductCard = ({ product }) => {
         <h3 className="aigen-title">{product.name}</h3>
         <p className="aigen-desc">{product.description}</p>
         <Link to={product.route} className="aigen-link">
-  View Details <span aria-hidden="true">→</span>
-</Link>
+          View Details <span aria-hidden="true">→</span>
+        </Link>
 
       </div>
     </div>
@@ -416,7 +416,7 @@ const TryOur = () => {
     if (type === 'product') setPIndex((s) => (s + 1) % productsData.length);
     else setEIndex((s) => (s + 1) % ethicsData.length);
   };
-  
+
   const prev = (type) => {
     if (type === 'product') setPIndex((s) => (s - 1 + productsData.length) % productsData.length);
     else setEIndex((s) => (s - 1 + ethicsData.length) % ethicsData.length);
@@ -425,40 +425,40 @@ const TryOur = () => {
   /* Auto-advance carousel */
   useEffect(() => {
     if (!isMobile) return;
-    
+
     const interval = setInterval(() => {
       setPIndex((s) => (s + 1) % productsData.length);
       setEIndex((s) => (s + 1) % ethicsData.length);
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, [isMobile]);
 
   /* Touch/drag support */
   useEffect(() => {
     if (!isMobile) return;
-    
+
     const pTrack = pTrackRef.current;
     const eTrack = eTrackRef.current;
     if (!pTrack || !eTrack) return;
 
     let pStart = 0, eStart = 0, pDragging = false, eDragging = false;
 
-    const pStartHandler = (ev) => { 
-      pDragging = true; 
-      pStart = ev.touches ? ev.touches[0].clientX : ev.clientX; 
-      pTrack.style.transition = 'none'; 
+    const pStartHandler = (ev) => {
+      pDragging = true;
+      pStart = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      pTrack.style.transition = 'none';
     };
-    
+
     const pMoveHandler = (ev) => {
       if (!pDragging) return;
       const x = ev.touches ? ev.touches[0].clientX : ev.clientX;
       const diff = x - pStart;
       pTrack.style.transform = `translateX(calc(-${pIndex * 100}% + ${diff}px))`;
     };
-    
+
     const pEndHandler = (ev) => {
-      pDragging = false; 
+      pDragging = false;
       pTrack.style.transition = '';
       const endX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
       const moved = endX - pStart;
@@ -467,21 +467,21 @@ const TryOur = () => {
       else pTrack.style.transform = `translateX(-${pIndex * 100}%)`;
     };
 
-    const eStartHandler = (ev) => { 
-      eDragging = true; 
-      eStart = ev.touches ? ev.touches[0].clientX : ev.clientX; 
-      eTrack.style.transition = 'none'; 
+    const eStartHandler = (ev) => {
+      eDragging = true;
+      eStart = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      eTrack.style.transition = 'none';
     };
-    
+
     const eMoveHandler = (ev) => {
       if (!eDragging) return;
       const x = ev.touches ? ev.touches[0].clientX : ev.clientX;
       const diff = x - eStart;
       eTrack.style.transform = `translateX(calc(-${eIndex * 100}% + ${diff}px))`;
     };
-    
+
     const eEndHandler = (ev) => {
-      eDragging = false; 
+      eDragging = false;
       eTrack.style.transition = '';
       const endX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
       const moved = endX - eStart;
@@ -531,39 +531,39 @@ const TryOur = () => {
     <div className="aigen-container">
       <h2 className="aigen-main-title">Try Our Exclusive AI Products</h2>
 
-     
-{/* Desktop / Tablet */}
-{!isMobile && (
-  <div className="aigen-products-grid">
-    {productsData.map((p, i) => (
-      <ProductCard key={i} product={p} />
-    ))}
-  </div>
-)}
 
-{/* Mobile */}
-{isMobile && (
-  <div className="aigen-carousel-container">
-    <div className="aigen-carousel-viewport">
-      <div className="aigen-carousel-track" ref={pTrackRef}>
-        {productsData.map((p, i) => (
-          <div key={i} className="aigen-carousel-slide">
-            <ProductCard product={p} />
+      {/* Desktop / Tablet */}
+      {!isMobile && (
+        <div className="aigen-products-grid">
+          {productsData.map((p, i) => (
+            <ProductCard key={i} product={p} />
+          ))}
+        </div>
+      )}
+
+      {/* Mobile */}
+      {isMobile && (
+        <div className="aigen-carousel-container">
+          <div className="aigen-carousel-viewport">
+            <div className="aigen-carousel-track" ref={pTrackRef}>
+              {productsData.map((p, i) => (
+                <div key={i} className="aigen-carousel-slide">
+                  <ProductCard product={p} />
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
 
-    <button className="aigen-arrow aigen-arrow--left" onClick={() => prev('product')}>‹</button>
-    <button className="aigen-arrow aigen-arrow--right" onClick={() => next('product')}>›</button>
+          <button className="aigen-arrow aigen-arrow--left" onClick={() => prev('product')}>‹</button>
+          <button className="aigen-arrow aigen-arrow--right" onClick={() => next('product')}>›</button>
 
-    <DotIndicators
-      count={productsData.length}
-      activeIndex={pIndex}
-      onClick={setPIndex}
-    />
-  </div>
-)}
+          <DotIndicators
+            count={productsData.length}
+            activeIndex={pIndex}
+            onClick={setPIndex}
+          />
+        </div>
+      )}
       {/* Ethics */}
       <div style={{ marginTop: 40 }}>
         <h2 className="aigen-ethics-title">The Difference: Innovation with Ethics</h2>
@@ -588,10 +588,10 @@ const TryOur = () => {
 
             <button className="aigen-arrow aigen-arrow--left" onClick={() => prev('ethics')} aria-label="Previous ethics">‹</button>
             <button className="aigen-arrow aigen-arrow--right" onClick={() => next('ethics')} aria-label="Next ethics">›</button>
-            
-            <DotIndicators 
-              count={ethicsData.length} 
-              activeIndex={eIndex} 
+
+            <DotIndicators
+              count={ethicsData.length}
+              activeIndex={eIndex}
               onClick={setEIndex}
             />
           </div>
