@@ -15,4 +15,4 @@ run cms -
 2. npm install 
 3. npm run dev
 
-credentials - admin@aigenthix.com , admin1234
+credentials - admin@aigenthix.com ,admin1234
