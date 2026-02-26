@@ -52,18 +52,12 @@ The backend is already configured to handle this connection string with SSL.
 | `CLOUDINARY_API_KEY` | `895962361469972` |
 | `CLOUDINARY_API_SECRET` | `rcVHGPBkE3ahX_tZ46YKetxsRE4` |
 | `DEBUG` | `false` |
-| `ADMIN_EMAIL` | `admin@yourdomain.com` |
-| `ADMIN_PASSWORD` | `YOUR_SECURE_PASSWORD` |
-| `SMTP_HOST` | `smtp.gmail.com` |
-| `SMTP_PORT` | `587` |
-| `SMTP_USERNAME` | `your.smtp.username@gmail.com` |
-| `SMTP_PASSWORD` | `YOUR_SMTP_APP_PASSWORD` |
-| `SMTP_USE_TLS` | `true` |
-| `SMTP_USE_SSL` | `false` |
-| `SMTP_TIMEOUT_SECONDS` | `10` |
-| `CONTACT_NOTIFICATION_TO` | `akankshasomvanshi@gmail.com` |
-| `CONTACT_NOTIFICATION_FROM` | `your.smtp.username@gmail.com` |
-| `CONTACT_NOTIFICATION_SUBJECT_PREFIX` | `[AiGENThix Contact]` |
+| `ADMIN_EMAIL` | `admin@aigenthix.com` |
+| `ADMIN_PASSWORD` | `admin1234` |
+| `RESEND_API_KEY` | `re_...` |
+| `CONTACT_FROM_EMAIL` | `"AiGENThix <onboarding@resend.dev>"` |
+| `CONTACT_NOTIFICATION_EMAIL` | `akankshasomvanshi7@gmail.com` |
+| `CONTACT_RATE_LIMIT_PER_MINUTE` | `3` |
 
 6. Click **"Create Web Service"**
 
@@ -188,16 +182,10 @@ If you prefer one-click deployment, use the included `render.yaml`:
 | `DEBUG` | ❌ | Set to `false` in production |
 | `ADMIN_EMAIL` | ❌ | Initial admin email |
 | `ADMIN_PASSWORD` | ❌ | Initial admin password |
-| `SMTP_HOST` | ✅ (for contact emails) | SMTP host |
-| `SMTP_PORT` | ❌ | SMTP port (default `587`) |
-| `SMTP_USERNAME` | ✅ (for contact emails) | SMTP username |
-| `SMTP_PASSWORD` | ✅ (for contact emails) | SMTP password/app password |
-| `SMTP_USE_TLS` | ❌ | Enable STARTTLS (`true` by default) |
-| `SMTP_USE_SSL` | ❌ | Enable implicit SSL (`false` by default) |
-| `SMTP_TIMEOUT_SECONDS` | ❌ | SMTP timeout seconds |
-| `CONTACT_NOTIFICATION_TO` | ❌ | Contact notification destination email |
-| `CONTACT_NOTIFICATION_FROM` | ❌ | Contact notification sender email |
-| `CONTACT_NOTIFICATION_SUBJECT_PREFIX` | ❌ | Subject prefix for contact emails |
+| `RESEND_API_KEY` | ✅ (for contact emails) | Resend API key |
+| `CONTACT_FROM_EMAIL` | ❌ | Sender email address for Resend |
+| `CONTACT_NOTIFICATION_EMAIL` | ❌ | Email address to receive contact notifications |
+| `CONTACT_RATE_LIMIT_PER_MINUTE` | ❌ | Rate limit for contact form submissions |
 
 ### CMS Admin (`cms-admin-v2`)
 

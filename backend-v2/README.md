@@ -93,6 +93,11 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 | CORS_ORIGINS | Yes | Comma-separated allowed origins |
 | CLOUDINARY_* | Yes | Cloudinary credentials |
 | REDIS_URL | No | Redis cache URL |
+| RESEND_API_KEY | Yes | Resend API Key for sending emails |
+| CONTACT_FROM_EMAIL | Yes | Senders email address via Resend |
+| CONTACT_NOTIFICATION_EMAIL | Yes | Receiver notification email |
+| ADMIN_EMAIL | No | Default Admin Email |
+| ADMIN_PASSWORD | No | Default Admin Password |
 
 ## Testing
 
