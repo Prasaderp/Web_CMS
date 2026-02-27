@@ -61,3 +61,4 @@ website-v2/.env.development
 !**/.env.development.example
 
 /Prompt Eng
+.env.example
